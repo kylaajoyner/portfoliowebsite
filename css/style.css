@@ -1412,7 +1412,12 @@ a {
   flex-direction: column;
   align-items: center;
   gap: calc(56 * var(--u));
-  padding: 0 16px;
+}
+
+/* full-width lane the rider gallops across, in one side and out the other */
+.wrangle-track {
+  width: 100%;
+  overflow: hidden;
 }
 
 /* wrangle.png is five 114 x 44 pixel frames side by side */
@@ -1421,7 +1426,12 @@ a {
   aspect-ratio: 114 / 44;
   background: url("../assets/images/rodeo/wrangle.png") 0 0 / 500% 100% no-repeat;
   image-rendering: pixelated;
-  animation: wrangle 1.6s infinite;
+  animation: wrangle 1.6s step-end infinite, ride 9s linear infinite;
+}
+
+@keyframes ride {
+  from { transform: translateX(-100%); }
+  to   { transform: translateX(100vw); }
 }
 
 /* swing, swing, throw, rope lands, caught (held a beat longer) */
@@ -1434,10 +1444,9 @@ a {
   100% { background-position-x: 100%; }
 }
 
-.wrangle { animation-timing-function: step-end; }
-
 .rodeo-title {
   margin: 0;
+  padding: 0 16px;
   font-family: var(--font-nav);
   font-weight: 400;
   font-size: calc(64 * var(--u));
@@ -1471,7 +1480,7 @@ a {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .wrangle { animation: none; background-position-x: 50%; }
+  .wrangle { animation: none; background-position-x: 50%; margin: 0 auto; }
 }
 
 @media (max-width: 900px) {
