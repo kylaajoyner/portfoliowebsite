@@ -209,6 +209,13 @@ a {
   opacity: 0.85;
 }
 
+/* Tall brand book pages: two rows of four */
+.project-gallery--portrait {
+  grid-template-columns: repeat(4, 1fr);
+  gap: calc(20 * var(--u));
+  max-width: calc(860 * var(--u));
+}
+
 /* Back to Work link under the gallery, same grow-from-center underline as the nav */
 .back-link {
   position: relative;
@@ -427,6 +434,10 @@ a {
 
   .project-gallery {
     grid-template-columns: 1fr; /* stack on phones so each page stays readable */
+  }
+
+  .project-gallery--portrait {
+    grid-template-columns: 1fr 1fr;
   }
 
   .lightbox__image {
