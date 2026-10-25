@@ -183,14 +183,18 @@ a {
   object-fit: cover;
 }
 
-/* Stand-in until the real thumbnail images are added */
-.work-card--placeholder {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-nav);
-  font-size: calc(28 * var(--u));
-  letter-spacing: calc(2 * var(--u));
+/* Crops match the Figma thumbnails */
+.work-card img[src*="old-spice"] {
+  object-position: center 44%;
+}
+
+.work-card--logo img {
+  object-fit: contain;
+}
+
+.work-card--wordmark img {
+  object-fit: contain;
+  padding: 0 8%;
 }
 
 /* ---------- Smaller screens ---------- */
