@@ -205,3 +205,23 @@
     }
   });
 })();
+
+// What's Kyla Spinning: duplicate the song list so the marquee loops seamlessly,
+// and keep the scroll speed steady however many songs there are
+(function () {
+  const display = document.querySelector("[data-marquee]");
+  if (!display) return;
+
+  const track = display.querySelector(".radio__track");
+  track.innerHTML += track.innerHTML;
+  track.lastElementChild && track.querySelectorAll("span").forEach(function (s, i, all) {
+    if (i >= all.length / 2) s.setAttribute("aria-hidden", "true");
+  });
+
+  function setSpeed() {
+    const pxPerSecond = display.clientWidth * 0.12;
+    track.style.setProperty("--marquee-time", (track.scrollWidth / 2) / pxPerSecond + "s");
+  }
+  setSpeed();
+  window.addEventListener("resize", setSpeed);
+})();

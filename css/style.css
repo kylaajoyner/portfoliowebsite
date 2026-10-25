@@ -807,6 +807,97 @@ a {
   white-space: nowrap;
 }
 
+/* ---------- What's Kyla Spinning (radio) ---------- */
+
+.radio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: calc(40 * var(--u)) 16px calc(160 * var(--u));
+}
+
+.radio__title {
+  margin: 0 0 calc(40 * var(--u));
+  font-family: var(--font-accent);
+  font-weight: 400;
+  font-synthesis: none;
+  font-size: calc(72 * var(--u));
+  letter-spacing: calc(4 * var(--u));
+  text-align: center;
+}
+
+.radio__set {
+  position: relative;
+  width: calc(1100 * var(--u));
+  max-width: 100%;
+}
+
+.radio__img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Sits exactly over the white cassette label in radio.jpg */
+.radio__display {
+  position: absolute;
+  left: 31.2%;
+  top: 41.3%;
+  width: 37.1%;
+  height: 26.4%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  background: #f6f4ef;
+  box-shadow: inset 0 calc(4 * var(--u)) calc(6 * var(--u)) rgba(0, 0, 0, 0.18);
+  container-type: inline-size;
+}
+
+/* Red stripe from the original label, kept as a nod to it */
+.radio__display::after {
+  content: "";
+  position: absolute;
+  left: 2%;
+  right: 4%;
+  bottom: 16%;
+  height: 2px;
+  background: #c4263f;
+}
+
+.radio__track {
+  display: flex;
+  flex: none;
+  white-space: nowrap;
+  font-family: var(--font-nav);
+  font-size: 11cqw;
+  letter-spacing: 0.6cqw;
+  color: #1a1a1a;
+  animation: radio-scroll var(--marquee-time, 30s) linear infinite;
+}
+
+.radio__track span {
+  padding-right: 6cqw;
+}
+
+.radio__track span::after {
+  content: "\2605"; /* star between songs */
+  padding-left: 6cqw;
+  font-size: 0.6em;
+  vertical-align: 0.25em;
+  color: #c4263f;
+}
+
+@keyframes radio-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .radio__track {
+    animation: none;
+  }
+}
+
 /* ---------- Work grid ---------- */
 
 .work-grid {
@@ -994,6 +1085,10 @@ a {
 
   .about-me__links a {
     font-size: 16px;
+  }
+
+  .radio__title {
+    font-size: 30px;
   }
 
   .work-grid {
