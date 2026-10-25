@@ -233,4 +233,79 @@
   }
   setSpeed();
   window.addEventListener("resize", setSpeed);
+
+  // Hold TUNE or FFWD: ease the scroll up to fast-forward, ease back down on release
+  const FAST = 5;
+  let held = 0;
+  let rate = 1;
+  let easing = false;
+
+  function scrollAnim() {
+    return track.getAnimations().find(function (a) { return a.animationName === "radio-scroll"; });
+  }
+
+  function ease() {
+    const anim = scrollAnim();
+    const target = held > 0 ? FAST : 1;
+    rate += (target - rate) * 0.12;
+    if (Math.abs(target - rate) < 0.02) rate = target;
+    if (anim) anim.playbackRate = rate;
+    if (rate !== target) requestAnimationFrame(ease);
+    else easing = false;
+  }
+
+  function startEase() {
+    if (!easing) {
+      easing = true;
+      requestAnimationFrame(ease);
+    }
+  }
+
+  document.querySelectorAll("[data-ffwd]").forEach(function (btn) {
+    let down = false;
+    function press() {
+      if (down) return;
+      down = true;
+      held++;
+      btn.classList.add("is-held");
+      startEase();
+    }
+    function release() {
+      if (!down) return;
+      down = false;
+      held--;
+      btn.classList.remove("is-held");
+      startEase();
+    }
+    btn.addEventListener("pointerdown", function (e) {
+      btn.setPointerCapture(e.pointerId);
+      press();
+    });
+    btn.addEventListener("pointerup", release);
+    btn.addEventListener("pointercancel", release);
+    btn.addEventListener("lostpointercapture", release);
+    btn.addEventListener("contextmenu", function (e) { e.preventDefault(); }); // long-press on phones
+    btn.addEventListener("keydown", function (e) {
+      if ((e.key === " " || e.key === "Enter") && !e.repeat) {
+        e.preventDefault();
+        press();
+      }
+    });
+    btn.addEventListener("keyup", function (e) {
+      if (e.key === " " || e.key === "Enter") release();
+    });
+    btn.addEventListener("blur", release);
+  });
+
+  // EJECT: switch the display off (blank label), press again to switch it back on
+  const eject = document.querySelector("[data-eject]");
+  if (eject) {
+    eject.addEventListener("click", function () {
+      const off = display.classList.toggle("is-off");
+      const anim = scrollAnim();
+      if (anim) off ? anim.pause() : anim.play();
+      eject.setAttribute("aria-pressed", String(off));
+      eject.setAttribute("aria-label", off ? "Eject: turn the radio display back on" : "Eject: turn the radio display off");
+    });
+  }
 })();

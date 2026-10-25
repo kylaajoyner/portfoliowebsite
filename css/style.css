@@ -887,6 +887,46 @@ a {
   color: #c4263f;
 }
 
+/* Radio off (after EJECT): the label goes blank */
+.radio__display.is-off .radio__track,
+.radio__display.is-off::after {
+  opacity: 0;
+}
+
+.radio__track,
+.radio__display::after {
+  transition: opacity 0.3s ease;
+}
+
+/* Invisible hit areas laid over the knob and buttons in the photo */
+.radio__btn {
+  position: absolute;
+  z-index: 1;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+  transition: background-color 0.1s ease;
+}
+
+.radio__btn.is-held,
+.radio__btn:active {
+  background: rgba(0, 0, 0, 0.18); /* reads as the button being pushed in */
+}
+
+.radio__btn:focus-visible {
+  outline: 2px solid #000;
+  outline-offset: 3px;
+}
+
+.radio__btn--tune  { left: 81.7%; top: 22.5%; width: 16%;   height: 58.3%; border-radius: 50%; }
+.radio__btn--ffwd  { left: 61.1%; top: 78.2%; width: 14%;   height: 10.4%; border-radius: 2px; }
+.radio__btn--eject { left: 24.9%; top: 78.4%; width: 14.1%; height: 10.7%; border-radius: 2px; }
+
 @keyframes radio-scroll {
   from { transform: translateX(0); }
   to   { transform: translateX(-50%); }
