@@ -414,26 +414,43 @@ a {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: calc(200 * var(--u)) 16px;
+  padding: calc(120 * var(--u)) 16px;
 }
+
+/* The ornaments hug the corners of the headshot */
+.about-me__frame {
+  position: relative;
+  flex: 0 0 auto;
+  padding: calc(40 * var(--u));
+}
+
+.about-me__frame .ornament {
+  width: calc(150 * var(--u));
+  height: calc(145 * var(--u));
+}
+
+.about-me__frame .ornament--top-left     { top: 0;    left: 0; }
+.about-me__frame .ornament--top-right    { top: 0;    right: 0; }
+.about-me__frame .ornament--bottom-left  { bottom: 0; left: 0; }
+.about-me__frame .ornament--bottom-right { bottom: 0; right: 0; }
 
 .about-me__inner {
   display: flex;
   align-items: center;
-  gap: calc(72 * var(--u));
-  max-width: calc(1040 * var(--u));
+  gap: calc(110 * var(--u));
+  max-width: calc(1260 * var(--u));
 }
 
 .about-me__photo {
-  flex: 0 0 calc(400 * var(--u));
-  width: calc(400 * var(--u));
+  display: block;
+  width: calc(480 * var(--u));
   height: auto;
 }
 
 .about-me__heading {
   margin: 0 0 calc(20 * var(--u));
   font-family: var(--font-body);
-  font-size: calc(40 * var(--u));
+  font-size: calc(52 * var(--u));
   font-weight: 700;
   line-height: 1.2;
 }
@@ -442,7 +459,7 @@ a {
 .about-me__links {
   display: flex;
   flex-wrap: wrap;
-  gap: calc(14 * var(--u)) calc(36 * var(--u));
+  gap: calc(14 * var(--u)) calc(28 * var(--u));
   margin: calc(32 * var(--u)) 0 0;
   padding: 0;
   list-style: none;
@@ -451,7 +468,7 @@ a {
 .about-me__links a {
   position: relative;
   font-family: var(--font-body);
-  font-size: calc(22 * var(--u));
+  font-size: calc(26 * var(--u));
   color: inherit;
   text-decoration: none;
 }
@@ -477,7 +494,7 @@ a {
 .about-me__copy {
   margin: 0;
   font-family: var(--font-body);
-  font-size: calc(26 * var(--u));
+  font-size: calc(32 * var(--u));
   line-height: 1.6;
 }
 
@@ -931,7 +948,7 @@ a {
   }
 
   .about-me {
-    padding: 130px 16px;
+    padding: 60px 16px 80px;
   }
 
   .about-me__inner {
@@ -939,9 +956,17 @@ a {
     gap: 28px;
   }
 
+  .about-me__frame {
+    padding: 24px;
+  }
+
+  .about-me__frame .ornament {
+    width: 80px;
+    height: 77px;
+  }
+
   .about-me__photo {
-    flex: none;
-    width: min(320px, 100%);
+    width: min(300px, calc(100vw - 80px));
   }
 
   .about-me__copy {
