@@ -193,7 +193,7 @@ a {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: calc(24 * var(--u));
-  max-width: calc(1040 * var(--u));
+  max-width: calc(1200 * var(--u));
   margin: calc(28 * var(--u)) auto 0;
   padding: 0 16px;
 }
