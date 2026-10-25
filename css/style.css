@@ -78,8 +78,8 @@ a {
   font-family: var(--font-accent);
   font-weight: 400;
   font-synthesis: none;
-  font-size: calc(43.714 * var(--u));
-  letter-spacing: calc(5.6829 * var(--u));
+  font-size: calc(37 * var(--u));
+  letter-spacing: calc(4.8 * var(--u));
   white-space: nowrap;
 }
 
@@ -95,6 +95,14 @@ a {
   font-family: var(--font-nav);
   font-size: calc(37.356 * var(--u));
   letter-spacing: calc(2.9885 * var(--u));
+}
+
+/* Faint underline under the section you're on */
+.site-nav a[aria-current="page"] {
+  text-decoration: underline;
+  text-decoration-thickness: max(1px, calc(1.5 * var(--u)));
+  text-decoration-color: rgba(0, 0, 0, 0.3);
+  text-underline-offset: calc(6 * var(--u));
 }
 
 /* ---------- Page frame + corner ornaments ---------- */
@@ -191,8 +199,8 @@ a {
   }
 
   .wordmark {
-    font-size: 28px;
-    letter-spacing: 3px;
+    font-size: 24px;
+    letter-spacing: 2.6px;
   }
 
   .site-nav ul {
@@ -228,8 +236,8 @@ a {
 
 @media (max-width: 480px) {
   .wordmark {
-    font-size: 20px;
-    letter-spacing: 1.5px;
+    font-size: 17px;
+    letter-spacing: 1.3px;
   }
 
   .site-nav ul {
