@@ -249,6 +249,22 @@ a {
   border: 0;
 }
 
+/* Small link under the video to the full story elsewhere (opens in a new tab) */
+.project-link {
+  align-self: center;
+  width: auto !important;
+  margin-top: calc(14 * var(--u));
+  font-family: var(--font-nav);
+  font-size: calc(20 * var(--u));
+  letter-spacing: calc(2 * var(--u));
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.project-link:hover,
+.project-link:focus-visible {
+  border-bottom-color: var(--color-ink);
+}
+
 /* Photo story under the video. A shared 16:9 frame keeps the rows even
    (a couple of stills are a hair taller); the slideshow shows them uncropped. */
 .project-gallery--story {
