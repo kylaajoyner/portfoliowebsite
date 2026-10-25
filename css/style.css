@@ -399,15 +399,35 @@ a {
   padding-top: 0;
 }
 
+/* Kyla's TV art sits on top; the screen glows through its cut-out */
 .tv {
   position: relative;
-  width: calc(960 * var(--u));
+  width: calc(1100 * var(--u));
   max-width: calc(100vw - 32px);
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 1314 / 850;
+}
+
+.tv__frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* Lines up with the screen hole in tv.webp, a little oversized so the bezel hides the edge */
+.tv__screen {
+  position: absolute;
+  left: 4.6%;
+  top: 9.4%;
+  width: 68.5%;
+  height: 81.8%;
   overflow: hidden;
-  border-radius: 6% / 8%; /* the bulge of a CRT screen */
+  border-radius: 9% / 12%;
   background: #0c0c0c;
-  box-shadow: inset 0 0 calc(120 * var(--u)) rgba(0, 0, 0, 0.9);
+  container-type: inline-size;
+  isolation: isolate; /* keeps the star layering inside the screen */
 }
 
 /* The picture tube warming up: a dot, then a line, then the full screen */
@@ -427,20 +447,29 @@ a {
   100% { transform: scale(1, 1);         filter: brightness(0.25); }
 }
 
-.tv__title {
+/* Name, rotating roles and the orbiting stars share one layer so stars can pass in front of and behind the text */
+.tv__content {
   position: absolute;
   inset: 0;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 2cqw;
+}
+
+.tv__title {
+  position: relative;
+  z-index: 2;
   margin: 0;
   font-family: var(--font-accent);
   font-weight: 400;
   font-synthesis: none;
-  font-size: calc(110 * var(--u));
-  letter-spacing: calc(6 * var(--u));
+  font-size: 12cqw;
+  letter-spacing: 0.6cqw;
+  line-height: 1;
   color: #f4f1ea;
-  text-shadow: 0 0 calc(18 * var(--u)) rgba(255, 255, 255, 0.55);
+  text-shadow: 0 0 2cqw rgba(255, 255, 255, 0.55);
   opacity: 0;
   animation: tv-title 1.2s ease-out 1.9s forwards, tv-flicker 4s steps(1) 3.1s infinite;
 }
@@ -462,9 +491,58 @@ a {
   83%      { opacity: 1; }
 }
 
+/* One role at a time, flipping over like a sign */
+.tv__roles {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 5cqw;
+  margin: 0;
+  perspective: 40cqw;
+  font-family: var(--font-nav);
+  font-size: 4.4cqw;
+  letter-spacing: 0.5cqw;
+  color: #f4f1ea;
+  text-shadow: 0 0 1.2cqw rgba(255, 255, 255, 0.45);
+  opacity: 0;
+  animation: tv-title 1.2s ease-out 2.4s forwards;
+}
+
+.tv__roles span {
+  position: absolute;
+  inset: 0;
+  text-align: center;
+  opacity: 0;
+  transform: rotateX(-90deg);
+  transform-origin: 50% 50% -2cqw;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+.tv__roles span.is-in {
+  opacity: 1;
+  transform: rotateX(0);
+}
+
+.tv__roles span.is-out {
+  opacity: 0;
+  transform: rotateX(90deg);
+}
+
+.tv__star {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 7cqw;
+  height: auto;
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
 /* Moving TV static (snow) that stays on once the picture is up */
 .tv__static {
   position: absolute;
+  z-index: 4;
   inset: -50%;
   pointer-events: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  3 0 0 0 -1.1'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
@@ -491,6 +569,7 @@ a {
 
 .tv__scanlines {
   position: absolute;
+  z-index: 5;
   inset: 0;
   pointer-events: none;
   background: repeating-linear-gradient(
@@ -500,7 +579,7 @@ a {
     transparent 1px,
     transparent 3px
   );
-  box-shadow: inset 0 0 calc(160 * var(--u)) rgba(0, 0, 0, 0.85); /* dark edges like curved glass */
+  box-shadow: inset 0 0 8cqw rgba(0, 0, 0, 0.85); /* dark edges like curved glass */
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -519,6 +598,24 @@ a {
     animation: none;
     opacity: 0.2;
   }
+
+  .tv__roles {
+    animation: none;
+    opacity: 1;
+  }
+
+  .tv__roles span {
+    transition: none;
+  }
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
 }
 
 /* ---------- Work grid ---------- */
@@ -665,11 +762,6 @@ a {
   .ornament {
     width: 110px;
     height: 106px;
-  }
-
-  .tv__title {
-    font-size: 40px;
-    letter-spacing: 2px;
   }
 
   .work-grid {

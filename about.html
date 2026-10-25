@@ -6,7 +6,7 @@
   <title>Kyla Joyner | About</title>
   <!-- Adobe Fonts kit: West End + Narkiss Yair -->
   <link rel="stylesheet" href="https://use.typekit.net/ijs5kav.css">
-  <link rel="stylesheet" href="css/style.css?v=27">
+  <link rel="stylesheet" href="css/style.css?v=28">
 </head>
 <body>
   <header class="site-header">
@@ -21,15 +21,24 @@
   </header>
 
   <main class="page page--about">
-    <!-- Old TV switching on, then the name fades up on screen -->
-    <div class="tv" aria-label="An old TV screen turning on to show the name Kyla Joyner">
-      <div class="tv__beam"></div>
-      <p class="tv__title">Kyla Joyner</p>
-      <div class="tv__static"></div>
-      <div class="tv__scanlines"></div>
+    <!-- Old TV switching on, then the name fades up on screen with stars circling it -->
+    <div class="tv">
+      <div class="tv__screen">
+        <div class="tv__beam"></div>
+        <div class="tv__content" data-stars>
+          <p class="tv__title">Kyla Joyner</p>
+          <p class="tv__roles" data-roles aria-hidden="true">
+            <span>Creative.</span><span>Storyteller.</span><span>Designer.</span><span>Photographer.</span><span>Gamer.</span><span>Nerd.</span><span>Musician.</span><span>Artist.</span>
+          </p>
+          <p class="sr-only">Creative. Storyteller. Designer. Photographer. Gamer. Nerd. Musician. Artist.</p>
+        </div>
+        <div class="tv__static"></div>
+        <div class="tv__scanlines"></div>
+      </div>
+      <img class="tv__frame" src="assets/images/about/tv.webp" alt="An old wood-grain TV set">
     </div>
   </main>
 
-  <script src="js/main.js?v=27"></script>
+  <script src="js/main.js?v=28"></script>
 </body>
 </html>

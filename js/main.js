@@ -90,3 +90,84 @@
     startX = null;
   });
 })();
+
+// About TV: roles flip over one at a time once the name is up
+(function () {
+  const roles = document.querySelector("[data-roles]");
+  if (!roles) return;
+
+  const words = roles.querySelectorAll("span");
+  let current = 0;
+  words[0].classList.add("is-in");
+
+  setTimeout(function () {
+    setInterval(function () {
+      const prev = words[current];
+      prev.classList.remove("is-in");
+      prev.classList.add("is-out");
+      setTimeout(function () { prev.classList.remove("is-out"); }, 500);
+      current = (current + 1) % words.length;
+      words[current].classList.add("is-in");
+    }, 1800);
+  }, 3100);
+})();
+
+// About TV: a ring of stars orbiting the name, Paramount style.
+// Stars on the near side of the ring pass in front of the text, the far side passes behind.
+(function () {
+  const stage = document.querySelector("[data-stars]");
+  if (!stage) return;
+
+  const COUNT = 22;
+  const TILT = -0.12;        // radians, a slight slant like the Paramount arc
+  const SPEED = 0.35;        // radians per second
+  const START = 2.6;         // seconds, when the stars fly in
+  const FLY_IN = 1.6;        // seconds to settle onto the ring
+  const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  const stars = [];
+  for (let i = 0; i < COUNT; i++) {
+    const img = document.createElement("img");
+    img.className = "tv__star";
+    img.src = "assets/images/about/star.svg";
+    img.alt = "";
+    stage.appendChild(img);
+    stars.push(img);
+  }
+
+  const t0 = performance.now();
+
+  function frame(now) {
+    const w = stage.clientWidth;
+    const h = stage.clientHeight;
+    const size = stars[0].offsetWidth;
+    const rx = w * 0.43;
+    const ry = h * 0.38;
+    const t = (now - t0) / 1000;
+
+    // 0 → 1 as the stars sweep in from far out, eased
+    let p = still ? 1 : Math.min(Math.max((t - START) / FLY_IN, 0), 1);
+    p = 1 - Math.pow(1 - p, 3);
+    const spread = 1 + (1 - p) * 1.8;
+    const spin = still ? 0 : t * SPEED + (1 - p) * 2.5;
+
+    for (let i = 0; i < COUNT; i++) {
+      const a = (i / COUNT) * Math.PI * 2 + spin;
+      const ex = Math.cos(a) * rx * spread;
+      const ey = Math.sin(a) * ry * spread;
+      const x = w / 2 + ex * Math.cos(TILT) - ey * Math.sin(TILT);
+      const y = h / 2 + ex * Math.sin(TILT) + ey * Math.cos(TILT);
+      const depth = (Math.sin(a) + 1) / 2;   // 0 far (top), 1 near (bottom)
+      const scale = 0.55 + depth * 0.6;
+      const s = stars[i];
+      s.style.transform = "translate(" + (x - size / 2) + "px," + (y - size / 2) + "px) scale(" + scale + ")";
+      s.style.opacity = p * (0.45 + depth * 0.55);
+      s.style.zIndex = depth > 0.5 ? 3 : 1;
+    }
+
+    if (!still) requestAnimationFrame(frame);
+  }
+
+  requestAnimationFrame(frame);
+  if (still) window.addEventListener("resize", function () { requestAnimationFrame(frame); });
+})();
