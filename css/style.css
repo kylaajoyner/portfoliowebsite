@@ -397,6 +397,11 @@ a {
   opacity: 1;
 }
 
+/* A card still waiting on its thumbnail shows its name all the time */
+.work-card--placeholder .work-card__label {
+  opacity: 1;
+}
+
 /* Crops match the Figma thumbnails */
 .work-card img[src*="old-spice"] {
   object-position: center 44%;
