@@ -939,6 +939,165 @@ a {
   }
 }
 
+/* ---------- Lost partner (bottom of About) ---------- */
+
+.lost {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(40 * var(--u));
+  padding: calc(40 * var(--u)) 16px calc(140 * var(--u));
+}
+
+.lost__scene {
+  position: relative;
+  flex: none;
+  width: calc(470 * var(--u));
+  height: calc(465 * var(--u));
+}
+
+.lost__cactus {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: calc(210 * var(--u));
+  height: auto;
+  image-rendering: pixelated;
+}
+
+.lost__cowboy {
+  position: absolute;
+  left: 0;
+  bottom: calc(15 * var(--u)); /* sits on the cactus' ground line */
+  width: calc(370 * var(--u));
+  height: auto;
+  image-rendering: pixelated;
+  mix-blend-mode: multiply; /* drops the video's white box so he overlaps the cactus cleanly */
+}
+
+/* Pixel-style speech bubble */
+.lost__bubble {
+  position: relative;
+  flex: none;
+  width: calc(440 * var(--u)); /* fixed so the scene doesn't shift when the dots turn into words */
+  min-height: calc(150 * var(--u));
+  box-sizing: border-box;
+  padding: calc(24 * var(--u)) calc(32 * var(--u));
+  border: calc(5 * var(--u)) solid #1c1c1c;
+  background: #fff;
+  box-shadow: calc(8 * var(--u)) calc(8 * var(--u)) 0 #1c1c1c;
+  font-family: var(--font-nav);
+  opacity: 0;
+  transform: scale(0.6);
+  transform-origin: left center;
+  transition: opacity 0.25s ease, transform 0.3s cubic-bezier(0.3, 1.6, 0.5, 1);
+}
+
+/* Stepped tail pointing back at the cowboy */
+.lost__bubble::before,
+.lost__bubble::after {
+  content: "";
+  position: absolute;
+  background: #1c1c1c;
+}
+
+.lost__bubble::before {
+  left: calc(-29 * var(--u)); /* measured from inside the border; runs under it so there's no gap */
+  top: 50%;
+  width: calc(30 * var(--u));
+  height: calc(12 * var(--u));
+}
+
+.lost__bubble::after {
+  left: calc(-41 * var(--u));
+  top: calc(50% + 12 * var(--u));
+  width: calc(12 * var(--u));
+  height: calc(12 * var(--u));
+}
+
+.lost.is-talking .lost__bubble {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.lost__dots {
+  display: flex;
+  gap: calc(14 * var(--u));
+  justify-content: center;
+  padding: calc(26 * var(--u)) 0;
+}
+
+.lost__dots i {
+  width: calc(16 * var(--u));
+  height: calc(16 * var(--u));
+  background: #1c1c1c;
+  animation: lost-dot 0.9s steps(1) infinite;
+}
+
+.lost__dots i:nth-child(2) { animation-delay: 0.3s; }
+.lost__dots i:nth-child(3) { animation-delay: 0.6s; }
+
+@keyframes lost-dot {
+  0%, 100% { opacity: 0.2; }
+  33%      { opacity: 1; }
+}
+
+.lost__text,
+.lost__links {
+  display: none;
+  margin: 0;
+}
+
+.lost.has-spoken .lost__dots { display: none; }
+.lost.has-spoken .lost__text { display: block; animation: lost-in 0.3s ease both; }
+.lost.has-links .lost__links { display: flex; animation: lost-in 0.3s ease both; }
+
+.lost__text {
+  font-size: calc(44 * var(--u));
+  letter-spacing: calc(2 * var(--u));
+  line-height: 1.1;
+}
+
+.lost__links {
+  gap: calc(32 * var(--u));
+  margin-top: calc(16 * var(--u));
+}
+
+.lost__links a {
+  position: relative;
+  font-size: calc(28 * var(--u));
+  letter-spacing: calc(1.5 * var(--u));
+  color: inherit;
+  text-decoration: none;
+}
+
+.lost__links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(-3 * var(--u));
+  height: max(1px, calc(2 * var(--u)));
+  background: currentColor;
+  transform: scaleX(0);
+  transition: transform 0.25s ease;
+}
+
+.lost__links a:hover::after,
+.lost__links a:focus-visible::after {
+  transform: scaleX(1);
+}
+
+@keyframes lost-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lost__bubble { transition: none; }
+  .lost__dots i { animation: none; opacity: 1; }
+}
+
 /* ---------- Work grid ---------- */
 
 .work-grid {
@@ -1131,6 +1290,37 @@ a {
   .radio__title {
     font-size: 30px;
   }
+
+  .lost {
+    flex-direction: column;
+    gap: 36px;
+  }
+
+  .lost__scene {
+    width: 235px;
+    height: 233px;
+  }
+
+  .lost__cactus { width: 105px; }
+  .lost__cowboy { width: 185px; bottom: 7px; }
+
+  .lost__bubble {
+    width: min(320px, 100%);
+    min-height: 110px;
+    transform-origin: center top;
+    padding: 16px 22px;
+    border-width: 4px;
+    box-shadow: 6px 6px 0 #1c1c1c;
+  }
+
+  /* tail points up at the cowboy on phones */
+  .lost__bubble::before { left: 30%; top: -18px; width: 10px; height: 14px; }
+  .lost__bubble::after  { left: calc(30% - 10px); top: -28px; width: 10px; height: 10px; }
+
+  .lost__text { font-size: 28px; }
+  .lost__links a { font-size: 20px; }
+  .lost__dots i { width: 10px; height: 10px; }
+
 
   .work-grid {
     margin-top: 100px; /* clears the smaller corner ornaments */

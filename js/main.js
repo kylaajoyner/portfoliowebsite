@@ -311,3 +311,41 @@
     });
   });
 })();
+
+// Lost partner: when the cowboy scrolls into view his bubble types "..." then speaks
+(function () {
+  const lost = document.querySelector("[data-lost]");
+  if (!lost) return;
+
+  const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function talk() {
+    lost.classList.add("is-talking");
+    if (still) {
+      lost.classList.add("has-spoken", "has-links");
+      return;
+    }
+    setTimeout(function () { lost.classList.add("has-spoken"); }, 1800);
+    setTimeout(function () { lost.classList.add("has-links"); }, 2500);
+  }
+
+  if ("IntersectionObserver" in window) {
+    const io = new IntersectionObserver(function (entries) {
+      if (entries[0].isIntersecting) {
+        talk();
+        io.disconnect();
+      }
+    }, { threshold: 0.5 });
+    io.observe(lost);
+  } else {
+    talk();
+  }
+
+  const top = lost.querySelector("[data-top]");
+  if (top) {
+    top.addEventListener("click", function (e) {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: still ? "auto" : "smooth" });
+    });
+  }
+})();
