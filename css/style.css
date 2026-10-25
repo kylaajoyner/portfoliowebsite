@@ -97,12 +97,28 @@ a {
   letter-spacing: calc(2.9885 * var(--u));
 }
 
-/* Faint underline under the section you're on */
-.site-nav a[aria-current="page"] {
-  text-decoration: underline;
-  text-decoration-thickness: max(1px, calc(1.5 * var(--u)));
-  text-decoration-color: rgba(0, 0, 0, 0.3);
-  text-underline-offset: calc(6 * var(--u));
+/* Faint underline: draws in on hover, stays under the section you're on */
+.site-nav a {
+  position: relative;
+}
+
+.site-nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(-4 * var(--u));
+  height: max(1px, calc(1.5 * var(--u)));
+  background: rgba(0, 0, 0, 0.3);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.25s ease;
+}
+
+.site-nav a:hover::after,
+.site-nav a:focus-visible::after,
+.site-nav a[aria-current="page"]::after {
+  transform: scaleX(1);
 }
 
 /* ---------- Page frame + corner ornaments ---------- */
