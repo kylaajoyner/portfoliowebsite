@@ -181,6 +181,14 @@ a {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: filter 0.3s ease, transform 0.3s ease;
+}
+
+/* Slight blur on hover. The tiny scale hides the soft edge blur leaves at the card border. */
+.work-card:hover img,
+.work-card:focus-visible img {
+  filter: blur(2.5px);
+  transform: scale(1.03);
 }
 
 /* Crops match the Figma thumbnails */
