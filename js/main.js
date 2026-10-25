@@ -5,7 +5,7 @@
 // The slideshow loops: next on the last image goes back to the first.
 
 (function () {
-  const gallery = document.querySelector(".project-gallery");
+  const gallery = document.querySelector(".project-gallery, .rodeo-gallery");
   if (!gallery) return;
 
   const images = Array.from(gallery.querySelectorAll("img"));

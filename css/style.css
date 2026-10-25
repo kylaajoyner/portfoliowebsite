@@ -1426,7 +1426,7 @@ a {
   aspect-ratio: 114 / 44;
   background: url("../assets/images/rodeo/wrangle.png") 0 0 / 500% 100% no-repeat;
   image-rendering: pixelated;
-  animation: wrangle 1.6s step-end infinite, ride 9s linear infinite;
+  animation: wrangle 0.6s step-end infinite, ride 9s linear infinite;
 }
 
 @keyframes ride {
@@ -1434,14 +1434,11 @@ a {
   to   { transform: translateX(100vw); }
 }
 
-/* swing, swing, throw, rope lands, caught (held a beat longer) */
+/* only the two lasso-swinging frames: he chases the horse but never catches it */
 @keyframes wrangle {
   0%   { background-position-x: 0; }
-  17%  { background-position-x: 25%; }
-  34%  { background-position-x: 50%; }
-  51%  { background-position-x: 75%; }
-  68%  { background-position-x: 100%; }
-  100% { background-position-x: 100%; }
+  50%  { background-position-x: 25%; }
+  100% { background-position-x: 25%; }
 }
 
 .rodeo-title {
@@ -1480,7 +1477,7 @@ a {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .wrangle { animation: none; background-position-x: 50%; margin: 0 auto; }
+  .wrangle { animation: none; background-position-x: 0; margin: 0 auto; }
 }
 
 @media (max-width: 900px) {
@@ -1494,4 +1491,8 @@ a {
 
 @media (max-width: 480px) {
   .rodeo-gallery__grid { columns: 1; }
+}
+
+.rodeo-gallery__item img {
+  cursor: zoom-in;
 }
