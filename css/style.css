@@ -127,6 +127,7 @@ a {
   position: relative;
   height: calc(100vh - var(--header-height));
   overflow: hidden;
+  overflow-x: clip; /* stays on even where a page lets content run long; ornaments hang off the edge */
   padding-top: calc(44 * var(--u));
 }
 
@@ -162,7 +163,7 @@ a {
 .page--project {
   height: auto;
   min-height: calc(100vh - var(--header-height));
-  overflow: visible;
+  overflow-y: visible;
   display: flex;
   flex-direction: column;
   justify-content: center; /* title, intro and gallery sit centered in the space under the header */
@@ -393,10 +394,47 @@ a {
 /* ---------- About: old TV turning on ---------- */
 
 .page--about {
+  height: auto;
+  overflow-y: visible;
+  padding-top: 0;
+}
+
+/* First screen: just the TV, centred under the header */
+.about-hero {
+  height: calc(100vh - var(--header-height));
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-top: 0;
+}
+
+/* Second screen: headshot and bio, framed by the corner ornaments */
+.about-me {
+  position: relative;
+  min-height: calc(100vh - var(--header-height));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(200 * var(--u)) 16px;
+}
+
+.about-me__inner {
+  display: flex;
+  align-items: center;
+  gap: calc(72 * var(--u));
+  max-width: calc(1040 * var(--u));
+}
+
+.about-me__photo {
+  flex: 0 0 calc(400 * var(--u));
+  width: calc(400 * var(--u));
+  height: auto;
+}
+
+.about-me__copy {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: calc(26 * var(--u));
+  line-height: 1.6;
 }
 
 /* Kyla's TV art sits on top; the screen glows through its cut-out */
@@ -778,7 +816,7 @@ a {
   .page {
     height: auto;
     min-height: calc(100vh - var(--header-height));
-    overflow: visible;
+    overflow-y: visible;
     padding-bottom: 120px;
   }
 
@@ -837,6 +875,33 @@ a {
   .ornament {
     width: 110px;
     height: 106px;
+  }
+
+  .page--about {
+    padding-bottom: 0;
+  }
+
+  .about-hero {
+    height: auto;
+    padding: 120px 0 40px;
+  }
+
+  .about-me {
+    padding: 130px 16px;
+  }
+
+  .about-me__inner {
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .about-me__photo {
+    flex: none;
+    width: min(320px, 100%);
+  }
+
+  .about-me__copy {
+    font-size: 17px;
   }
 
   .work-grid {
