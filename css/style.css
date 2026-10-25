@@ -235,6 +235,31 @@ a {
   min-width: 0;
 }
 
+/* Main video on a project page, 16:9 like the film */
+.project-video {
+  max-width: calc(1120 * var(--u));
+  margin: calc(28 * var(--u)) auto 0;
+  padding: 0 16px;
+}
+
+.project-video iframe {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 0;
+}
+
+/* Photo story under the video. A shared 16:9 frame keeps the rows even
+   (a couple of stills are a hair taller); the slideshow shows them uncropped. */
+.project-gallery--story {
+  margin-top: calc(48 * var(--u));
+}
+
+.project-gallery--story img {
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
 /* Back to Work link under the gallery, same grow-from-center underline as the nav */
 .back-link {
   position: relative;
@@ -394,11 +419,6 @@ a {
 
 .work-card:hover .work-card__label,
 .work-card:focus-visible .work-card__label {
-  opacity: 1;
-}
-
-/* A card still waiting on its thumbnail shows its name all the time */
-.work-card--placeholder .work-card__label {
   opacity: 1;
 }
 
