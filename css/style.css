@@ -547,6 +547,7 @@ a {
   height: 5cqw;
   margin: 0;
   perspective: 40cqw;
+  transform: translateX(-1.3cqw) rotate(-6deg); /* same slant as the name, nudged to sit on its line */
   font-family: var(--font-nav);
   font-size: 4.4cqw;
   letter-spacing: 0.5cqw;
