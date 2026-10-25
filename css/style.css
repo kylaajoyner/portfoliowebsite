@@ -1497,12 +1497,12 @@ a {
   70.312% { background-position-x: 20%; }
   71.875% { background-position-x: 40%; }
   73.438% { background-position-x: 60%; }
-  75.000% { background-position-x: 80%; }
-  76.562% { background-position-x: 100%; }
-  78.125% { background-position-x: 80%; }
-  79.688% { background-position-x: 100%; }
-  81.250% { background-position-x: 80%; }
-  82.812% { background-position-x: 100%; }
+  75.000% { background-position-x: 0%; }
+  76.562% { background-position-x: 20%; }
+  78.125% { background-position-x: 40%; }
+  79.688% { background-position-x: 60%; }
+  81.250% { background-position-x: 0%; }
+  82.812% { background-position-x: 20%; }
   84.375% { background-position-x: 80%; }
   85.938% { background-position-x: 100%; }
   87.500% { background-position-x: 80%; }
