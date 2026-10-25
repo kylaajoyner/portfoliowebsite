@@ -156,6 +156,44 @@ a {
   text-align: center;
 }
 
+/* ---------- Project pages ---------- */
+
+/* Project pages hold more than one screen of content, so they scroll. */
+.page--project {
+  height: auto;
+  min-height: calc(100vh - var(--header-height));
+  overflow: visible;
+  padding-bottom: calc(120 * var(--u));
+}
+
+.project-intro {
+  max-width: calc(810 * var(--u));
+  margin: calc(16 * var(--u)) auto 0;
+  padding: 0 16px;
+  font-family: var(--font-nav);
+  font-size: calc(20.77 * var(--u));
+  letter-spacing: calc(2.7 * var(--u));
+  text-align: center;
+}
+
+.project-intro p {
+  margin: 0 0 1.2em;
+}
+
+.project-gallery {
+  display: flex;
+  flex-direction: column;
+  gap: calc(40 * var(--u));
+  max-width: calc(1200 * var(--u));
+  margin: calc(48 * var(--u)) auto 0;
+  padding: 0 16px;
+}
+
+.project-gallery img {
+  width: 100%;
+  height: auto;
+}
+
 /* ---------- Work grid ---------- */
 
 .work-grid {
@@ -267,6 +305,11 @@ a {
   .page-title {
     font-size: 44px;
     letter-spacing: 5px;
+  }
+
+  .project-intro {
+    font-size: 17px;
+    letter-spacing: 1.5px;
   }
 
   .ornament {
