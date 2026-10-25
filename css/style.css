@@ -1422,7 +1422,7 @@ a {
 
 /* wrangle.png is five 114 x 44 pixel frames side by side */
 .wrangle {
-  width: min(calc(912 * var(--u)), calc(100vw - 32px));
+  width: min(calc(570 * var(--u)), 70vw);
   aspect-ratio: 114 / 44;
   background: url("../assets/images/rodeo/wrangle.png") 0 0 / 500% 100% no-repeat;
   image-rendering: pixelated;
