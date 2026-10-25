@@ -184,8 +184,8 @@ a {
   display: flex;
   flex-direction: column;
   gap: calc(40 * var(--u));
-  max-width: calc(1200 * var(--u));
-  margin: calc(48 * var(--u)) auto 0;
+  max-width: calc(960 * var(--u)); /* small enough that the title, intro and cover all fit the first screen */
+  margin: calc(28 * var(--u)) auto 0;
   padding: 0 16px;
 }
 
