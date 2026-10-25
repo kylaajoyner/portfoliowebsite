@@ -114,6 +114,19 @@ a {
 .ornament--bottom-left  { bottom: 12px; left: -11px;  transform: scaleX(-1); }
 .ornament--bottom-right { bottom: 12px; right: -14px; }
 
+/* ---------- Project page title ---------- */
+
+.page-title {
+  margin: 0;
+  padding: 0 16px;
+  font-family: var(--font-accent);
+  font-size: 80.303px;
+  font-weight: 400;
+  font-synthesis: none;
+  letter-spacing: 10.4394px;
+  text-align: center;
+}
+
 /* ---------- Work grid ---------- */
 
 .work-grid {
@@ -173,6 +186,11 @@ a {
     letter-spacing: 2px;
   }
 
+
+  .page-title {
+    font-size: 44px;
+    letter-spacing: 5px;
+  }
 
   .ornament {
     width: 110px;
