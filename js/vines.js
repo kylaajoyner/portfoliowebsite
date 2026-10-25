@@ -1,8 +1,6 @@
 // ---------- Growing vine ornaments ----------
 // Swaps each corner ornament image for Kyla's vine as inline SVG so it can grow.
-// Most pages: the vine grows out from its corner and pulls back on a slow loop,
-// faster while hovered. Work page: each corner stays a small sprig until you
-// hover it, then grows in, and pulls back when you leave.
+// At rest it looks like the regular ornament; hovering a corner regrows it.
 
 (function () {
   const ornaments = document.querySelectorAll("img.ornament");
@@ -17,20 +15,20 @@
     BUDS.map(([d, at]) => '<path class="vine__bud" style="--at:' + at + '" d="' + d + '"/>').join("") +
     "</svg>";
 
-  const onWork = document.querySelector(".page--work") !== null;
-
   ornaments.forEach((img) => {
     const wrap = document.createElement("span");
-    wrap.className = img.className + " vine-ornament" + (onWork ? " vine-ornament--hover" : "");
+    wrap.className = img.className + " vine-ornament";
     wrap.setAttribute("aria-hidden", "true");
     wrap.innerHTML = svg;
     img.replaceWith(wrap);
 
-    if (onWork) return;
-
-    // Looping vines speed up while the pointer is over them.
-    const anims = () => wrap.getAnimations({ subtree: true });
-    wrap.addEventListener("pointerenter", () => anims().forEach((a) => (a.playbackRate = 3)));
-    wrap.addEventListener("pointerleave", () => anims().forEach((a) => (a.playbackRate = 1)));
+    const vine = wrap.firstChild;
+    wrap.addEventListener("pointerenter", () => {
+      if (wrap.classList.contains("is-growing")) return; // let a grow finish
+      wrap.classList.add("is-growing");
+    });
+    vine.addEventListener("animationend", (e) => {
+      if (e.target === vine) wrap.classList.remove("is-growing");
+    });
   });
 })();

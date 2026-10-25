@@ -1590,10 +1590,11 @@ a {
 }
 
 /* ---------- Growing vine ornaments (js/vines.js) ---------- */
-
+/* At rest the vine is the regular ornament. Hovering a corner regrows it from
+   its corner, the buds popping open as the vine reaches them. */
 .vine-ornament {
   display: block;
-  pointer-events: auto; /* hovering speeds the vine up, or grows it on Work */
+  pointer-events: auto; /* needed for the hover */
 }
 
 .vine {
@@ -1602,8 +1603,6 @@ a {
   height: 100%;
   fill: var(--color-ink);
   overflow: visible;
-  /* grows out from the corner the ornament points to */
-  clip-path: circle(85% at 88.9% 90.1%);
 }
 
 .vine__bud {
@@ -1611,56 +1610,27 @@ a {
   transform-origin: center;
 }
 
-/* Most pages: grow in, rest, pull back to a sprig, on a slow loop */
-.vine-ornament:not(.vine-ornament--hover) .vine {
-  animation: vine-grow 12s ease-in-out infinite both;
+.vine-ornament.is-growing .vine {
+  animation: vine-grow 1.6s ease-out both;
 }
 
-.vine-ornament:not(.vine-ornament--hover) .vine__bud {
-  animation: vine-bud 12s ease-out infinite both;
-  animation-delay: calc(var(--at) * 3.6s); /* blooms once the vine reaches it */
+.vine-ornament.is-growing .vine__bud {
+  animation: vine-bud 0.45s ease-out both;
+  animation-delay: calc(var(--at) * 1.4s); /* blooms once the vine reaches it */
 }
 
 @keyframes vine-grow {
-  0%, 100% { clip-path: circle(9% at 88.9% 90.1%); }
-  30%, 65% { clip-path: circle(85% at 88.9% 90.1%); }
-  92%      { clip-path: circle(9% at 88.9% 90.1%); }
+  from { clip-path: circle(9% at 88.9% 90.1%); }
+  to   { clip-path: circle(85% at 88.9% 90.1%); }
 }
 
 @keyframes vine-bud {
-  0%        { transform: scale(0); }
-  6%        { transform: scale(1.15); }
-  9%, 55%   { transform: scale(1); }
-  62%, 100% { transform: scale(0); }
-}
-
-/* Work page: a sprig until hovered, then it grows in */
-.vine-ornament--hover .vine {
-  clip-path: circle(9% at 88.9% 90.1%);
-  transition: clip-path 1.4s ease-in-out;
-}
-
-.vine-ornament--hover .vine__bud {
-  transform: scale(0);
-  transition: transform 0.35s ease-out;
-}
-
-.vine-ornament--hover:hover .vine {
-  clip-path: circle(85% at 88.9% 90.1%);
-}
-
-.vine-ornament--hover:hover .vine__bud {
-  transform: scale(1);
-  transition-delay: calc(var(--at) * 1.2s);
-}
-
-/* No hover on touch screens, so the Work vines just show in full there */
-@media (hover: none) {
-  .vine-ornament--hover .vine { clip-path: circle(85% at 88.9% 90.1%); }
-  .vine-ornament--hover .vine__bud { transform: none; }
+  0%   { transform: scale(0); }
+  65%  { transform: scale(1.15); }
+  100% { transform: scale(1); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .vine-ornament .vine { animation: none; transition: none; clip-path: none; }
-  .vine-ornament .vine__bud { animation: none; transition: none; transform: none; }
+  .vine-ornament.is-growing .vine,
+  .vine-ornament.is-growing .vine__bud { animation: none; }
 }
