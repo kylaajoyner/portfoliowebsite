@@ -206,7 +206,7 @@
   });
 })();
 
-// What's Kyla Spinning: duplicate the song list so the marquee loops seamlessly,
+// Jukebox: duplicate the song list so the marquee loops seamlessly,
 // and keep the scroll speed steady however many songs there are
 (function () {
   const display = document.querySelector("[data-marquee]");
