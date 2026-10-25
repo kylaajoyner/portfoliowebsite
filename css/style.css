@@ -1404,7 +1404,7 @@ a {
 .page--rodeo {
   height: auto;
   overflow-y: visible;
-  padding: calc(60 * var(--u)) 0 calc(260 * var(--u));
+  padding: calc(36 * var(--u)) 0 calc(260 * var(--u)); /* rider lines up with the top ornaments */
 }
 
 .rodeo-hero {
@@ -1414,10 +1414,18 @@ a {
   gap: calc(56 * var(--u));
 }
 
-/* full-width lane the rider gallops across, in one side and out the other */
+/* lane between the two top ornaments: the rider rides out from behind the
+   left one and disappears behind the right one */
 .wrangle-track {
-  width: 100%;
+  --lane-inset: calc(var(--ornament-width) * 0.28);
+  align-self: stretch;
+  margin: 0 var(--lane-inset);
   overflow: hidden;
+  container-type: inline-size;
+}
+
+.page--rodeo .ornament {
+  z-index: 2;
 }
 
 /* wrangle.png is five 114 x 44 pixel frames side by side */
@@ -1431,7 +1439,7 @@ a {
 
 @keyframes ride {
   from { transform: translateX(-100%); }
-  to   { transform: translateX(100vw); }
+  to   { transform: translateX(100cqw); }
 }
 
 /* only the two lasso-swinging frames: he chases the horse but never catches it */
@@ -1481,7 +1489,8 @@ a {
 }
 
 @media (max-width: 900px) {
-  .page--rodeo { padding: 96px 0 80px; }
+  .page--rodeo { padding: 30px 0 80px; }
+  .wrangle-track { --lane-inset: 31px; }
   .rodeo-hero { gap: 28px; }
   .rodeo-title { font-size: 30px; letter-spacing: 1.5px; }
   .rodeo-gallery { margin-top: 40px; }
