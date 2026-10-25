@@ -1398,3 +1398,91 @@ a {
     letter-spacing: 1px;
   }
 }
+
+/* ---------- Rodeo: wrangling animation + gallery ---------- */
+
+.page--rodeo {
+  height: auto;
+  overflow-y: visible;
+  padding: calc(60 * var(--u)) 0 calc(260 * var(--u));
+}
+
+.rodeo-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(56 * var(--u));
+  padding: 0 16px;
+}
+
+/* wrangle.png is five 114 x 44 pixel frames side by side */
+.wrangle {
+  width: min(calc(912 * var(--u)), calc(100vw - 32px));
+  aspect-ratio: 114 / 44;
+  background: url("../assets/images/rodeo/wrangle.png") 0 0 / 500% 100% no-repeat;
+  image-rendering: pixelated;
+  animation: wrangle 1.6s infinite;
+}
+
+/* swing, swing, throw, rope lands, caught (held a beat longer) */
+@keyframes wrangle {
+  0%   { background-position-x: 0; }
+  17%  { background-position-x: 25%; }
+  34%  { background-position-x: 50%; }
+  51%  { background-position-x: 75%; }
+  68%  { background-position-x: 100%; }
+  100% { background-position-x: 100%; }
+}
+
+.wrangle { animation-timing-function: step-end; }
+
+.rodeo-title {
+  margin: 0;
+  font-family: var(--font-nav);
+  font-weight: 400;
+  font-size: calc(64 * var(--u));
+  letter-spacing: calc(3 * var(--u));
+  text-align: center;
+}
+
+.rodeo-gallery {
+  max-width: calc(1260 * var(--u));
+  margin: calc(90 * var(--u)) auto 0;
+  padding: 0 16px;
+}
+
+/* masonry-style columns so posters and landscape pieces keep their shapes */
+.rodeo-gallery__grid {
+  columns: 3;
+  column-gap: calc(28 * var(--u));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rodeo-gallery__item {
+  break-inside: avoid;
+  margin-bottom: calc(28 * var(--u));
+}
+
+.rodeo-gallery__item img {
+  width: 100%;
+  height: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wrangle { animation: none; background-position-x: 50%; }
+}
+
+@media (max-width: 900px) {
+  .page--rodeo { padding: 96px 0 80px; }
+  .rodeo-hero { gap: 28px; }
+  .rodeo-title { font-size: 30px; letter-spacing: 1.5px; }
+  .rodeo-gallery { margin-top: 40px; }
+  .rodeo-gallery__grid { columns: 2; column-gap: 12px; }
+  .rodeo-gallery__item { margin-bottom: 12px; }
+}
+
+@media (max-width: 480px) {
+  .rodeo-gallery__grid { columns: 1; }
+}
