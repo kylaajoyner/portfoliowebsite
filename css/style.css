@@ -1423,8 +1423,8 @@ a {
   overflow: hidden;
   container-type: inline-size;
   /* soft edges: he fades in from the left ornament and out into the right one */
-  -webkit-mask-image: linear-gradient(to right, transparent, #000 14%, #000 86%, transparent);
-  mask-image: linear-gradient(to right, transparent, #000 14%, #000 86%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,.08) 6%, rgba(0,0,0,.3) 13%, rgba(0,0,0,.65) 21%, #000 30%, #000 70%, rgba(0,0,0,.65) 79%, rgba(0,0,0,.3) 87%, rgba(0,0,0,.08) 94%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,.08) 6%, rgba(0,0,0,.3) 13%, rgba(0,0,0,.65) 21%, #000 30%, #000 70%, rgba(0,0,0,.65) 79%, rgba(0,0,0,.3) 87%, rgba(0,0,0,.08) 94%, transparent 100%);
 }
 
 .page--rodeo .ornament {
