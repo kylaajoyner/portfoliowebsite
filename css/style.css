@@ -158,12 +158,12 @@ a {
 
 /* ---------- Project pages ---------- */
 
-/* Project pages hold more than one screen of content, so they scroll. */
+/* Project pages can scroll if their content runs long. */
 .page--project {
   height: auto;
   min-height: calc(100vh - var(--header-height));
   overflow: visible;
-  padding-bottom: calc(120 * var(--u));
+  padding-bottom: calc(24 * var(--u));
 }
 
 .project-intro {
@@ -180,11 +180,12 @@ a {
   margin: 0 0 1.2em;
 }
 
+/* Two on top, two on bottom, sized so the whole brief fits the first screen */
 .project-gallery {
-  display: flex;
-  flex-direction: column;
-  gap: calc(40 * var(--u));
-  max-width: calc(960 * var(--u)); /* small enough that the title, intro and cover all fit the first screen */
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: calc(24 * var(--u));
+  max-width: calc(1040 * var(--u));
   margin: calc(28 * var(--u)) auto 0;
   padding: 0 16px;
 }
@@ -305,6 +306,10 @@ a {
   .page-title {
     font-size: 44px;
     letter-spacing: 5px;
+  }
+
+  .project-gallery {
+    grid-template-columns: 1fr; /* stack on phones so each page stays readable */
   }
 
   .project-intro {
