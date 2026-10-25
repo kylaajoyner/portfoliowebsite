@@ -114,14 +114,14 @@ a {
 .ornament--bottom-left  { bottom: 12px; left: -11px;  transform: scaleX(-1); }
 .ornament--bottom-right { bottom: 12px; right: -14px; }
 
-.page-title {
-  margin: 0;
-  font-family: var(--font-accent);
-  font-size: 80.303px;
-  font-weight: 400;
-  font-synthesis: none;
-  letter-spacing: 10.4394px;
-  text-align: center;
+/* Page names stay in the markup for screen readers and search, but aren't shown. */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
 }
 
 /* ---------- Work grid ---------- */
@@ -132,7 +132,7 @@ a {
   justify-content: center;
   gap: 44px 41px;
   max-width: calc(380px * 3 + 41px * 2);
-  margin: 44px auto 0;
+  margin: 168px auto 0; /* where the grid sat under the old title, per Figma */
   padding: 0;
   list-style: none;
 }
@@ -183,10 +183,6 @@ a {
     letter-spacing: 2px;
   }
 
-  .page-title {
-    font-size: 52px;
-    letter-spacing: 6px;
-  }
 
   .ornament {
     width: 110px;
@@ -194,6 +190,7 @@ a {
   }
 
   .work-grid {
+    margin-top: 100px; /* clears the smaller corner ornaments */
     padding: 0 16px;
   }
 
