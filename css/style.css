@@ -17,15 +17,14 @@
   font-display: swap;
 }
 
-/* West End and Narkiss Yair come from Adobe Fonts. Until the Adobe Fonts
-   web kit is added in each page's <head>, the fallbacks after them are used. */
+/* West End and Narkiss Yair come from the Adobe Fonts kit linked in each page's <head>. */
 
 :root {
   --color-ink: #000;
   --color-paper: #fff;
   --color-thumb-border: rgba(0, 0, 0, 0.43);
 
-  --font-accent: "west-end", "Brunson", serif;        /* wordmark + page titles */
+  --font-accent: "west-end-decorate-shadow", "Brunson", serif; /* wordmark + page titles */
   --font-nav: "Bebas Neue", sans-serif;               /* nav + subheads */
   --font-header: "Brunson", serif;                    /* headers */
   --font-body: "narkiss-yair-variable", "Courier New", monospace; /* body copy */
