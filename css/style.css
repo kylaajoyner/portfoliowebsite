@@ -583,7 +583,7 @@ a {
   width: 7cqw;
   height: auto;
   /* stacked shadows give the flat star some thickness */
-  filter: drop-shadow(0.2cqw 0.25cqw 0 #6b6760) drop-shadow(0.2cqw 0.25cqw 0 #2e2c29) drop-shadow(0 0 1cqw rgba(255, 255, 255, 0.3));
+  filter: drop-shadow(0.2cqw 0.25cqw 0 #8a2238) drop-shadow(0.2cqw 0.25cqw 0 #5c1424) drop-shadow(0 0 1cqw rgba(255, 210, 220, 0.3));
   opacity: 0;
   pointer-events: none;
   will-change: transform, opacity;
