@@ -404,7 +404,7 @@ a {
   position: relative;
   width: calc(1100 * var(--u));
   max-width: calc(100vw - 32px);
-  aspect-ratio: 705 / 474;
+  aspect-ratio: 2350 / 1782;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
 }
@@ -462,12 +462,12 @@ a {
 /* Lines up with the screen hole in tv.webp, a little oversized so the bezel hides the edge */
 .tv__screen {
   position: absolute;
-  left: 6.6%;
-  top: 8.8%;
+  left: 7%;
+  top: 9.3%;
   width: 67.2%;
-  height: 74.2%;
+  height: 70.8%;
   overflow: hidden;
-  border-radius: 7% / 9%;
+  border-radius: 9% / 12%;
   background: #0c0c0c;
   container-type: inline-size;
   isolation: isolate; /* keeps the star layering inside the screen */
