@@ -421,7 +421,7 @@ a {
 .about-me__frame {
   position: relative;
   flex: 0 0 auto;
-  padding: calc(40 * var(--u));
+  padding: calc(84 * var(--u)); /* far enough out that the ornaments never touch the photo */
 }
 
 .about-me__frame .ornament {
@@ -448,11 +448,12 @@ a {
 }
 
 .about-me__heading {
-  margin: 0 0 calc(20 * var(--u));
-  font-family: var(--font-body);
-  font-size: calc(52 * var(--u));
-  font-weight: 700;
-  line-height: 1.2;
+  margin: 0 0 calc(16 * var(--u));
+  font-family: var(--font-nav);
+  font-size: calc(64 * var(--u));
+  font-weight: 400;
+  letter-spacing: calc(3 * var(--u));
+  line-height: 1;
 }
 
 /* Social and email links, with the same grow-from-the-middle underline as the nav */
@@ -467,8 +468,9 @@ a {
 
 .about-me__links a {
   position: relative;
-  font-family: var(--font-body);
-  font-size: calc(26 * var(--u));
+  font-family: var(--font-nav);
+  font-size: calc(28 * var(--u));
+  letter-spacing: calc(1.5 * var(--u));
   color: inherit;
   text-decoration: none;
 }
@@ -493,9 +495,10 @@ a {
 
 .about-me__copy {
   margin: 0;
-  font-family: var(--font-body);
-  font-size: calc(32 * var(--u));
-  line-height: 1.6;
+  font-family: var(--font-nav);
+  font-size: calc(34 * var(--u));
+  letter-spacing: calc(1 * var(--u));
+  line-height: 1.35;
 }
 
 /* Kyla's TV art sits on top; the screen glows through its cut-out */
@@ -957,7 +960,7 @@ a {
   }
 
   .about-me__frame {
-    padding: 24px;
+    padding: 50px;
   }
 
   .about-me__frame .ornament {
@@ -966,11 +969,11 @@ a {
   }
 
   .about-me__photo {
-    width: min(300px, calc(100vw - 80px));
+    width: min(270px, calc(100vw - 132px));
   }
 
   .about-me__copy {
-    font-size: 17px;
+    font-size: 20px;
   }
 
   .about-me__heading {
@@ -978,7 +981,7 @@ a {
   }
 
   .about-me__links a {
-    font-size: 16px;
+    font-size: 18px;
   }
 
   .work-grid {
