@@ -1496,3 +1496,8 @@ a {
 .rodeo-gallery__item img {
   cursor: zoom-in;
 }
+
+/* Red Dead infographic runs across the whole gallery */
+.rodeo-gallery__item--feature {
+  column-span: all;
+}
