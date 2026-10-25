@@ -297,15 +297,17 @@
     btn.addEventListener("blur", release);
   });
 
-  // EJECT: switch the display off (blank label), press again to switch it back on
-  const eject = document.querySelector("[data-eject]");
-  if (eject) {
-    eject.addEventListener("click", function () {
+  // OFF/VOL knob or EJECT: switch the display off (blank label), press again to switch it back on
+  const power = document.querySelectorAll("[data-power]");
+  power.forEach(function (btn) {
+    btn.addEventListener("click", function () {
       const off = display.classList.toggle("is-off");
       const anim = scrollAnim();
       if (anim) off ? anim.pause() : anim.play();
-      eject.setAttribute("aria-pressed", String(off));
-      eject.setAttribute("aria-label", off ? "Eject: turn the radio display back on" : "Eject: turn the radio display off");
+      power.forEach(function (b) {
+        b.setAttribute("aria-pressed", String(off));
+        b.setAttribute("aria-label", b.getAttribute("aria-label").replace(off ? " off" : " back on", off ? " back on" : " off"));
+      });
     });
-  }
+  });
 })();
