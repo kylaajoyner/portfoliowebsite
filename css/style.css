@@ -818,7 +818,7 @@ a {
 
 .radio__title {
   margin: 0 0 calc(40 * var(--u));
-  font-family: var(--font-accent);
+  font-family: var(--font-nav);
   font-weight: 400;
   font-synthesis: none;
   font-size: calc(72 * var(--u));
@@ -946,21 +946,34 @@ a {
   align-items: center;
   justify-content: center;
   gap: calc(40 * var(--u));
-  padding: calc(40 * var(--u)) 16px calc(140 * var(--u));
+  position: relative;
+  z-index: 1;
+  padding: calc(40 * var(--u)) 16px 0;
 }
 
 .lost__scene {
+  --v: calc(0.6 * var(--u)); /* one video pixel; the cowboy art is ~13.2v per pixel */
   position: relative;
   flex: none;
-  width: calc(470 * var(--u));
-  height: calc(465 * var(--u));
+  width: calc(402 * var(--v));
+  height: calc(533 * var(--v));
 }
 
 .lost__cactus {
   position: absolute;
-  right: 0;
+  left: calc(217 * var(--v));
   bottom: 0;
-  width: calc(210 * var(--u));
+  width: calc(185 * var(--v));
+  height: auto;
+  image-rendering: pixelated;
+}
+
+/* pixel legs and boots under the animated head and shoulders */
+.lost__body {
+  position: absolute;
+  left: calc(56 * var(--v));
+  top: calc(309 * var(--v));
+  width: calc(264 * var(--v));
   height: auto;
   image-rendering: pixelated;
 }
@@ -968,11 +981,50 @@ a {
 .lost__cowboy {
   position: absolute;
   left: 0;
-  bottom: calc(15 * var(--u)); /* sits on the cactus' ground line */
-  width: calc(370 * var(--u));
+  top: calc(24 * var(--v));
+  width: calc(370 * var(--v));
   height: auto;
   image-rendering: pixelated;
   mix-blend-mode: multiply; /* drops the video's white box so he overlaps the cactus cleanly */
+}
+
+/* Pixel western landscape footer with a rolling tumbleweed */
+.landscape {
+  --h: max(120px, 15vw);
+  position: relative;
+  height: var(--h);
+  background: url("../assets/images/about/landscape.svg") center bottom / auto 100% repeat-x;
+  image-rendering: pixelated;
+  overflow: hidden;
+  margin-top: calc(var(--h) * -28 / 36); /* the cowboy sits right on the ground line */
+}
+
+.landscape__tumbleweed {
+  position: absolute;
+  left: 0;
+  bottom: calc(var(--h) * 7.6 / 36); /* rolls along the ground line */
+  width: calc(var(--h) * 7 / 36);
+  height: auto;
+  image-rendering: pixelated;
+  animation: tumble-across 14s linear infinite;
+}
+
+@keyframes tumble-across {
+  0%   { transform: translateX(110vw) translateY(0) rotate(0deg); }
+  10%  { transform: translateX(99vw) translateY(-40%) rotate(-90deg); }
+  20%  { transform: translateX(88vw) translateY(0) rotate(-180deg); }
+  30%  { transform: translateX(77vw) translateY(-25%) rotate(-270deg); }
+  40%  { transform: translateX(66vw) translateY(0) rotate(-360deg); }
+  50%  { transform: translateX(55vw) translateY(-45%) rotate(-450deg); }
+  60%  { transform: translateX(44vw) translateY(0) rotate(-540deg); }
+  70%  { transform: translateX(33vw) translateY(-30%) rotate(-630deg); }
+  80%  { transform: translateX(22vw) translateY(0) rotate(-720deg); }
+  90%  { transform: translateX(11vw) translateY(-35%) rotate(-810deg); }
+  100% { transform: translateX(-12vw) translateY(0) rotate(-900deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .landscape__tumbleweed { animation: none; transform: translateX(70vw); }
 }
 
 /* Pixel-style speech bubble */
@@ -1296,13 +1348,10 @@ a {
     gap: 36px;
   }
 
-  .lost__scene {
-    width: 235px;
-    height: 233px;
-  }
+  .lost__scene { --v: 0.45px; }
 
-  .lost__cactus { width: 105px; }
-  .lost__cowboy { width: 185px; bottom: 7px; }
+  .lost { padding-bottom: 40px; }
+  .landscape { margin-top: 0; }
 
   .lost__bubble {
     width: min(320px, 100%);
