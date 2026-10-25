@@ -216,14 +216,21 @@ a {
   max-width: calc(860 * var(--u));
 }
 
-/* Mixed shapes in one row at a shared height: each image's width follows its aspect ratio (--ar) */
-.project-gallery--row {
+/* Mixed shapes in rows: images in a row share a height, and each one's width
+   follows its aspect ratio (--ar), so nothing gets cropped */
+.project-gallery--rows {
   display: flex;
+  flex-direction: column;
   gap: calc(20 * var(--u));
-  max-width: calc(1400 * var(--u));
+  max-width: calc(1060 * var(--u));
 }
 
-.project-gallery--row img {
+.gallery-row {
+  display: flex;
+  gap: calc(20 * var(--u));
+}
+
+.gallery-row img {
   flex: var(--ar) 1 0;
   min-width: 0;
 }
@@ -452,7 +459,7 @@ a {
     grid-template-columns: 1fr 1fr;
   }
 
-  .project-gallery--row {
+  .gallery-row {
     flex-direction: column;
   }
 
