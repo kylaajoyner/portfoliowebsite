@@ -557,6 +557,20 @@ a {
   height: 100%;
   z-index: 2;
   pointer-events: none;
+  filter: drop-shadow(0 calc(10 * var(--u)) calc(14 * var(--u)) rgba(0, 0, 0, 0.28));
+}
+
+/* Soft contact shadow on the "floor" under the legs */
+.tv::after {
+  content: "";
+  position: absolute;
+  left: 6%;
+  right: 6%;
+  bottom: -2.5%;
+  height: 6%;
+  z-index: 0;
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.12) 45%, transparent 72%);
+  pointer-events: none;
 }
 
 /* Lines up with the screen hole in tv.webp, a little oversized so the bezel hides the edge */
