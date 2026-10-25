@@ -515,7 +515,6 @@ a {
   font-size: 13cqw;
   letter-spacing: 0.6cqw;
   line-height: 0.9;
-  transform: rotate(-6deg);
   color: #f4f1ea;
   text-shadow: 0 0 2cqw rgba(255, 255, 255, 0.55);
   opacity: 0;
@@ -539,17 +538,27 @@ a {
   83%      { opacity: 1; }
 }
 
+/* Name and roles tilt together so the roles stay centred under Joyner */
+.tv__name {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.4cqw;
+  transform: rotate(-6deg);
+}
+
 /* One role at a time, flipping over like a sign */
 .tv__roles {
   position: relative;
   z-index: 2;
   width: 100%;
-  height: 5cqw;
+  height: 4.2cqw;
   margin: 0;
   perspective: 40cqw;
-  transform: translateX(-1.3cqw) rotate(-6deg); /* same slant as the name, nudged to sit on its line */
   font-family: var(--font-nav);
-  font-size: 4.4cqw;
+  font-size: 3.6cqw;
   letter-spacing: 0.5cqw;
   color: #f4f1ea;
   text-shadow: 0 0 1.2cqw rgba(255, 255, 255, 0.45);
