@@ -97,7 +97,7 @@ a {
   letter-spacing: calc(2.9885 * var(--u));
 }
 
-/* Faint underline: draws in on hover, stays under the section you're on */
+/* Faint underline: grows out from the middle on hover, stays under the section you're on */
 .site-nav a {
   position: relative;
 }
@@ -111,7 +111,7 @@ a {
   height: max(1px, calc(1.5 * var(--u)));
   background: rgba(0, 0, 0, 0.3);
   transform: scaleX(0);
-  transform-origin: left;
+  transform-origin: center;
   transition: transform 0.25s ease;
 }
 
