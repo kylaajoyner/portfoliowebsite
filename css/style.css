@@ -114,16 +114,6 @@ a {
 .ornament--bottom-left  { bottom: 12px; left: -11px;  transform: scaleX(-1); }
 .ornament--bottom-right { bottom: 12px; right: -14px; }
 
-/* Page names stay in the markup for screen readers and search, but aren't shown. */
-.visually-hidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-  white-space: nowrap;
-}
-
 /* ---------- Work grid ---------- */
 
 .work-grid {
