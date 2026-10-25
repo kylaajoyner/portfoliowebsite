@@ -213,8 +213,17 @@
   if (!display) return;
 
   const track = display.querySelector(".radio__track");
+
+  // shuffle the artists so the order is different on every visit
+  const items = Array.from(track.children);
+  for (let i = items.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [items[i], items[j]] = [items[j], items[i]];
+  }
+  items.forEach(function (el) { track.appendChild(el); });
+
   track.innerHTML += track.innerHTML;
-  track.lastElementChild && track.querySelectorAll("span").forEach(function (s, i, all) {
+  track.querySelectorAll("span").forEach(function (s, i, all) {
     if (i >= all.length / 2) s.setAttribute("aria-hidden", "true");
   });
 
