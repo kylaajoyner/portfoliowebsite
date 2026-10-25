@@ -404,7 +404,50 @@ a {
   position: relative;
   width: calc(1100 * var(--u));
   max-width: calc(100vw - 32px);
-  aspect-ratio: 1314 / 850;
+  aspect-ratio: 705 / 474;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tv:focus-visible {
+  outline: 2px solid #000;
+  outline-offset: 6px;
+}
+
+/* Click the TV: the picture tears, splits colour and the snow spikes for a moment */
+.tv.is-glitching .tv__content {
+  animation: tv-glitch 0.6s steps(1) both;
+}
+
+.tv.is-glitching .tv__title,
+.tv.is-glitching .tv__roles {
+  text-shadow: -0.8cqw 0 rgba(255, 40, 80, 0.8), 0.8cqw 0 rgba(40, 220, 255, 0.8);
+}
+
+.tv.is-glitching .tv__static {
+  opacity: 0.75 !important;
+}
+
+.tv.is-glitching .tv__scanlines {
+  animation: tv-roll 0.6s linear both;
+}
+
+@keyframes tv-glitch {
+  0%   { transform: translate(0, 0); clip-path: inset(0 0 0 0); }
+  10%  { transform: translate(-3cqw, 0) skewX(12deg); clip-path: inset(10% 0 55% 0); }
+  20%  { transform: translate(2cqw, 1cqw); clip-path: inset(45% 0 20% 0); }
+  30%  { transform: translate(0, -2cqw) scaleY(1.1); clip-path: inset(0 0 0 0); }
+  40%  { transform: translate(4cqw, 0) skewX(-18deg); clip-path: inset(65% 0 5% 0); }
+  50%  { transform: translate(-2cqw, 3cqw); clip-path: inset(25% 0 40% 0); }
+  60%  { transform: translate(1cqw, 0); clip-path: inset(0 0 0 0); opacity: 0.4; }
+  75%  { transform: translate(-1cqw, -1cqw) skewX(6deg); clip-path: inset(5% 0 70% 0); opacity: 1; }
+  90%  { transform: translate(0.5cqw, 0); clip-path: inset(0 0 0 0); }
+  100% { transform: none; clip-path: none; }
+}
+
+@keyframes tv-roll {
+  from { transform: translateY(-30%); }
+  to   { transform: translateY(0); }
 }
 
 .tv__frame {
@@ -419,12 +462,12 @@ a {
 /* Lines up with the screen hole in tv.webp, a little oversized so the bezel hides the edge */
 .tv__screen {
   position: absolute;
-  left: 4.6%;
-  top: 9.4%;
-  width: 68.5%;
-  height: 81.8%;
+  left: 6.6%;
+  top: 8.8%;
+  width: 67.2%;
+  height: 74.2%;
   overflow: hidden;
-  border-radius: 9% / 12%;
+  border-radius: 7% / 9%;
   background: #0c0c0c;
   container-type: inline-size;
   isolation: isolate; /* keeps the star layering inside the screen */
@@ -455,7 +498,8 @@ a {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2cqw;
+  gap: 3cqw;
+  filter: url(#crt-warp); /* slight barrel bulge, like the picture sits on curved glass */
 }
 
 .tv__title {
@@ -465,9 +509,13 @@ a {
   font-family: var(--font-accent);
   font-weight: 400;
   font-synthesis: none;
-  font-size: 12cqw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 13cqw;
   letter-spacing: 0.6cqw;
-  line-height: 1;
+  line-height: 0.9;
+  transform: rotate(-6deg);
   color: #f4f1ea;
   text-shadow: 0 0 2cqw rgba(255, 255, 255, 0.55);
   opacity: 0;
@@ -534,6 +582,8 @@ a {
   top: 0;
   width: 7cqw;
   height: auto;
+  /* stacked shadows give the flat star some thickness */
+  filter: drop-shadow(0.2cqw 0.25cqw 0 #8a2238) drop-shadow(0.2cqw 0.25cqw 0 #5c1424) drop-shadow(0 0 1cqw rgba(255, 210, 220, 0.35));
   opacity: 0;
   pointer-events: none;
   will-change: transform, opacity;
@@ -552,7 +602,7 @@ a {
 }
 
 @keyframes tv-static-in {
-  to { opacity: 0.45; }
+  to { opacity: 0.3; }
 }
 
 /* Jump the noise around every frame so it reads as moving snow */
@@ -582,6 +632,16 @@ a {
   box-shadow: inset 0 0 8cqw rgba(0, 0, 0, 0.85); /* dark edges like curved glass */
 }
 
+/* Soft glare on the glass */
+.tv__screen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  pointer-events: none;
+  background: radial-gradient(ellipse 70% 55% at 28% 18%, rgba(255, 255, 255, 0.12), transparent 70%);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .tv__beam {
     animation: none;
@@ -596,7 +656,7 @@ a {
 
   .tv__static {
     animation: none;
-    opacity: 0.2;
+    opacity: 0.15;
   }
 
   .tv__roles {
@@ -606,6 +666,11 @@ a {
 
   .tv__roles span {
     transition: none;
+  }
+
+  .tv.is-glitching .tv__content,
+  .tv.is-glitching .tv__scanlines {
+    animation: none;
   }
 }
 

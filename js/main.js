@@ -158,10 +158,13 @@
       const x = w / 2 + ex * Math.cos(TILT) - ey * Math.sin(TILT);
       const y = h / 2 + ex * Math.sin(TILT) + ey * Math.cos(TILT);
       const depth = (Math.sin(a) + 1) / 2;   // 0 far (top), 1 near (bottom)
-      const scale = 0.55 + depth * 0.6;
+      const scale = 0.45 + depth * 0.8;
+      // turn each star as it travels so it reads as a solid shape, not a sticker
+      const turnY = Math.cos(a) * 55;
+      const turnX = 18 - depth * 18;
       const s = stars[i];
-      s.style.transform = "translate(" + (x - size / 2) + "px," + (y - size / 2) + "px) scale(" + scale + ")";
-      s.style.opacity = p * (0.45 + depth * 0.55);
+      s.style.transform = "translate(" + (x - size / 2) + "px," + (y - size / 2) + "px) perspective(" + size * 6 + "px) rotateX(" + turnX + "deg) rotateY(" + turnY + "deg) scale(" + scale + ")";
+      s.style.opacity = p * (0.35 + depth * 0.65);
       s.style.zIndex = depth > 0.5 ? 3 : 1;
     }
 
@@ -170,4 +173,35 @@
 
   requestAnimationFrame(frame);
   if (still) window.addEventListener("resize", function () { requestAnimationFrame(frame); });
+})();
+
+// About TV: warp strength follows the screen size; clicking the set glitches the picture
+(function () {
+  const tv = document.querySelector("[data-tv]");
+  if (!tv) return;
+
+  const warp = document.querySelector("#crt-warp feDisplacementMap");
+  const content = tv.querySelector(".tv__content");
+  function sizeWarp() {
+    if (warp && content) warp.setAttribute("scale", Math.round(content.clientWidth * 0.06));
+  }
+  sizeWarp();
+  window.addEventListener("resize", sizeWarp);
+
+  let timer;
+  function glitch() {
+    tv.classList.remove("is-glitching");
+    void tv.offsetWidth; // restart the animation on repeat clicks
+    tv.classList.add("is-glitching");
+    clearTimeout(timer);
+    timer = setTimeout(function () { tv.classList.remove("is-glitching"); }, 600);
+  }
+
+  tv.addEventListener("click", glitch);
+  tv.addEventListener("keydown", function (e) {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      glitch();
+    }
+  });
 })();
