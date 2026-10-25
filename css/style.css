@@ -1404,7 +1404,7 @@ a {
 .page--rodeo {
   height: auto;
   overflow-y: visible;
-  padding: calc(36 * var(--u)) 0 calc(260 * var(--u)); /* rider lines up with the top ornaments */
+  padding: calc(46 * var(--u)) 0 calc(260 * var(--u)); /* lane top lines up with the ornament tops */
 }
 
 .rodeo-hero {
@@ -1414,12 +1414,12 @@ a {
   gap: calc(56 * var(--u));
 }
 
-/* lane between the two top ornaments: the rider rides out from behind the
-   left one and disappears behind the right one */
+/* lane fenced by the two top ornaments: its sides sit on the ornaments' inner
+   edges and its top on their tops, so the rider appears out of the left one
+   and vanishes into the right one without ever drawing over them */
 .wrangle-track {
-  --lane-inset: calc(var(--ornament-width) * 0.28);
   align-self: stretch;
-  margin: 0 var(--lane-inset);
+  margin: 0 calc(167 * var(--u)) 0 calc(170 * var(--u));
   overflow: hidden;
   container-type: inline-size;
 }
@@ -1428,13 +1428,13 @@ a {
   z-index: 2;
 }
 
-/* wrangle.png is five 114 x 44 pixel frames side by side */
+/* wrangle.png is four 114 x 44 pixel frames side by side: lasso swinging overhead, legs galloping */
 .wrangle {
   width: min(calc(570 * var(--u)), 70vw);
   aspect-ratio: 114 / 44;
-  background: url("../assets/images/rodeo/wrangle.png") 0 0 / 500% 100% no-repeat;
+  background: url("../assets/images/rodeo/wrangle.png") 0 0 / 400% 100% no-repeat;
   image-rendering: pixelated;
-  animation: wrangle 0.6s step-end infinite, ride 9s linear infinite;
+  animation: wrangle 0.56s step-end infinite, ride 9s linear infinite;
 }
 
 @keyframes ride {
@@ -1442,11 +1442,13 @@ a {
   to   { transform: translateX(100cqw); }
 }
 
-/* only the two lasso-swinging frames: he chases the horse but never catches it */
+/* he chases the horse but never throws the rope */
 @keyframes wrangle {
   0%   { background-position-x: 0; }
-  50%  { background-position-x: 25%; }
-  100% { background-position-x: 25%; }
+  25%  { background-position-x: 33.333%; }
+  50%  { background-position-x: 66.667%; }
+  75%  { background-position-x: 100%; }
+  100% { background-position-x: 100%; }
 }
 
 .rodeo-title {
@@ -1489,8 +1491,9 @@ a {
 }
 
 @media (max-width: 900px) {
-  .page--rodeo { padding: 30px 0 80px; }
-  .wrangle-track { --lane-inset: 31px; }
+  .page--rodeo { padding: 37px 0 80px; }
+  .wrangle-track { margin: 0 75px 0 78px; }
+  .wrangle { width: 50vw; }
   .rodeo-hero { gap: 28px; }
   .rodeo-title { font-size: 30px; letter-spacing: 1.5px; }
   .rodeo-gallery { margin-top: 40px; }
