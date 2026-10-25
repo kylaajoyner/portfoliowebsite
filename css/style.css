@@ -1464,6 +1464,15 @@ a {
   text-align: center;
 }
 
+.rodeo-intro {
+  margin: calc(-36 * var(--u)) 0 0; /* sits close under the headline */
+  padding: 0 16px;
+  font-family: var(--font-body);
+  font-size: calc(26 * var(--u));
+  line-height: 1.5;
+  text-align: center;
+}
+
 .rodeo-gallery {
   max-width: calc(1260 * var(--u));
   margin: calc(90 * var(--u)) auto 0;
@@ -1499,6 +1508,7 @@ a {
   .wrangle { width: 50vw; }
   .rodeo-hero { gap: 28px; }
   .rodeo-title { font-size: 30px; letter-spacing: 1.5px; }
+  .rodeo-intro { margin-top: -16px; font-size: 16px; }
   .rodeo-gallery { margin-top: 40px; }
   .rodeo-gallery__grid { columns: 2; column-gap: 12px; }
   .rodeo-gallery__item { margin-bottom: 12px; }
