@@ -29,9 +29,13 @@
   --font-header: "Brunson", serif;                    /* headers */
   --font-body: "narkiss-yair-variable", "Courier New", monospace; /* body copy */
 
-  --header-height: 79px;
-  --ornament-width: 224.63px;
-  --ornament-height: 216.52px;
+  /* One Figma pixel, scaled so the 1440 x 1024 frame always fits the window
+     without scrolling. Every desktop size below is a multiple of it. */
+  --u: min(calc(100vw / 1440), calc(100vh / 1024));
+
+  --header-height: calc(79 * var(--u));
+  --ornament-width: calc(224.63 * var(--u));
+  --ornament-height: calc(216.52 * var(--u));
 }
 
 /* ---------- Base ---------- */
@@ -66,7 +70,7 @@ a {
   align-items: center;
   justify-content: space-between;
   height: var(--header-height);
-  padding: 0 44px 0 15px;
+  padding: 0 calc(44 * var(--u)) 0 calc(15 * var(--u));
   background: var(--color-paper);
 }
 
@@ -74,14 +78,14 @@ a {
   font-family: var(--font-accent);
   font-weight: 400;
   font-synthesis: none;
-  font-size: 43.714px;
-  letter-spacing: 5.6829px;
+  font-size: calc(43.714 * var(--u));
+  letter-spacing: calc(5.6829 * var(--u));
   white-space: nowrap;
 }
 
 .site-nav ul {
   display: flex;
-  gap: 47px;
+  gap: calc(47 * var(--u));
   margin: 0;
   padding: 0;
   list-style: none;
@@ -89,16 +93,17 @@ a {
 
 .site-nav a {
   font-family: var(--font-nav);
-  font-size: 37.356px;
-  letter-spacing: 2.9885px;
+  font-size: calc(37.356 * var(--u));
+  letter-spacing: calc(2.9885 * var(--u));
 }
 
 /* ---------- Page frame + corner ornaments ---------- */
 
 .page {
   position: relative;
-  min-height: calc(100vh - var(--header-height));
-  padding: 44px 0 120px;
+  height: calc(100vh - var(--header-height));
+  overflow: hidden;
+  padding-top: calc(44 * var(--u));
 }
 
 .ornament {
@@ -109,10 +114,10 @@ a {
 }
 
 /* The uploaded ornament points to the bottom-right corner; the others are flipped. */
-.ornament--top-left     { top: 32px; left: -11px;  transform: rotate(180deg); }
-.ornament--top-right    { top: 44px; right: -14px; transform: scaleY(-1); }
-.ornament--bottom-left  { bottom: 12px; left: -11px;  transform: scaleX(-1); }
-.ornament--bottom-right { bottom: 12px; right: -14px; }
+.ornament--top-left     { top: calc(32 * var(--u)); left: calc(-11 * var(--u));  transform: rotate(180deg); }
+.ornament--top-right    { top: calc(44 * var(--u)); right: calc(-14 * var(--u)); transform: scaleY(-1); }
+.ornament--bottom-left  { bottom: calc(12 * var(--u)); left: calc(-11 * var(--u));  transform: scaleX(-1); }
+.ornament--bottom-right { bottom: calc(12 * var(--u)); right: calc(-14 * var(--u)); }
 
 /* ---------- Project page title ---------- */
 
@@ -120,10 +125,10 @@ a {
   margin: 0;
   padding: 0 16px;
   font-family: var(--font-accent);
-  font-size: 80.303px;
+  font-size: calc(80.303 * var(--u));
   font-weight: 400;
   font-synthesis: none;
-  letter-spacing: 10.4394px;
+  letter-spacing: calc(10.4394 * var(--u));
   text-align: center;
 }
 
@@ -133,16 +138,16 @@ a {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 44px 41px;
-  max-width: calc(380px * 3 + 41px * 2);
-  margin: 168px auto 0; /* where the grid sat under the old title, per Figma */
+  gap: calc(44 * var(--u)) calc(41 * var(--u));
+  max-width: calc((380 * 3 + 41 * 2) * var(--u));
+  margin: calc(168 * var(--u)) auto 0; /* where the grid sat under the old title, per Figma */
   padding: 0;
   list-style: none;
 }
 
 .work-card {
   display: block;
-  width: 380px;
+  width: calc(380 * var(--u));
   aspect-ratio: 380 / 214;
   overflow: hidden;
   border: 0.5px solid var(--color-thumb-border);
@@ -160,13 +165,26 @@ a {
   align-items: center;
   justify-content: center;
   font-family: var(--font-nav);
-  font-size: 28px;
-  letter-spacing: 2px;
+  font-size: calc(28 * var(--u));
+  letter-spacing: calc(2 * var(--u));
 }
 
 /* ---------- Smaller screens ---------- */
 
 @media (max-width: 900px) {
+  /* Phones and small tablets use fixed sizes and scroll normally. */
+  :root {
+    --u: 1px;
+    --header-height: 79px;
+  }
+
+  .page {
+    height: auto;
+    min-height: calc(100vh - var(--header-height));
+    overflow: visible;
+    padding-bottom: 120px;
+  }
+
   .site-header {
     gap: 16px;
     padding: 0 16px;
@@ -185,7 +203,6 @@ a {
     font-size: 24px;
     letter-spacing: 2px;
   }
-
 
   .page-title {
     font-size: 44px;
