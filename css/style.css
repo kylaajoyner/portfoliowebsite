@@ -1777,6 +1777,12 @@ a {
   column-span: all;
 }
 
+/* Red Dead infographic runs at 75% of the full width, centered */
+.rodeo-gallery__item--smaller > img {
+  width: 75%;
+  margin: 0 auto;
+}
+
 /* Videos scattered through the gallery: a YouTube embed and two of Kyla's own clips */
 .rodeo-gallery__item--video iframe,
 .rodeo-gallery__item--video video {
