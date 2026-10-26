@@ -281,7 +281,7 @@
   window.addEventListener("resize", setSpeed);
 
   // Hold TUNE or FFWD: ease the scroll up to fast-forward, ease back down on release
-  const FAST = 5;
+  const FAST = 10;
   let held = 0;
   let rate = 1;
   let easing = false;
@@ -293,7 +293,7 @@
   function ease() {
     const anim = scrollAnim();
     const target = held > 0 ? FAST : 1;
-    rate += (target - rate) * 0.12;
+    rate += (target - rate) * 0.2;
     if (Math.abs(target - rate) < 0.02) rate = target;
     if (anim) anim.playbackRate = rate;
     if (rate !== target) requestAnimationFrame(ease);
