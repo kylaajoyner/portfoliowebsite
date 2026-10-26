@@ -197,10 +197,14 @@ a {
   grid-template-columns: auto auto 1fr;
   column-gap: calc(20 * var(--u));
   row-gap: calc(28 * var(--u));
-  max-width: calc(900 * var(--u));
+  max-width: calc(1120 * var(--u)); /* same width as the work below, so they share a left edge */
   margin: calc(30 * var(--u)) auto 0;
   padding: 0 16px;
 }
+
+/* Match the narrower galleries so the left edges still line up */
+.explainer:has(+ .project-gallery--portrait) { max-width: calc(860 * var(--u)); }
+.explainer:has(+ .project-gallery--rows) { max-width: calc(1060 * var(--u)); }
 
 .explainer__row {
   display: grid;
@@ -235,6 +239,7 @@ a {
   margin: 0;
   font-family: var(--font-body);
   font-size: calc(20 * var(--u));
+  max-width: calc(720 * var(--u)); /* keeps lines a comfortable reading length */
   line-height: var(--explainer-line);
   text-box: trim-start cap alphabetic;
 }
