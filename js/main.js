@@ -624,3 +624,9 @@
   // coming back with the browser's back button shouldn't show a blank page
   window.addEventListener("pageshow", (e) => { if (e.persisted) page.classList.remove("is-leaving"); });
 })();
+
+// Copyright year stays current
+(function () {
+  const year = document.querySelector("[data-year]");
+  if (year) year.textContent = new Date().getFullYear();
+})();
