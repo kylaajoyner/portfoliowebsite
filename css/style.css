@@ -379,13 +379,26 @@ a {
   font-family: var(--font-nav);
   font-size: calc(20 * var(--u));
   letter-spacing: calc(2 * var(--u));
-  border-bottom: 1px solid transparent; /* underline shows only on hover */
-  transition: border-color 0.2s ease;
+  position: relative;
 }
 
-.project-link:hover,
-.project-link:focus-visible {
-  border-bottom-color: var(--color-ink);
+/* same grow-from-the-middle underline as the nav and Back to Work */
+.project-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(-3 * var(--u));
+  height: max(1px, calc(1.5 * var(--u)));
+  background: rgba(0, 0, 0, 0.3);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.25s ease;
+}
+
+.project-link:hover::after,
+.project-link:focus-visible::after {
+  transform: scaleX(1);
 }
 
 /* Small line of project details, e.g. awards */
@@ -1673,71 +1686,6 @@ a {
   95.312% { background-position-x: 71.429%; }
   96.875% { background-position-x: 57.143%; }
   98.438% { background-position-x: 71.429%; }
-}
-  1.562% { background-position-x: 20%; }
-  3.125% { background-position-x: 40%; }
-  4.688% { background-position-x: 60%; }
-  6.250% { background-position-x: 0%; }
-  7.812% { background-position-x: 20%; }
-  9.375% { background-position-x: 40%; }
-  10.938% { background-position-x: 60%; }
-  12.500% { background-position-x: 0%; }
-  14.062% { background-position-x: 20%; }
-  15.625% { background-position-x: 40%; }
-  17.188% { background-position-x: 60%; }
-  18.750% { background-position-x: 0%; }
-  20.312% { background-position-x: 20%; }
-  21.875% { background-position-x: 40%; }
-  23.438% { background-position-x: 60%; }
-  25.000% { background-position-x: 0%; }
-  26.562% { background-position-x: 20%; }
-  28.125% { background-position-x: 40%; }
-  29.688% { background-position-x: 60%; }
-  31.250% { background-position-x: 0%; }
-  32.812% { background-position-x: 20%; }
-  34.375% { background-position-x: 40%; }
-  35.938% { background-position-x: 60%; }
-  37.500% { background-position-x: 0%; }
-  39.062% { background-position-x: 20%; }
-  40.625% { background-position-x: 40%; }
-  42.188% { background-position-x: 60%; }
-  43.750% { background-position-x: 0%; }
-  45.312% { background-position-x: 20%; }
-  46.875% { background-position-x: 40%; }
-  48.438% { background-position-x: 60%; }
-  50.000% { background-position-x: 0%; }
-  51.562% { background-position-x: 20%; }
-  53.125% { background-position-x: 40%; }
-  54.688% { background-position-x: 60%; }
-  56.250% { background-position-x: 0%; }
-  57.812% { background-position-x: 20%; }
-  59.375% { background-position-x: 40%; }
-  60.938% { background-position-x: 60%; }
-  62.500% { background-position-x: 0%; }
-  64.062% { background-position-x: 20%; }
-  65.625% { background-position-x: 40%; }
-  67.188% { background-position-x: 60%; }
-  68.750% { background-position-x: 0%; }
-  70.312% { background-position-x: 20%; }
-  71.875% { background-position-x: 40%; }
-  73.438% { background-position-x: 60%; }
-  75.000% { background-position-x: 0%; }
-  76.562% { background-position-x: 20%; }
-  78.125% { background-position-x: 40%; }
-  79.688% { background-position-x: 60%; }
-  81.250% { background-position-x: 0%; }
-  82.812% { background-position-x: 20%; }
-  84.375% { background-position-x: 80%; }
-  85.938% { background-position-x: 100%; }
-  87.500% { background-position-x: 80%; }
-  89.062% { background-position-x: 100%; }
-  90.625% { background-position-x: 80%; }
-  92.188% { background-position-x: 100%; }
-  93.750% { background-position-x: 80%; }
-  95.312% { background-position-x: 100%; }
-  96.875% { background-position-x: 80%; }
-  98.438% { background-position-x: 100%; }
-  100% { background-position-x: 100%; }
 }
 
 .rodeo-title {
