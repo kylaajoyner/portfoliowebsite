@@ -512,10 +512,12 @@
     const isVideo = (li) => li.classList.contains("rodeo-gallery__item--video");
 
     // the run of columns where a piece can sit highest, and the empty space it would leave under itself
-    function spot(span) {
+    // on the 4-column desktop layout each piece has a hand-picked column (data-col)
+    function spot(span, li) {
+      const pinned = li && cols === 4 && li.dataset.col ? Number(li.dataset.col) - 1 : -1;
       let best = 0;
       let bestTop = Infinity;
-      for (let c = 0; c + span <= cols; c++) {
+      for (let c = Math.max(pinned, 0); c + span <= cols && (pinned < 0 || c === pinned); c++) {
         const top = Math.max(...heights.slice(c, c + span));
         if (top < bestTop - 1) { bestTop = top; best = c; }
       }
@@ -526,7 +528,7 @@
 
     function place(li) {
       const span = Math.min(isVideo(li) ? VIDEO_SPAN : 1, cols);
-      const { best, bestTop } = spot(span);
+      const { best, bestTop } = spot(span, li);
       const width = col * span + gap * (span - 1);
       li.style.width = width + "px";
       li.style.left = best * (col + gap) + "px";
@@ -536,12 +538,19 @@
     }
 
     // a video waits for the next photos to even out the columns under it, so no holes open up
+    // (but only for a few photos, so it stays roughly where it is in the list)
+    const MAX_WAIT = 3;
     const waiting = [];
+    let waited = 0;
     const fits = (li) => spot(Math.min(VIDEO_SPAN, cols)).waste < col * 0.35;
     items.forEach((li, i) => {
-      if (isVideo(li)) waiting.push(li);
-      else place(li);
-      while (waiting.length && (fits(waiting[0]) || !items.slice(i + 1).some((x) => !isVideo(x)))) place(waiting.shift());
+      if (cols === 4 && li.dataset.col) place(li);
+      else if (isVideo(li)) waiting.push(li);
+      else { place(li); if (waiting.length) waited++; }
+      while (waiting.length && (fits(waiting[0]) || waited >= MAX_WAIT || !items.slice(i + 1).some((x) => !isVideo(x)))) {
+        place(waiting.shift());
+        waited = 0;
+      }
     });
     grid.style.height = Math.max(...heights) - gap + "px";
   }

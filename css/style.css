@@ -265,7 +265,7 @@ a {
 /* Desktop: the explainer becomes a column on the left that stays in view
    while the work scrolls past on the right. Phones keep it stacked on top. */
 @media (min-width: 901px) {
-  .page--project:has(> .explainer) {
+  .page--project:has(> .explainer, > .project-aside) {
     display: grid;
     grid-template-columns: calc(420 * var(--u)) minmax(0, 1fr);
     column-gap: calc(64 * var(--u));
@@ -274,37 +274,49 @@ a {
     padding-right: calc(80 * var(--u));
   }
 
-  .page--project:has(> .explainer) > * {
+  .page--project:has(> .explainer, > .project-aside) > * {
     grid-column: 2;
   }
 
-  .page--project > .explainer {
+  .page--project > .explainer,
+  .page--project > .project-aside {
     grid-column: 1;
     grid-row: 1 / span 10;
     align-self: start;
     position: sticky;
     top: calc(40 * var(--u));
+    margin: calc(28 * var(--u)) 0 0;
+  }
+
+  .page--project > .explainer,
+  .project-aside > .explainer {
     grid-template-columns: auto 1fr;
     row-gap: calc(40 * var(--u));
     max-width: none;
-    margin: calc(28 * var(--u)) 0 0;
     padding: 0;
   }
 
+  .project-aside > .explainer { margin: 0; }
+
+  /* View full project sits under Role, lined up with the copy */
+  .page--project > .project-aside > .project-link {
+    margin: calc(40 * var(--u)) 0 0 calc(39.3 * var(--u));
+  }
+
   /* star and label on one line, copy underneath, lined up with the label */
-  .page--project > .explainer .explainer__copy {
+  .page--project .explainer .explainer__copy {
     grid-column: 2;
     margin-top: calc(18 * var(--u));
     font-size: calc(19 * var(--u));
     line-height: 1.6;
   }
 
-  .page--project:has(> .explainer) .project-gallery,
-  .page--project:has(> .explainer) .project-video {
+  .page--project:has(> .explainer, > .project-aside) .project-gallery,
+  .page--project:has(> .explainer, > .project-aside) .project-video {
     padding: 0;
   }
 
-  .page--project:has(> .explainer) .project-link {
+  .page--project:has(> .explainer, > .project-aside) > .project-link {
     justify-self: center;
   }
 }
@@ -398,6 +410,12 @@ a {
 .project-link:hover::after,
 .project-link:focus-visible::after {
   transform: scaleX(1);
+}
+
+/* explainer plus View full project, kept together (stacked on phones, left column on desktop) */
+.project-aside > .project-link {
+  display: inline-block;
+  margin: 24px 16px 0;
 }
 
 /* Small line of project details, e.g. awards */
