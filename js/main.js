@@ -485,3 +485,68 @@
     });
   });
 })();
+
+// Rodeo gallery: pack the pieces into columns, shortest column first, with each video
+// taking two columns so the photos fill in around it. Recomputed on resize.
+(function () {
+  const grid = document.querySelector(".rodeo-gallery__grid:not(.rodeo-gallery__grid--big)");
+  if (!grid) return;
+  const items = Array.from(grid.children);
+  const VIDEO_SPAN = 2;
+
+  function ratio(li) {
+    if (li.classList.contains("rodeo-gallery__item--video")) return 9 / 16;
+    const img = li.querySelector("img");
+    return img.height / img.width; // from the width/height attributes, so it works before load
+  }
+
+  function pack() {
+    const w = window.innerWidth;
+    const cols = w <= 480 ? 1 : w <= 900 ? 2 : Number(grid.dataset.cols || 4);
+    grid.classList.remove("is-packed");
+    const gap = parseFloat(getComputedStyle(grid).columnGap) || 0;
+    grid.classList.add("is-packed");
+    const col = (grid.clientWidth - gap * (cols - 1)) / cols;
+    const heights = new Array(cols).fill(0);
+
+    const isVideo = (li) => li.classList.contains("rodeo-gallery__item--video");
+
+    // the run of columns where a piece can sit highest, and the empty space it would leave under itself
+    function spot(span) {
+      let best = 0;
+      let bestTop = Infinity;
+      for (let c = 0; c + span <= cols; c++) {
+        const top = Math.max(...heights.slice(c, c + span));
+        if (top < bestTop - 1) { bestTop = top; best = c; }
+      }
+      let waste = 0;
+      for (let c = best; c < best + span; c++) waste += bestTop - heights[c];
+      return { best, bestTop, waste };
+    }
+
+    function place(li) {
+      const span = Math.min(isVideo(li) ? VIDEO_SPAN : 1, cols);
+      const { best, bestTop } = spot(span);
+      const width = col * span + gap * (span - 1);
+      li.style.width = width + "px";
+      li.style.left = best * (col + gap) + "px";
+      li.style.top = bestTop + "px";
+      const bottom = bestTop + width * ratio(li) + gap;
+      for (let c = best; c < best + span; c++) heights[c] = bottom;
+    }
+
+    // a video waits for the next photos to even out the columns under it, so no holes open up
+    const waiting = [];
+    const fits = (li) => spot(Math.min(VIDEO_SPAN, cols)).waste < col * 0.35;
+    items.forEach((li, i) => {
+      if (isVideo(li)) waiting.push(li);
+      else place(li);
+      while (waiting.length && (fits(waiting[0]) || !items.slice(i + 1).some((x) => !isVideo(x)))) place(waiting.shift());
+    });
+    grid.style.height = Math.max(...heights) - gap + "px";
+  }
+
+  pack();
+  let raf = 0;
+  window.addEventListener("resize", () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(pack); });
+})();
