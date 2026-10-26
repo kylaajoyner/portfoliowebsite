@@ -371,7 +371,7 @@ a {
   border: 0;
 }
 
-/* Small link under the video to the full story elsewhere (opens in a new tab) */
+/* Small link under the video to the full story elsewhere (opens in a new tab); underlined on hover */
 .project-link {
   align-self: center;
   width: auto !important;
@@ -379,7 +379,8 @@ a {
   font-family: var(--font-nav);
   font-size: calc(20 * var(--u));
   letter-spacing: calc(2 * var(--u));
-  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+  border-bottom: 1px solid transparent; /* underline shows only on hover */
+  transition: border-color 0.2s ease;
 }
 
 .project-link:hover,
