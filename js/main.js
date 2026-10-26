@@ -96,6 +96,14 @@
   const roles = document.querySelector("[data-roles]");
   if (!roles) return;
 
+  // shuffle the roles so every visit starts on a different one in a different order
+  const spans = Array.from(roles.querySelectorAll("span"));
+  for (let i = spans.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [spans[i], spans[j]] = [spans[j], spans[i]];
+  }
+  spans.forEach((span) => roles.appendChild(span));
+
   const words = roles.querySelectorAll("span");
   let current = 0;
   words[0].classList.add("is-in");
