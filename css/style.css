@@ -874,6 +874,7 @@ a {
   position: absolute;
   inset: 0;
   text-align: center;
+  white-space: nowrap; /* longer roles like Country Music Defender stay on one line */
   opacity: 0;
   transform: rotateX(-90deg);
   transform-origin: 50% 50% -2cqw;
@@ -956,6 +957,59 @@ a {
   background: radial-gradient(ellipse 70% 55% at 28% 18%, rgba(255, 255, 255, 0.12), transparent 70%);
 }
 
+/* Power button: an invisible hit area over the button drawn on the TV */
+.tv__power {
+  position: absolute;
+  left: 81.3%;
+  top: 42.2%;
+  width: 5.8%;
+  height: 4.2%;
+  z-index: 3;
+  padding: 0;
+  border: 0;
+  border-radius: 12%;
+  background: transparent;
+  cursor: pointer;
+}
+
+.tv__power:active {
+  background: rgba(0, 0, 0, 0.25); /* reads as the button pushing in */
+}
+
+.tv__power:focus-visible {
+  outline: 2px solid #f4f1ea;
+  outline-offset: 2px;
+}
+
+/* Switching off: the picture squeezes into a bright line, then a dot, then black */
+.tv.is-off .tv__beam,
+.tv.is-off .tv__content,
+.tv.is-off .tv__static,
+.tv.is-off .tv__scanlines {
+  animation: tv-off 0.55s ease-in forwards;
+}
+
+@keyframes tv-off {
+  0%   { transform: scale(1, 1);        filter: brightness(1); opacity: 1; }
+  45%  { transform: scale(1, 0.006);    filter: brightness(4); opacity: 1; }
+  80%  { transform: scale(0.015, 0.006); filter: brightness(5); opacity: 1; }
+  100% { transform: scale(0, 0);        filter: brightness(5); opacity: 0; }
+}
+
+/* Switching back on replays the warm-up, and the picture fades up once the tube is lit */
+.tv.is-waking .tv__beam {
+  animation: tv-on 1.6s cubic-bezier(0.2, 0.7, 0.3, 1) forwards;
+}
+
+.tv.is-waking .tv__content {
+  animation: tv-wake 1.6s ease-out both;
+}
+
+@keyframes tv-wake {
+  0%, 55% { opacity: 0; }
+  100%    { opacity: 1; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .tv__beam {
     animation: none;
@@ -984,6 +1038,19 @@ a {
 
   .tv.is-glitching .tv__content,
   .tv.is-glitching .tv__scanlines {
+    animation: none;
+  }
+
+  .tv.is-off .tv__beam,
+  .tv.is-off .tv__content,
+  .tv.is-off .tv__static,
+  .tv.is-off .tv__scanlines {
+    animation: none;
+    opacity: 0;
+  }
+
+  .tv.is-waking .tv__beam,
+  .tv.is-waking .tv__content {
     animation: none;
   }
 }

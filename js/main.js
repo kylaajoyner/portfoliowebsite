@@ -205,8 +205,25 @@
     timer = setTimeout(function () { tv.classList.remove("is-glitching"); }, 600);
   }
 
-  tv.addEventListener("click", glitch);
+  // the power button on the set turns the picture off and back on
+  const power = tv.querySelector(".tv__power");
+  if (power) {
+    power.addEventListener("click", function (e) {
+      e.stopPropagation(); // not a glitch click
+      const off = !tv.classList.contains("is-off");
+      tv.classList.toggle("is-off", off);
+      tv.classList.toggle("is-waking", !off);
+      power.setAttribute("aria-pressed", String(off));
+      power.setAttribute("aria-label", off ? "Turn the TV on" : "Turn the TV off");
+    });
+    power.addEventListener("keydown", function (e) { e.stopPropagation(); });
+  }
+
+  tv.addEventListener("click", function () {
+    if (!tv.classList.contains("is-off")) glitch();
+  });
   tv.addEventListener("keydown", function (e) {
+    if (tv.classList.contains("is-off")) return;
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
       glitch();
