@@ -981,8 +981,103 @@ a {
   outline-offset: 2px;
 }
 
+/* Channel buttons 1-6: hit areas over the rocker buttons drawn on the set */
+.tv__channels {
+  position: absolute;
+  left: 81.2%;
+  top: 49.4%;
+  width: 12.8%;
+  height: 7.2%;
+  z-index: 3;
+}
+
+.tv__channel {
+  position: absolute;
+  top: 0;
+  left: calc(var(--i) * 16.625%); /* button pitch on the art */
+  width: 15.6%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: 10%;
+  background: transparent;
+  cursor: pointer;
+}
+
+/* the chosen channel's button looks pushed in */
+.tv__channel[aria-pressed="true"],
+.tv__channel:active {
+  background: rgba(0, 0, 0, 0.28);
+}
+
+.tv__channel:focus-visible {
+  outline: 2px solid #f4f1ea;
+  outline-offset: 2px;
+}
+
+/* Channel 2: "dark mode", a bright screen with the name and roles in black */
+.tv__light {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, #f4f1ea 0%, #e4dfd4 60%, #b9b4aa 100%);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.tv[data-channel="2"] .tv__light { opacity: 1; }
+
+.tv[data-channel="2"] .tv__title,
+.tv[data-channel="2"] .tv__roles {
+  color: #111;
+  text-shadow: none;
+}
+
+/* Channel 3: the landscape film with the name written out in red script */
+.tv__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+}
+
+.tv__script {
+  position: absolute;
+  z-index: 3;
+  left: 0;
+  right: 0;
+  top: 50%;
+  margin: 0;
+  font-family: var(--font-script, "Brush Script MT", "Segoe Script", cursive);
+  font-size: 15cqw;
+  line-height: 1.2;
+  text-align: center;
+  white-space: nowrap;
+  color: #e44e6c;
+  text-shadow: 0 0 1.5cqw rgba(0, 0, 0, 0.35);
+  transform: translateY(-50%) rotate(-6deg);
+  visibility: hidden;
+}
+
+.tv[data-channel="3"] .tv__video { opacity: 1; }
+.tv[data-channel="3"] .tv__name,
+.tv[data-channel="3"] .tv__star { visibility: hidden; }
+.tv[data-channel="3"] .tv__script {
+  visibility: visible;
+  animation: tv-write 2.2s cubic-bezier(0.45, 0.1, 0.4, 1) 0.2s both;
+}
+
+/* "written out": the name is uncovered left to right, like a pen moving across */
+@keyframes tv-write {
+  from { clip-path: inset(-20% 100% -20% 0); }
+  to   { clip-path: inset(-20% 0 -20% 0); }
+}
+
 /* Switching off: the picture squeezes into a bright line, then a dot, then black */
 .tv.is-off .tv__beam,
+.tv.is-off .tv__light,
+.tv.is-off .tv__video,
 .tv.is-off .tv__content,
 .tv.is-off .tv__static,
 .tv.is-off .tv__scanlines {
@@ -1042,6 +1137,8 @@ a {
   }
 
   .tv.is-off .tv__beam,
+  .tv.is-off .tv__light,
+  .tv.is-off .tv__video,
   .tv.is-off .tv__content,
   .tv.is-off .tv__static,
   .tv.is-off .tv__scanlines {
@@ -1053,6 +1150,8 @@ a {
   .tv.is-waking .tv__content {
     animation: none;
   }
+
+  .tv[data-channel="3"] .tv__script { animation: none; }
 }
 
 .sr-only {

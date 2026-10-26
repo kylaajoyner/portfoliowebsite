@@ -6,7 +6,7 @@
   <title>Kyla Joyner | About</title>
   <!-- Adobe Fonts kit: West End + Narkiss Yair -->
   <link rel="stylesheet" href="https://use.typekit.net/ijs5kav.css">
-  <link rel="stylesheet" href="css/style.css?v=99">
+  <link rel="stylesheet" href="css/style.css?v=100">
 </head>
 <body>
   <header class="site-header">
@@ -23,17 +23,20 @@
   <main class="page page--about">
     <section class="about-hero">
     <!-- Old TV switching on, then the name fades up on screen with stars circling it -->
-    <div class="tv" data-tv role="button" tabindex="0" aria-label="Kyla Joyner: Creative, Storyteller, Designer, Photographer, Gamer, Nerd, Musician, Artist, Country Music Defender, Screamo Lover, Curious, Attentive, Observant, Versatile, Documentarian. Press to glitch the TV picture.">
+    <div class="tv" data-tv data-channel="1" role="button" tabindex="0" aria-label="Kyla Joyner: Creative, Storyteller, Designer, Photographer, Gamer, Nerd, Musician, Artist, Country Music Defender, Screamo Lover, Documentarian. Press to glitch the TV picture.">
       <div class="tv__screen">
         <div class="tv__beam"></div>
+        <div class="tv__light"></div>
+        <video class="tv__video" src="assets/videos/about/landscape.mp4" muted loop playsinline preload="none" aria-hidden="true"></video>
         <div class="tv__content" data-stars>
           <div class="tv__name">
             <p class="tv__title"><span>Kyla</span><span>Joyner</span></p>
             <p class="tv__roles" data-roles aria-hidden="true">
-              <span>Creative</span><span>Storyteller</span><span>Designer</span><span>Photographer</span><span>Gamer</span><span>Nerd</span><span>Musician</span><span>Artist</span><span>Country Music Defender</span><span>Screamo Lover</span><span>Curious</span><span>Attentive</span><span>Observant</span><span>Versatile</span><span>Documentarian</span>
+              <span>Creative</span><span>Storyteller</span><span>Designer</span><span>Photographer</span><span>Gamer</span><span>Nerd</span><span>Musician</span><span>Artist</span><span>Country Music Defender</span><span>Screamo Lover</span><span>Documentarian</span>
             </p>
           </div>
-          <p class="sr-only">Creative, Storyteller, Designer, Photographer, Gamer, Nerd, Musician, Artist, Country Music Defender, Screamo Lover, Curious, Attentive, Observant, Versatile, Documentarian</p>
+          <p class="tv__script" aria-hidden="true">Kyla Joyner</p>
+          <p class="sr-only">Creative, Storyteller, Designer, Photographer, Gamer, Nerd, Musician, Artist, Country Music Defender, Screamo Lover, Documentarian</p>
         </div>
         <div class="tv__static"></div>
         <div class="tv__scanlines"></div>
@@ -48,6 +51,12 @@
       <img class="tv__frame" src="assets/images/about/tv.webp" alt="">
       <!-- Sits over the power button in the TV art: switches the set off and back on -->
       <button class="tv__power" type="button" aria-label="Turn the TV off" aria-pressed="false"></button>
+      <!-- Channel buttons 1-6 on the set change the picture (4-6 still to come) -->
+      <div class="tv__channels">
+        <button class="tv__channel" type="button" data-channel="1" style="--i: 0" aria-label="Channel 1" aria-pressed="true"></button>
+        <button class="tv__channel" type="button" data-channel="2" style="--i: 1" aria-label="Channel 2" aria-pressed="false"></button>
+        <button class="tv__channel" type="button" data-channel="3" style="--i: 2" aria-label="Channel 3" aria-pressed="false"></button>
+      </div>
     </div>
     </section>
 
@@ -141,6 +150,6 @@
     </section>
   </main>
 
-  <script src="js/main.js?v=99"></script>
+  <script src="js/main.js?v=100"></script>
 </body>
 </html>

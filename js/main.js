@@ -219,6 +219,27 @@
     power.addEventListener("keydown", function (e) { e.stopPropagation(); });
   }
 
+  // channel buttons switch the picture, with a burst of static in between
+  const video = tv.querySelector(".tv__video");
+  const channels = tv.querySelectorAll(".tv__channel");
+  channels.forEach(function (btn) {
+    btn.addEventListener("click", function (e) {
+      e.stopPropagation();
+      if (tv.classList.contains("is-off")) return;
+      const ch = btn.dataset.channel;
+      channels.forEach(function (b) { b.setAttribute("aria-pressed", String(b === btn)); });
+      tv.dataset.channel = "";
+      void tv.offsetWidth; // replays the written-out name when channel 3 is picked again
+      tv.dataset.channel = ch;
+      glitch();
+      if (video) {
+        if (ch === "3") video.play().catch(function () {});
+        else video.pause();
+      }
+    });
+    btn.addEventListener("keydown", function (e) { e.stopPropagation(); });
+  });
+
   tv.addEventListener("click", function () {
     if (!tv.classList.contains("is-off")) glitch();
   });
