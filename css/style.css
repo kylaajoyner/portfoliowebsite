@@ -262,6 +262,54 @@ a {
   opacity: 0.45;
 }
 
+/* Desktop: the explainer becomes a column on the left that stays in view
+   while the work scrolls past on the right. Phones keep it stacked on top. */
+@media (min-width: 901px) {
+  .page--project:has(> .explainer) {
+    display: grid;
+    grid-template-columns: calc(340 * var(--u)) minmax(0, 1fr);
+    column-gap: calc(64 * var(--u));
+    align-content: center;
+    padding-left: calc(80 * var(--u));
+    padding-right: calc(80 * var(--u));
+  }
+
+  .page--project:has(> .explainer) > * {
+    grid-column: 2;
+  }
+
+  .page--project > .explainer {
+    grid-column: 1;
+    grid-row: 1 / span 10;
+    align-self: start;
+    position: sticky;
+    top: calc(40 * var(--u));
+    grid-template-columns: auto 1fr;
+    row-gap: calc(40 * var(--u));
+    max-width: none;
+    margin: calc(28 * var(--u)) 0 0;
+    padding: 0;
+  }
+
+  /* star and label on one line, copy underneath, lined up with the label */
+  .page--project > .explainer .explainer__copy {
+    grid-column: 2;
+    margin-top: calc(18 * var(--u));
+    font-size: calc(19 * var(--u));
+    line-height: 1.6;
+  }
+
+  .page--project:has(> .explainer) .project-gallery,
+  .page--project:has(> .explainer) .project-video {
+    padding: 0;
+  }
+
+  .page--project:has(> .explainer) .project-link,
+  .page--project:has(> .explainer) .back-link {
+    justify-self: center;
+  }
+}
+
 /* Two on top, two on bottom, sized so the whole brief fits the first screen */
 .project-gallery {
   display: grid;
