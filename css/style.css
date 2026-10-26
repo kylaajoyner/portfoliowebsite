@@ -1814,10 +1814,20 @@ a {
   column-span: all;
 }
 
-/* Red Dead infographic runs at 75% of the full width, centered */
-.rodeo-gallery__item--smaller > img {
-  width: 75%;
-  margin: 0 auto;
+/* Red Dead infographic shares a row with a photo; each flex value is the image's width / height,
+   so both come out the same height and the row fills the full width */
+.rodeo-gallery__row {
+  display: flex;
+  gap: calc(28 * var(--u));
+}
+
+.rodeo-gallery__row > img {
+  min-width: 0;
+  width: 100%;
+}
+
+@media (max-width: 900px) {
+  .rodeo-gallery__row { gap: 12px; }
 }
 
 /* Videos scattered through the gallery: a YouTube embed and two of Kyla's own clips */
