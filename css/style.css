@@ -1762,6 +1762,16 @@ a {
   column-span: all;
 }
 
+/* Instagram reels scattered through the gallery, playing in Instagram's own player.
+   The frame is a little taller than 9:16 to fit the player's header. */
+.rodeo-gallery__item--video iframe {
+  display: block;
+  width: 100%;
+  aspect-ratio: 9 / 17.5;
+  border: 0;
+  background: #f4f4f4;
+}
+
 /* the featured pieces sit two to a row, so they show larger than the rest */
 .rodeo-gallery__grid--big {
   columns: 2;
