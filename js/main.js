@@ -550,3 +550,22 @@
   let raf = 0;
   window.addEventListener("resize", () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(pack); });
 })();
+
+// Project pages: More Work slides this project out and the next one in, like a slideshow.
+(function () {
+  try { sessionStorage.removeItem("slide-in"); } catch (e) {}
+  const more = document.querySelector(".more-link");
+  const page = document.querySelector(".page--project");
+  if (!more || !page || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  more.addEventListener("click", (e) => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return; // let new-tab clicks through
+    e.preventDefault();
+    try { sessionStorage.setItem("slide-in", "1"); } catch (err) {}
+    page.classList.add("is-leaving");
+    setTimeout(() => { window.location.href = more.href; }, 350);
+  });
+
+  // coming back with the browser's back button shouldn't show a blank page
+  window.addEventListener("pageshow", (e) => { if (e.persisted) page.classList.remove("is-leaving"); });
+})();

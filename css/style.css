@@ -304,8 +304,7 @@ a {
     padding: 0;
   }
 
-  .page--project:has(> .explainer) .project-link,
-  .page--project:has(> .explainer) .back-link {
+  .page--project:has(> .explainer) .project-link {
     justify-self: center;
   }
 }
@@ -450,6 +449,44 @@ a {
 .back-link:hover::after,
 .back-link:focus-visible::after {
   transform: scaleX(1);
+}
+
+/* Back to All Work and More Work sit side by side at the bottom of each project */
+.project-nav {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: calc(16 * var(--u)) calc(72 * var(--u));
+  margin-top: calc(28 * var(--u));
+}
+
+.project-nav .back-link {
+  margin-top: 0;
+}
+
+@media (max-width: 900px) {
+  .project-nav { gap: 12px 32px; }
+  .project-nav .back-link { font-size: 18px; letter-spacing: 1.5px; }
+}
+
+/* More Work flips through the projects like a slideshow: the page slides out left, the next slides in from the right */
+.page--project.is-leaving {
+  opacity: 0;
+  transform: translateX(-60px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.slide-in .page--project {
+  animation: slide-in 0.45s ease backwards;
+}
+
+@keyframes slide-in {
+  from { opacity: 0; transform: translateX(60px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page--project.is-leaving { transition: none; transform: none; }
+  .slide-in .page--project { animation: none; }
 }
 
 /* ---------- Lightbox (full-screen image viewer) ---------- */
