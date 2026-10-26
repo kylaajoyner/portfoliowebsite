@@ -1583,19 +1583,19 @@ a {
   background: url("../assets/images/rodeo/wrangle.png") 0 0 / 800% 100% no-repeat;
   image-rendering: pixelated;
   animation: wrangle 9s step-end infinite;
+  animation-delay: var(--wrangle-sync, 0s); /* set by the click code so the frames rejoin the ride in step */
 }
 
-/* Clicked: throw, the loop lands on the horse, then the rope pulls tight and holds
-   until they ride out of view */
+/* Clicked: throw, the loop lands on the horse, then the rope pulls tight for about a second */
 .wrangle.is-catching::before {
-  animation: wrangle-catch 1.6s step-end forwards;
+  animation: wrangle-catch 1.65s step-end forwards;
 }
 
 @keyframes wrangle-catch {
   0%   { background-position-x: 57.143%; }
-  20%  { background-position-x: 71.429%; }
-  40%  { background-position-x: 85.714%; }
-  70%  { background-position-x: 100.000%; }
+  12%  { background-position-x: 71.429%; }
+  24%  { background-position-x: 85.714%; }
+  39%  { background-position-x: 100.000%; }
   100% { background-position-x: 100.000%; }
 }
 

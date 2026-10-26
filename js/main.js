@@ -351,20 +351,22 @@
 })();
 
 // Rodeo: he never ropes the runaway horse... unless you click him.
-// The catch holds until they ride out of view, then the normal loop picks up in step.
+// He holds the catch for about a second, then goes back to swinging the lasso.
 (function () {
   const rider = document.querySelector(".wrangle");
   if (!rider || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
   const ride = rider.getAnimations().find((a) => a.animationName === "ride");
-  let timer = null;
+  const CATCH_MS = 1650; // matches .wrangle.is-catching in the CSS
 
   rider.addEventListener("click", () => {
     if (rider.classList.contains("is-catching") || !ride) return;
     rider.classList.add("is-catching");
-    // Let go when this pass ends, right as the ride loops; both loops restart there together.
-    const cycle = ride.effect.getComputedTiming().duration;
-    clearTimeout(timer);
-    timer = setTimeout(() => rider.classList.remove("is-catching"), cycle - (ride.currentTime % cycle));
+    setTimeout(() => {
+      // restart the normal frames at the ride's current point so the end-of-pass throw stays in step
+      const cycle = ride.effect.getComputedTiming().duration;
+      rider.style.setProperty("--wrangle-sync", -(ride.currentTime % cycle) + "ms");
+      rider.classList.remove("is-catching");
+    }, CATCH_MS);
   });
 })();
