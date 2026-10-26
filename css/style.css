@@ -1330,7 +1330,7 @@ a {
   aspect-ratio: 250 / 233;
   background: url("../assets/images/lost-cowboy.png") 0 0 / 600% 100% no-repeat;
   image-rendering: pixelated;
-  animation: lost-smoke 4.2s steps(1) infinite;
+  animation: lost-smoke 6.5s steps(1) infinite;
 }
 
 @keyframes lost-smoke {

@@ -371,8 +371,8 @@
       lost.classList.add("has-spoken", "has-links");
       return;
     }
-    setTimeout(function () { lost.classList.add("has-spoken"); }, 2800);
-    setTimeout(function () { lost.classList.add("has-links"); }, 3500);
+    setTimeout(function () { lost.classList.add("has-spoken"); }, 1000);
+    setTimeout(function () { lost.classList.add("has-links"); }, 1600);
   }
 
   if ("IntersectionObserver" in window) {
