@@ -1750,16 +1750,21 @@ a {
 }
 
 @media (max-width: 480px) {
-  .rodeo-gallery__grid { columns: 1; }
+  .rodeo-gallery__grid, .rodeo-gallery__grid--big { columns: 1; }
 }
 
 .rodeo-gallery__item img {
   cursor: zoom-in;
 }
 
-/* Red Dead infographic runs across the whole gallery */
+/* Swing ride and Red Dead infographic run across the whole gallery */
 .rodeo-gallery__item--feature {
   column-span: all;
+}
+
+/* the featured pieces sit two to a row, so they show larger than the rest */
+.rodeo-gallery__grid--big {
+  columns: 2;
 }
 
 /* ---------- Growing vine ornaments (js/vines.js) ---------- */
