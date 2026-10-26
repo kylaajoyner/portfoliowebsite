@@ -1048,30 +1048,43 @@ a {
   left: 0;
   right: 0;
   top: 50%;
+  display: flex;
+  justify-content: center;
   margin: 0;
-  font-family: var(--font-script, "Brush Script MT", "Segoe Script", cursive);
-  font-size: 15cqw;
+  font-family: var(--font-accent);
+  font-weight: 400;
+  font-synthesis: none;
+  font-size: 13cqw;
   line-height: 1.2;
-  text-align: center;
   white-space: nowrap;
   color: #e44e6c;
-  text-shadow: 0 0 1.5cqw rgba(0, 0, 0, 0.35);
   transform: translateY(-50%) rotate(-6deg);
   visibility: hidden;
 }
 
+.tv__script span {
+  display: inline-block;
+  transform-origin: 50% 90%;
+}
+
+.tv__script .tv__gap { width: 0.3em; }
+
 .tv[data-channel="3"] .tv__video { opacity: 1; }
 .tv[data-channel="3"] .tv__name,
 .tv[data-channel="3"] .tv__star { visibility: hidden; }
-.tv[data-channel="3"] .tv__script {
-  visibility: visible;
-  animation: tv-write 2.2s cubic-bezier(0.45, 0.1, 0.4, 1) 0.2s both;
+.tv[data-channel="3"] .tv__script { visibility: visible; }
+
+/* Looney Tunes style: each letter springs up from nothing, overshoots, squashes and settles, one after another */
+.tv[data-channel="3"] .tv__script span {
+  animation: tv-toon 0.7s cubic-bezier(0.3, 0, 0.3, 1) calc(0.35s + var(--n, 0) * 0.08s) both;
 }
 
-/* "written out": the name is uncovered left to right, like a pen moving across */
-@keyframes tv-write {
-  from { clip-path: inset(-20% 100% -20% 0); }
-  to   { clip-path: inset(-20% 0 -20% 0); }
+@keyframes tv-toon {
+  0%   { transform: translateY(40%) scale(0) rotate(-25deg); opacity: 0; }
+  45%  { transform: translateY(-18%) scale(1.35, 1.25) rotate(8deg); opacity: 1; }
+  65%  { transform: translateY(4%) scale(0.85, 1.12) rotate(-4deg); }
+  80%  { transform: translateY(-3%) scale(1.06, 0.95) rotate(2deg); }
+  100% { transform: none; opacity: 1; }
 }
 
 /* Switching off: the picture squeezes into a bright line, then a dot, then black */
@@ -1151,7 +1164,7 @@ a {
     animation: none;
   }
 
-  .tv[data-channel="3"] .tv__script { animation: none; }
+  .tv[data-channel="3"] .tv__script span { animation: none; }
 }
 
 .sr-only {
