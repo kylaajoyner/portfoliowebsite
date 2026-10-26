@@ -1793,7 +1793,7 @@ a {
   background: #000;
 }
 
-/* video thumbnails: hover plays a short muted sizzle, click plays the full video */
+/* video thumbnails: a short muted sizzle plays on its own, click plays the full video */
 .sizzle {
   position: relative;
   display: block;

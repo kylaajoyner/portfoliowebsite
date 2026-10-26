@@ -371,15 +371,13 @@
   });
 })();
 
-// Rodeo videos: hovering a thumbnail plays a short muted sizzle (like YouTube),
+// Rodeo videos: each thumbnail plays a short muted sizzle on its own while it's on screen,
 // clicking swaps in the full video with sound.
 (function () {
   const thumbs = document.querySelectorAll(".sizzle");
   if (!thumbs.length) return;
 
-  const canHover = window.matchMedia("(hover: hover)").matches &&
-    !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const HOVER_DELAY = 250; // ignore the pointer just passing over
+  const autoplay = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const CUT_MS = 2200; // how long each sizzle cut lasts on YouTube videos
   const CUTS = [0.1, 0.25, 0.4, 0.55, 0.7, 0.85];
 
@@ -397,7 +395,6 @@
   }
 
   thumbs.forEach((thumb) => {
-    let timer = null;
     let preview = null;
     let stop = null;
 
@@ -429,7 +426,7 @@
         if (player && player.destroy) player.destroy();
       };
       loadYouTube().then(() => {
-        if (preview !== mine) return; // pointer already left
+        if (preview !== mine) return; // scrolled away before it loaded
         let cut = 0;
         player = new YT.Player(slot, {
           videoId: thumb.dataset.youtube,
@@ -452,7 +449,6 @@
     }
 
     function end() {
-      clearTimeout(timer);
       if (!preview) return;
       if (stop) stop();
       preview.remove();
@@ -460,9 +456,12 @@
       stop = null;
     }
 
-    if (canHover) {
-      thumb.addEventListener("mouseenter", () => { timer = setTimeout(start, HOVER_DELAY); });
-      thumb.addEventListener("mouseleave", end);
+    // play while it's on screen (or nearly), stop once scrolled away
+    if (autoplay) {
+      new IntersectionObserver((entries) => {
+        if (!thumb.isConnected) return;
+        if (entries[0].isIntersecting) { if (!preview) start(); } else end();
+      }, { rootMargin: "200px 0px" }).observe(thumb);
     }
 
     thumb.addEventListener("click", () => {
