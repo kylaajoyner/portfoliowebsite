@@ -1772,9 +1772,44 @@ a {
   background: #000;
 }
 
-.rodeo-gallery__item--video video {
-  aspect-ratio: auto; /* own clips keep their shape (Paterson + Leo is 4:3) */
-  height: auto;
+/* video thumbnails: hover plays a short muted sizzle, click plays the full video */
+.sizzle {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  padding: 0;
+  border: 0;
+  background: #000;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.sizzle img,
+.sizzle__preview,
+.sizzle__preview iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* crops the letterbox off YouTube's 4:3 thumbnails */
+  border: 0;
+}
+
+.sizzle__preview {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.sizzle__preview.is-playing {
+  opacity: 1;
+}
+
+.sizzle__preview iframe {
+  /* overscan so YouTube's title bar and logo sit outside the frame */
+  inset: -60px 0;
+  height: calc(100% + 120px);
 }
 
 /* the featured pieces sit two to a row, so they show larger than the rest */

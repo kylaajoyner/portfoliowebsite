@@ -8,7 +8,7 @@
   const gallery = document.querySelector(".project-gallery, .rodeo-gallery");
   if (!gallery) return;
 
-  const images = Array.from(gallery.querySelectorAll("img"));
+  const images = Array.from(gallery.querySelectorAll("img:not(.sizzle img)"));
   let current = 0;
   let lastFocus = null;
 
@@ -368,5 +368,121 @@
       rider.style.setProperty("--wrangle-sync", -(ride.currentTime % cycle) + "ms");
       rider.classList.remove("is-catching");
     }, CATCH_MS);
+  });
+})();
+
+// Rodeo videos: hovering a thumbnail plays a short muted sizzle (like YouTube),
+// clicking swaps in the full video with sound.
+(function () {
+  const thumbs = document.querySelectorAll(".sizzle");
+  if (!thumbs.length) return;
+
+  const canHover = window.matchMedia("(hover: hover)").matches &&
+    !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const HOVER_DELAY = 250; // ignore the pointer just passing over
+  const CUT_MS = 2200; // how long each sizzle cut lasts on YouTube videos
+  const CUTS = [0.1, 0.25, 0.4, 0.55, 0.7, 0.85];
+
+  let ytReady = null;
+  function loadYouTube() {
+    if (!ytReady) {
+      ytReady = new Promise((resolve) => {
+        window.onYouTubeIframeAPIReady = resolve;
+        const s = document.createElement("script");
+        s.src = "https://www.youtube.com/iframe_api";
+        document.head.appendChild(s);
+      });
+    }
+    return ytReady;
+  }
+
+  thumbs.forEach((thumb) => {
+    let timer = null;
+    let preview = null;
+    let stop = null;
+
+    function start() {
+      preview = document.createElement("div");
+      preview.className = "sizzle__preview";
+      thumb.appendChild(preview);
+      const mine = preview;
+
+      if (thumb.dataset.sizzle) {
+        const v = document.createElement("video");
+        v.src = thumb.dataset.sizzle;
+        v.muted = true;
+        v.loop = true;
+        v.playsInline = true;
+        v.addEventListener("playing", () => mine.classList.add("is-playing"));
+        preview.appendChild(v);
+        v.play().catch(() => {});
+        stop = () => v.pause();
+        return;
+      }
+
+      const slot = document.createElement("div");
+      preview.appendChild(slot);
+      let hop = null;
+      let player = null;
+      stop = () => {
+        clearInterval(hop);
+        if (player && player.destroy) player.destroy();
+      };
+      loadYouTube().then(() => {
+        if (preview !== mine) return; // pointer already left
+        let cut = 0;
+        player = new YT.Player(slot, {
+          videoId: thumb.dataset.youtube,
+          host: "https://www.youtube-nocookie.com",
+          playerVars: { autoplay: 1, mute: 1, controls: 0, disablekb: 1, fs: 0, playsinline: 1, rel: 0, iv_load_policy: 3 },
+          events: {
+            onReady(e) {
+              const len = e.target.getDuration();
+              const jump = () => e.target.seekTo(len * CUTS[cut++ % CUTS.length], true);
+              jump();
+              e.target.playVideo();
+              hop = setInterval(jump, CUT_MS);
+            },
+            onStateChange(e) {
+              if (e.data === YT.PlayerState.PLAYING) mine.classList.add("is-playing");
+            },
+          },
+        });
+      });
+    }
+
+    function end() {
+      clearTimeout(timer);
+      if (!preview) return;
+      if (stop) stop();
+      preview.remove();
+      preview = null;
+      stop = null;
+    }
+
+    if (canHover) {
+      thumb.addEventListener("mouseenter", () => { timer = setTimeout(start, HOVER_DELAY); });
+      thumb.addEventListener("mouseleave", end);
+    }
+
+    thumb.addEventListener("click", () => {
+      end();
+      let full;
+      if (thumb.dataset.youtube) {
+        full = document.createElement("iframe");
+        full.src = "https://www.youtube-nocookie.com/embed/" + thumb.dataset.youtube + "?autoplay=1&rel=0";
+        full.allow = "autoplay; encrypted-media; picture-in-picture; fullscreen";
+        full.allowFullscreen = true;
+      } else {
+        full = document.createElement("video");
+        full.src = thumb.dataset.video;
+        full.controls = true;
+        full.playsInline = true;
+        full.autoplay = true;
+      }
+      full.title = thumb.getAttribute("aria-label").replace(/^Play /, "");
+      thumb.replaceWith(full);
+      if (full.focus) full.focus();
+    });
   });
 })();
