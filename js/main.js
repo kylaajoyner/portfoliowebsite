@@ -371,8 +371,8 @@
       lost.classList.add("has-spoken", "has-links");
       return;
     }
-    setTimeout(function () { lost.classList.add("has-spoken"); }, 1800);
-    setTimeout(function () { lost.classList.add("has-links"); }, 2500);
+    setTimeout(function () { lost.classList.add("has-spoken"); }, 2800);
+    setTimeout(function () { lost.classList.add("has-links"); }, 3500);
   }
 
   if ("IntersectionObserver" in window) {
@@ -381,7 +381,7 @@
         talk();
         io.disconnect();
       }
-    }, { threshold: 0.5 });
+    }, { threshold: 0.9 }); // wait until he is fully on screen so the "..." is seen
     io.observe(lost);
   } else {
     talk();
