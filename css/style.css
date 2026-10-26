@@ -1757,6 +1757,21 @@ a {
   cursor: zoom-in;
 }
 
+/* pieces pop up slightly on hover */
+.rodeo-gallery__item > img,
+.sizzle {
+  display: block;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .rodeo-gallery__item > img:hover,
+  .sizzle:hover {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.18);
+  }
+}
+
 /* Swing ride and Red Dead infographic run across the whole gallery */
 .rodeo-gallery__item--feature {
   column-span: all;
