@@ -1762,14 +1762,19 @@ a {
   column-span: all;
 }
 
-/* Instagram reels scattered through the gallery, playing in Instagram's own player.
-   The frame is a little taller than 9:16 to fit the player's header. */
-.rodeo-gallery__item--video iframe {
+/* Videos scattered through the gallery: a YouTube embed and two of Kyla's own clips */
+.rodeo-gallery__item--video iframe,
+.rodeo-gallery__item--video video {
   display: block;
   width: 100%;
-  aspect-ratio: 9 / 17.5;
+  aspect-ratio: 16 / 9;
   border: 0;
-  background: #f4f4f4;
+  background: #000;
+}
+
+.rodeo-gallery__item--video video {
+  aspect-ratio: auto; /* own clips keep their shape (Paterson + Leo is 4:3) */
+  height: auto;
 }
 
 /* the featured pieces sit two to a row, so they show larger than the rest */
