@@ -198,7 +198,7 @@ a {
   column-gap: calc(20 * var(--u));
   row-gap: calc(28 * var(--u));
   max-width: calc(900 * var(--u));
-  margin: calc(20 * var(--u)) auto 0;
+  margin: calc(30 * var(--u)) auto 0;
   padding: 0 16px;
 }
 
@@ -214,22 +214,21 @@ a {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: var(--explainer-line);
+  height: calc(36 * 0.7 * var(--u)); /* as tall as the label's capitals, so the star centers on them */
   font-size: calc(32 * var(--u));
   line-height: 1;
   color: #c4263f;
-  transform: translateY(-0.08em); /* the glyph sits low in its box */
 }
 
+/* Both the label and the copy are trimmed to the top of their capitals,
+   so the first line of copy starts exactly level with "PROJECT:" / "ROLE:" */
 .explainer__label {
-  display: flex;
-  align-items: center;
-  height: var(--explainer-line);
   font-family: var(--font-nav);
   font-size: calc(36 * var(--u));
   letter-spacing: calc(2 * var(--u));
   line-height: 1;
   white-space: nowrap;
+  text-box: trim-both cap alphabetic;
 }
 
 .explainer__copy {
@@ -237,6 +236,13 @@ a {
   font-family: var(--font-body);
   font-size: calc(20 * var(--u));
   line-height: var(--explainer-line);
+  text-box: trim-start cap alphabetic;
+}
+
+/* Browsers without text-box trimming (Firefox): close enough by hand */
+@supports not (text-box: trim-both cap alphabetic) {
+  .explainer__label { margin-top: -0.12em; margin-bottom: -0.18em; }
+  .explainer__copy { margin-top: calc((var(--explainer-line) - 0.7em) / -2); }
 }
 
 .explainer__copy p {
@@ -1355,16 +1361,15 @@ a {
 
   /* Phones: star and label on one line, copy underneath */
   .explainer {
-    --explainer-line: 26px;
     grid-template-columns: auto 1fr;
     column-gap: 10px;
     row-gap: 22px;
     margin-top: 12px;
   }
 
-  .explainer__row::before { font-size: 24px; }
+  .explainer__row::before { height: calc(26px * 0.7); font-size: 22px; }
   .explainer__label { font-size: 26px; letter-spacing: 1.2px; }
-  .explainer__copy { grid-column: 1 / -1; margin-top: 6px; font-size: 16px; line-height: 1.6; }
+  .explainer__copy { grid-column: 1 / -1; margin-top: 14px; font-size: 16px; line-height: 1.6; }
 
   .ornament {
     width: 110px;
