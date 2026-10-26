@@ -1564,13 +1564,39 @@ a {
   z-index: 2;
 }
 
-/* wrangle.png is six 114 x 44 pixel frames side by side: four galloping with the lasso overhead, two throwing it */
+/* wrangle.png is eight 114 x 44 pixel frames side by side: four galloping with the
+   lasso overhead, two throwing it, and two catching the horse (only on click).
+   The rider rides on .wrangle; the frames play on its ::before so a click can swap
+   the frames without restarting the ride. */
 .wrangle {
   width: min(calc(570 * var(--u)), 70vw);
   aspect-ratio: 114 / 44;
-  background: url("../assets/images/rodeo/wrangle.png") 0 0 / 600% 100% no-repeat;
+  cursor: pointer;
+  animation: ride 9s linear infinite;
+}
+
+.wrangle::before {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: url("../assets/images/rodeo/wrangle.png") 0 0 / 800% 100% no-repeat;
   image-rendering: pixelated;
-  animation: wrangle 9s step-end infinite, ride 9s linear infinite;
+  animation: wrangle 9s step-end infinite;
+}
+
+/* Clicked: throw, the loop lands on the horse, then the rope pulls tight and holds
+   until they ride out of view */
+.wrangle.is-catching::before {
+  animation: wrangle-catch 1.6s step-end forwards;
+}
+
+@keyframes wrangle-catch {
+  0%   { background-position-x: 57.143%; }
+  20%  { background-position-x: 71.429%; }
+  40%  { background-position-x: 85.714%; }
+  70%  { background-position-x: 100.000%; }
+  100% { background-position-x: 100.000%; }
 }
 
 @keyframes ride {
@@ -1580,9 +1606,73 @@ a {
 
 /* one 9s pass, in step with the ride: frames 0-3 gallop with the lasso
    swinging overhead, then near the right ornament he throws it (frames 4-5)
-   as he fades out; the rope never lands on the horse */
+   as he fades out; the rope never lands on the horse unless you click him */
 @keyframes wrangle {
-  0.000% { background-position-x: 0%; }
+  0.000% { background-position-x: 0.000%; }
+  1.562% { background-position-x: 14.286%; }
+  3.125% { background-position-x: 28.571%; }
+  4.688% { background-position-x: 42.857%; }
+  6.250% { background-position-x: 0.000%; }
+  7.812% { background-position-x: 14.286%; }
+  9.375% { background-position-x: 28.571%; }
+  10.938% { background-position-x: 42.857%; }
+  12.500% { background-position-x: 0.000%; }
+  14.062% { background-position-x: 14.286%; }
+  15.625% { background-position-x: 28.571%; }
+  17.188% { background-position-x: 42.857%; }
+  18.750% { background-position-x: 0.000%; }
+  20.312% { background-position-x: 14.286%; }
+  21.875% { background-position-x: 28.571%; }
+  23.438% { background-position-x: 42.857%; }
+  25.000% { background-position-x: 0.000%; }
+  26.562% { background-position-x: 14.286%; }
+  28.125% { background-position-x: 28.571%; }
+  29.688% { background-position-x: 42.857%; }
+  31.250% { background-position-x: 0.000%; }
+  32.812% { background-position-x: 14.286%; }
+  34.375% { background-position-x: 28.571%; }
+  35.938% { background-position-x: 42.857%; }
+  37.500% { background-position-x: 0.000%; }
+  39.062% { background-position-x: 14.286%; }
+  40.625% { background-position-x: 28.571%; }
+  42.188% { background-position-x: 42.857%; }
+  43.750% { background-position-x: 0.000%; }
+  45.312% { background-position-x: 14.286%; }
+  46.875% { background-position-x: 28.571%; }
+  48.438% { background-position-x: 42.857%; }
+  50.000% { background-position-x: 0.000%; }
+  51.562% { background-position-x: 14.286%; }
+  53.125% { background-position-x: 28.571%; }
+  54.688% { background-position-x: 42.857%; }
+  56.250% { background-position-x: 0.000%; }
+  57.812% { background-position-x: 14.286%; }
+  59.375% { background-position-x: 28.571%; }
+  60.938% { background-position-x: 42.857%; }
+  62.500% { background-position-x: 0.000%; }
+  64.062% { background-position-x: 14.286%; }
+  65.625% { background-position-x: 28.571%; }
+  67.188% { background-position-x: 42.857%; }
+  68.750% { background-position-x: 0.000%; }
+  70.312% { background-position-x: 14.286%; }
+  71.875% { background-position-x: 28.571%; }
+  73.438% { background-position-x: 42.857%; }
+  75.000% { background-position-x: 0.000%; }
+  76.562% { background-position-x: 14.286%; }
+  78.125% { background-position-x: 28.571%; }
+  79.688% { background-position-x: 42.857%; }
+  81.250% { background-position-x: 0.000%; }
+  82.812% { background-position-x: 14.286%; }
+  84.375% { background-position-x: 57.143%; }
+  85.938% { background-position-x: 71.429%; }
+  87.500% { background-position-x: 57.143%; }
+  89.062% { background-position-x: 71.429%; }
+  90.625% { background-position-x: 57.143%; }
+  92.188% { background-position-x: 71.429%; }
+  93.750% { background-position-x: 57.143%; }
+  95.312% { background-position-x: 71.429%; }
+  96.875% { background-position-x: 57.143%; }
+  98.438% { background-position-x: 71.429%; }
+}
   1.562% { background-position-x: 20%; }
   3.125% { background-position-x: 40%; }
   4.688% { background-position-x: 60%; }
@@ -1694,7 +1784,8 @@ a {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .wrangle { animation: none; background-position-x: 0; margin: 0 auto; }
+  .wrangle { animation: none; margin: 0 auto; cursor: default; }
+  .wrangle::before, .wrangle.is-catching::before { animation: none; background-position-x: 0; }
 }
 
 @media (max-width: 900px) {

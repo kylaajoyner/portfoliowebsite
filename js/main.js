@@ -349,3 +349,22 @@
     });
   }
 })();
+
+// Rodeo: he never ropes the runaway horse... unless you click him.
+// The catch holds until they ride out of view, then the normal loop picks up in step.
+(function () {
+  const rider = document.querySelector(".wrangle");
+  if (!rider || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  const ride = rider.getAnimations().find((a) => a.animationName === "ride");
+  let timer = null;
+
+  rider.addEventListener("click", () => {
+    if (rider.classList.contains("is-catching") || !ride) return;
+    rider.classList.add("is-catching");
+    // Let go when this pass ends, right as the ride loops; both loops restart there together.
+    const cycle = ride.effect.getComputedTiming().duration;
+    clearTimeout(timer);
+    timer = setTimeout(() => rider.classList.remove("is-catching"), cycle - (ride.currentTime % cycle));
+  });
+})();
