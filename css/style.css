@@ -1049,25 +1049,28 @@ a {
   right: 0;
   top: 50%;
   display: flex;
-  justify-content: center;
+  flex-direction: column; /* Kyla over Joyner, stacked like the name on channel 1 */
+  align-items: center;
   margin: 0;
   font-family: var(--font-accent);
   font-weight: 400;
   font-synthesis: none;
-  font-size: 13cqw;
-  line-height: 1.2;
+  font-size: 15cqw;
+  line-height: 0.95;
   white-space: nowrap;
-  color: #e44e6c;
+  color: #fff;
+  -webkit-text-stroke: 1.1cqw #e44e6c; /* red outline */
+  paint-order: stroke fill; /* outline sits behind the white so the letters keep their weight */
   transform: translateY(-50%) rotate(-6deg);
   visibility: hidden;
 }
 
-.tv__script span {
+.tv__line { display: flex; }
+
+.tv__line span {
   display: inline-block;
   transform-origin: 50% 90%;
 }
-
-.tv__script .tv__gap { width: 0.3em; }
 
 .tv[data-channel="3"] .tv__video { opacity: 1; }
 .tv[data-channel="3"] .tv__name,
@@ -1075,7 +1078,7 @@ a {
 .tv[data-channel="3"] .tv__script { visibility: visible; }
 
 /* Looney Tunes style: each letter springs up from nothing, overshoots, squashes and settles, one after another */
-.tv[data-channel="3"] .tv__script span {
+.tv[data-channel="3"] .tv__line span {
   animation: tv-toon 0.7s cubic-bezier(0.3, 0, 0.3, 1) calc(0.35s + var(--n, 0) * 0.08s) both;
 }
 
@@ -1164,7 +1167,7 @@ a {
     animation: none;
   }
 
-  .tv[data-channel="3"] .tv__script span { animation: none; }
+  .tv[data-channel="3"] .tv__line span { animation: none; }
 }
 
 .sr-only {
@@ -1317,44 +1320,30 @@ a {
   gap: calc(40 * var(--u));
   position: relative;
   z-index: 1;
-  padding: calc(40 * var(--u)) 16px 0;
+  padding: calc(80 * var(--u)) 16px calc(80 * var(--u));
 }
 
-.lost__scene {
-  --v: calc(0.6 * var(--u)); /* one video pixel; the cowboy art is ~13.2v per pixel */
-  position: relative;
-  flex: none;
-  width: calc(402 * var(--v));
-  height: calc(533 * var(--v));
-}
-
-.lost__cactus {
-  position: absolute;
-  left: calc(217 * var(--v));
-  bottom: 0;
-  width: calc(185 * var(--v));
-  height: auto;
-  image-rendering: pixelated;
-}
-
-/* pixel legs and boots under the animated head and shoulders */
-.lost__body {
-  position: absolute;
-  left: calc(56 * var(--v));
-  top: calc(309 * var(--v));
-  width: calc(264 * var(--v));
-  height: auto;
-  image-rendering: pixelated;
-}
-
+/* Kyla's pixel cowboy leaning on a cactus: six frames, he takes a drag and blows a smoke ring */
 .lost__cowboy {
-  position: absolute;
-  left: 0;
-  top: calc(24 * var(--v));
-  width: calc(370 * var(--v));
-  height: auto;
+  flex: none;
+  width: calc(260 * var(--u));
+  aspect-ratio: 250 / 233;
+  background: url("../assets/images/lost-cowboy.png") 0 0 / 600% 100% no-repeat;
   image-rendering: pixelated;
-  mix-blend-mode: multiply; /* drops the video's white box so he overlaps the cactus cleanly */
+  animation: lost-smoke 2.4s steps(1) infinite;
+}
+
+@keyframes lost-smoke {
+  0%     { background-position-x: 0; }
+  25%    { background-position-x: 20%; }
+  37.5%  { background-position-x: 40%; }
+  50%    { background-position-x: 60%; }
+  62.5%  { background-position-x: 80%; }
+  75%    { background-position-x: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lost__cowboy { animation: none; }
 }
 
 /* Pixel western landscape footer with a rolling tumbleweed */
@@ -1400,8 +1389,8 @@ a {
 .lost__bubble {
   position: relative;
   flex: none;
-  width: calc(440 * var(--u)); /* fixed so the scene doesn't shift when the dots turn into words */
-  min-height: calc(150 * var(--u));
+  width: calc(400 * var(--u)); /* fixed so the scene doesn't shift when the dots turn into words */
+  min-height: calc(120 * var(--u));
   box-sizing: border-box;
   padding: calc(24 * var(--u)) calc(32 * var(--u));
   border: calc(5 * var(--u)) solid #1c1c1c;
@@ -1474,7 +1463,7 @@ a {
 .lost.has-links .lost__links { display: flex; animation: lost-in 0.3s ease both; }
 
 .lost__text {
-  font-size: calc(44 * var(--u));
+  font-size: calc(34 * var(--u));
   letter-spacing: calc(2 * var(--u));
   line-height: 1.1;
 }
@@ -1486,7 +1475,7 @@ a {
 
 .lost__links a {
   position: relative;
-  font-size: calc(28 * var(--u));
+  font-size: calc(24 * var(--u));
   letter-spacing: calc(1.5 * var(--u));
   color: inherit;
   text-decoration: none;
@@ -1729,7 +1718,7 @@ a {
     gap: 36px;
   }
 
-  .lost__scene { --v: 0.45px; }
+  .lost__cowboy { width: 180px; }
 
   .lost { padding-bottom: 40px; }
   .landscape { margin-top: 0; }
@@ -1747,7 +1736,7 @@ a {
   .lost__bubble::before { left: 30%; top: -18px; width: 10px; height: 14px; }
   .lost__bubble::after  { left: calc(30% - 10px); top: -28px; width: 10px; height: 10px; }
 
-  .lost__text { font-size: 28px; }
+  .lost__text { font-size: 24px; }
   .lost__links a { font-size: 20px; }
   .lost__dots i { width: 10px; height: 10px; }
 
