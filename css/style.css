@@ -170,6 +170,7 @@ a {
 }
 
 .work-card {
+  position: relative;
   display: block;
   width: calc(380 * var(--u));
   aspect-ratio: 380 / 214;
@@ -181,16 +182,51 @@ a {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: filter 0.3s ease, transform 0.3s ease;
 }
 
-/* Stand-in until the real thumbnail images are added */
-.work-card--placeholder {
+/* Slight blur on hover. The tiny scale hides the soft edge blur leaves at the card border. */
+.work-card:hover img,
+.work-card:focus-visible img {
+  filter: blur(6px);
+  transform: scale(1.06);
+}
+
+/* Project name that fades in over the blurred thumbnail */
+.work-card__label {
+  position: absolute;
+  inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 0 calc(16 * var(--u));
   font-family: var(--font-nav);
-  font-size: calc(28 * var(--u));
-  letter-spacing: calc(2 * var(--u));
+  font-size: calc(34 * var(--u));
+  letter-spacing: calc(2.5 * var(--u));
+  text-align: center;
+  color: var(--color-ink);
+  background: rgba(255, 255, 255, 0.45); /* soft wash so the name reads on any thumbnail */
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.work-card:hover .work-card__label,
+.work-card:focus-visible .work-card__label {
+  opacity: 1;
+}
+
+/* Crops match the Figma thumbnails */
+.work-card img[src*="old-spice"] {
+  object-position: center 44%;
+}
+
+.work-card--logo img {
+  object-fit: contain;
+}
+
+.work-card--wordmark img {
+  object-fit: contain;
+  padding: 0 8%;
 }
 
 /* ---------- Smaller screens ---------- */
