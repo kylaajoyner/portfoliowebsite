@@ -682,6 +682,30 @@ a {
   transform: scaleX(1);
 }
 
+/* Résumé: dark pill under the social links, red underline under the word */
+.resume-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: calc(36 * var(--u));
+  padding: calc(13 * var(--u)) calc(48 * var(--u)) calc(11 * var(--u));
+  border-radius: calc(14 * var(--u));
+  background: #231f20;
+  color: #fff;
+  font-family: var(--font-nav);
+  font-size: calc(32 * var(--u));
+  letter-spacing: calc(1 * var(--u));
+  line-height: 1;
+  text-decoration: none;
+  transition: transform 0.25s ease, background-color 0.25s ease;
+}
+
+.resume-btn:hover,
+.resume-btn:focus-visible {
+  background: #000;
+  transform: translateY(calc(-3 * var(--u)));
+}
+
 .about-me__copy {
   margin: 0;
   font-family: var(--font-body);
@@ -1712,6 +1736,13 @@ a {
 
   .about-me__links a {
     font-size: 16px;
+  }
+
+  .resume-btn {
+    margin-top: 24px;
+    padding: 9px 32px 7px;
+    border-radius: 10px;
+    font-size: 21px;
   }
 
   .radio__title {
