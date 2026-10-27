@@ -8,7 +8,7 @@
   const gallery = document.querySelector(".project-gallery, .rodeo-gallery");
   if (!gallery) return;
 
-  const images = Array.from(gallery.querySelectorAll("img"));
+  const images = Array.from(gallery.querySelectorAll("img:not(.sizzle img)"));
   let current = 0;
   let lastFocus = null;
 
@@ -95,6 +95,14 @@
 (function () {
   const roles = document.querySelector("[data-roles]");
   if (!roles) return;
+
+  // shuffle the roles so every visit starts on a different one in a different order
+  const spans = Array.from(roles.querySelectorAll("span"));
+  for (let i = spans.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [spans[i], spans[j]] = [spans[j], spans[i]];
+  }
+  spans.forEach((span) => roles.appendChild(span));
 
   const words = roles.querySelectorAll("span");
   let current = 0;
@@ -197,8 +205,46 @@
     timer = setTimeout(function () { tv.classList.remove("is-glitching"); }, 600);
   }
 
-  tv.addEventListener("click", glitch);
+  // the power button on the set turns the picture off and back on
+  const power = tv.querySelector(".tv__power");
+  if (power) {
+    power.addEventListener("click", function (e) {
+      e.stopPropagation(); // not a glitch click
+      const off = !tv.classList.contains("is-off");
+      tv.classList.toggle("is-off", off);
+      tv.classList.toggle("is-waking", !off);
+      power.setAttribute("aria-pressed", String(off));
+      power.setAttribute("aria-label", off ? "Turn the TV on" : "Turn the TV off");
+    });
+    power.addEventListener("keydown", function (e) { e.stopPropagation(); });
+  }
+
+  // channel buttons switch the picture, with a burst of static in between
+  const video = tv.querySelector(".tv__video");
+  const channels = tv.querySelectorAll(".tv__channel");
+  channels.forEach(function (btn) {
+    btn.addEventListener("click", function (e) {
+      e.stopPropagation();
+      if (tv.classList.contains("is-off")) return;
+      const ch = btn.dataset.channel;
+      channels.forEach(function (b) { b.setAttribute("aria-pressed", String(b === btn)); });
+      tv.dataset.channel = "";
+      void tv.offsetWidth;
+      tv.dataset.channel = ch;
+      glitch();
+      if (video) {
+        if (ch === "3") { video.currentTime = 0; video.play().catch(function () {}); }
+        else video.pause();
+      }
+    });
+    btn.addEventListener("keydown", function (e) { e.stopPropagation(); });
+  });
+
+  tv.addEventListener("click", function () {
+    if (!tv.classList.contains("is-off")) glitch();
+  });
   tv.addEventListener("keydown", function (e) {
+    if (tv.classList.contains("is-off")) return;
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
       glitch();
@@ -235,7 +281,7 @@
   window.addEventListener("resize", setSpeed);
 
   // Hold TUNE or FFWD: ease the scroll up to fast-forward, ease back down on release
-  const FAST = 5;
+  const FAST = 10;
   let held = 0;
   let rate = 1;
   let easing = false;
@@ -247,7 +293,7 @@
   function ease() {
     const anim = scrollAnim();
     const target = held > 0 ? FAST : 1;
-    rate += (target - rate) * 0.12;
+    rate += (target - rate) * 0.2;
     if (Math.abs(target - rate) < 0.02) rate = target;
     if (anim) anim.playbackRate = rate;
     if (rate !== target) requestAnimationFrame(ease);
@@ -325,8 +371,8 @@
       lost.classList.add("has-spoken", "has-links");
       return;
     }
-    setTimeout(function () { lost.classList.add("has-spoken"); }, 1800);
-    setTimeout(function () { lost.classList.add("has-links"); }, 2500);
+    setTimeout(function () { lost.classList.add("has-spoken"); }, 1000);
+    setTimeout(function () { lost.classList.add("has-links"); }, 1600);
   }
 
   if ("IntersectionObserver" in window) {
@@ -335,7 +381,7 @@
         talk();
         io.disconnect();
       }
-    }, { threshold: 0.5 });
+    }, { threshold: 0.9 }); // wait until he is fully on screen so the "..." is seen
     io.observe(lost);
   } else {
     talk();
@@ -348,4 +394,239 @@
       window.scrollTo({ top: 0, behavior: still ? "auto" : "smooth" });
     });
   }
+})();
+
+// Rodeo: he never ropes the runaway horse... unless you click him.
+// He holds the catch for about a second, then goes back to swinging the lasso.
+(function () {
+  const rider = document.querySelector(".wrangle");
+  if (!rider || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  const ride = rider.getAnimations().find((a) => a.animationName === "ride");
+  const CATCH_MS = 1650; // matches .wrangle.is-catching in the CSS
+
+  rider.addEventListener("click", () => {
+    if (rider.classList.contains("is-catching") || !ride) return;
+    rider.classList.add("is-catching");
+    setTimeout(() => {
+      // restart the normal frames at the ride's current point so the end-of-pass throw stays in step
+      const cycle = ride.effect.getComputedTiming().duration;
+      rider.style.setProperty("--wrangle-sync", -(ride.currentTime % cycle) + "ms");
+      rider.classList.remove("is-catching");
+    }, CATCH_MS);
+  });
+})();
+
+// Rodeo videos: each thumbnail plays a short muted sizzle on its own while it's on screen,
+// clicking swaps in the full video with sound.
+(function () {
+  const thumbs = document.querySelectorAll(".sizzle");
+  if (!thumbs.length) return;
+
+  const autoplay = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const CUT_MS = 2200; // how long each sizzle cut lasts on YouTube videos
+  const CUTS = [0.1, 0.25, 0.4, 0.55, 0.7, 0.85];
+
+  let ytReady = null;
+  function loadYouTube() {
+    if (!ytReady) {
+      ytReady = new Promise((resolve) => {
+        window.onYouTubeIframeAPIReady = resolve;
+        const s = document.createElement("script");
+        s.src = "https://www.youtube.com/iframe_api";
+        document.head.appendChild(s);
+      });
+    }
+    return ytReady;
+  }
+
+  thumbs.forEach((thumb) => {
+    let preview = null;
+    let stop = null;
+
+    function start() {
+      preview = document.createElement("div");
+      preview.className = "sizzle__preview";
+      thumb.appendChild(preview);
+      const mine = preview;
+
+      if (thumb.dataset.sizzle) {
+        const v = document.createElement("video");
+        v.src = thumb.dataset.sizzle;
+        v.muted = true;
+        v.loop = true;
+        v.playsInline = true;
+        v.addEventListener("playing", () => mine.classList.add("is-playing"));
+        preview.appendChild(v);
+        v.play().catch(() => {});
+        stop = () => v.pause();
+        return;
+      }
+
+      const slot = document.createElement("div");
+      preview.appendChild(slot);
+      let hop = null;
+      let player = null;
+      stop = () => {
+        clearInterval(hop);
+        if (player && player.destroy) player.destroy();
+      };
+      loadYouTube().then(() => {
+        if (preview !== mine) return; // scrolled away before it loaded
+        let cut = 0;
+        player = new YT.Player(slot, {
+          videoId: thumb.dataset.youtube,
+          host: "https://www.youtube-nocookie.com",
+          playerVars: { autoplay: 1, mute: 1, controls: 0, disablekb: 1, fs: 0, playsinline: 1, rel: 0, iv_load_policy: 3 },
+          events: {
+            onReady(e) {
+              const len = e.target.getDuration();
+              const jump = () => e.target.seekTo(len * CUTS[cut++ % CUTS.length], true);
+              jump();
+              e.target.playVideo();
+              hop = setInterval(jump, CUT_MS);
+            },
+            onStateChange(e) {
+              if (e.data === YT.PlayerState.PLAYING) mine.classList.add("is-playing");
+            },
+          },
+        });
+      });
+    }
+
+    function end() {
+      if (!preview) return;
+      if (stop) stop();
+      preview.remove();
+      preview = null;
+      stop = null;
+    }
+
+    // play while it's on screen (or nearly), stop once scrolled away
+    if (autoplay) {
+      new IntersectionObserver((entries) => {
+        if (!thumb.isConnected) return;
+        if (entries[0].isIntersecting) { if (!preview) start(); } else end();
+      }, { rootMargin: "200px 0px" }).observe(thumb);
+    }
+
+    thumb.addEventListener("click", () => {
+      end();
+      let full;
+      if (thumb.dataset.youtube) {
+        full = document.createElement("iframe");
+        full.src = "https://www.youtube-nocookie.com/embed/" + thumb.dataset.youtube + "?autoplay=1&rel=0";
+        full.allow = "autoplay; encrypted-media; picture-in-picture; fullscreen";
+        full.allowFullscreen = true;
+      } else {
+        full = document.createElement("video");
+        full.src = thumb.dataset.video;
+        full.controls = true;
+        full.playsInline = true;
+        full.autoplay = true;
+      }
+      full.title = thumb.getAttribute("aria-label").replace(/^Play /, "");
+      thumb.replaceWith(full);
+      if (full.focus) full.focus();
+    });
+  });
+})();
+
+// Rodeo gallery: pack the pieces into columns, shortest column first, with each video
+// taking two columns so the photos fill in around it. Recomputed on resize.
+(function () {
+  const grid = document.querySelector(".rodeo-gallery__grid:not(.rodeo-gallery__grid--big)");
+  if (!grid) return;
+  const items = Array.from(grid.children);
+  const VIDEO_SPAN = 2;
+
+  function ratio(li) {
+    if (li.classList.contains("rodeo-gallery__item--video")) return 9 / 16;
+    const img = li.querySelector("img");
+    return img.height / img.width; // from the width/height attributes, so it works before load
+  }
+
+  function pack() {
+    const w = window.innerWidth;
+    const cols = w <= 480 ? 1 : w <= 900 ? 2 : Number(grid.dataset.cols || 4);
+    grid.classList.remove("is-packed");
+    const gap = parseFloat(getComputedStyle(grid).columnGap) || 0;
+    grid.classList.add("is-packed");
+    const col = (grid.clientWidth - gap * (cols - 1)) / cols;
+    const heights = new Array(cols).fill(0);
+
+    const isVideo = (li) => li.classList.contains("rodeo-gallery__item--video");
+
+    // the run of columns where a piece can sit highest, and the empty space it would leave under itself
+    // on the 4-column desktop layout each piece has a hand-picked column (data-col)
+    function spot(span, li) {
+      const pinned = li && cols === 4 && li.dataset.col ? Number(li.dataset.col) - 1 : -1;
+      let best = 0;
+      let bestTop = Infinity;
+      for (let c = Math.max(pinned, 0); c + span <= cols && (pinned < 0 || c === pinned); c++) {
+        const top = Math.max(...heights.slice(c, c + span));
+        if (top < bestTop - 1) { bestTop = top; best = c; }
+      }
+      let waste = 0;
+      for (let c = best; c < best + span; c++) waste += bestTop - heights[c];
+      return { best, bestTop, waste };
+    }
+
+    function place(li) {
+      const span = Math.min(isVideo(li) ? VIDEO_SPAN : 1, cols);
+      const { best, bestTop } = spot(span, li);
+      const width = col * span + gap * (span - 1);
+      li.style.width = width + "px";
+      li.style.left = best * (col + gap) + "px";
+      li.style.top = bestTop + "px";
+      const bottom = bestTop + width * ratio(li) + gap;
+      for (let c = best; c < best + span; c++) heights[c] = bottom;
+    }
+
+    // a video waits for the next photos to even out the columns under it, so no holes open up
+    // (but only for a few photos, so it stays roughly where it is in the list)
+    const MAX_WAIT = 3;
+    const waiting = [];
+    let waited = 0;
+    const fits = (li) => spot(Math.min(VIDEO_SPAN, cols)).waste < col * 0.35;
+    items.forEach((li, i) => {
+      if (cols === 4 && li.dataset.col) place(li);
+      else if (isVideo(li)) waiting.push(li);
+      else { place(li); if (waiting.length) waited++; }
+      while (waiting.length && (fits(waiting[0]) || waited >= MAX_WAIT || !items.slice(i + 1).some((x) => !isVideo(x)))) {
+        place(waiting.shift());
+        waited = 0;
+      }
+    });
+    grid.style.height = Math.max(...heights) - gap + "px";
+  }
+
+  pack();
+  let raf = 0;
+  window.addEventListener("resize", () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(pack); });
+})();
+
+// Project pages: More Work slides this project out and the next one in, like a slideshow.
+(function () {
+  try { sessionStorage.removeItem("slide-in"); } catch (e) {}
+  const more = document.querySelector(".more-link");
+  const page = document.querySelector(".page--project");
+  if (!more || !page || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  more.addEventListener("click", (e) => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return; // let new-tab clicks through
+    e.preventDefault();
+    try { sessionStorage.setItem("slide-in", "1"); } catch (err) {}
+    page.classList.add("is-leaving");
+    setTimeout(() => { window.location.href = more.href; }, 350);
+  });
+
+  // coming back with the browser's back button shouldn't show a blank page
+  window.addEventListener("pageshow", (e) => { if (e.persisted) page.classList.remove("is-leaving"); });
+})();
+
+// Copyright year stays current
+(function () {
+  const year = document.querySelector("[data-year]");
+  if (year) year.textContent = new Date().getFullYear();
 })();

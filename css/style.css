@@ -189,6 +189,138 @@ a {
   margin: 0 0 1.2em;
 }
 
+/* Project explainer: a red star, a Bebas label, then the copy in Narkiss.
+   The labels share a column so every line of copy starts at the same edge. */
+.explainer {
+  --explainer-line: calc(34 * var(--u)); /* one shared line height so star, label and copy sit on the same center line */
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  column-gap: calc(20 * var(--u));
+  row-gap: calc(28 * var(--u));
+  max-width: calc(1120 * var(--u)); /* same width as the work below, so they share a left edge */
+  margin: calc(30 * var(--u)) auto 0;
+  padding: 0 16px;
+}
+
+/* Match the narrower galleries so the left edges still line up */
+.explainer:has(+ .project-gallery--portrait) { max-width: calc(860 * var(--u)); }
+.explainer:has(+ .project-gallery--rows) { max-width: calc(1060 * var(--u)); }
+
+.explainer__row {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: subgrid;
+  align-items: start;
+}
+
+.explainer__row::before {
+  content: "\2605"; /* same red star as the Jukebox */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: calc(36 * 0.7 * var(--u)); /* as tall as the label's capitals, so the star centers on them */
+  font-size: calc(32 * var(--u));
+  line-height: 1;
+  color: #c4263f;
+}
+
+/* Both the label and the copy are trimmed to the top of their capitals,
+   so the first line of copy starts exactly level with "PROJECT:" / "ROLE:" */
+.explainer__label {
+  font-family: var(--font-nav);
+  font-size: calc(36 * var(--u));
+  letter-spacing: calc(2 * var(--u));
+  line-height: 1;
+  white-space: nowrap;
+  text-box: trim-both cap alphabetic;
+}
+
+.explainer__copy {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: calc(20 * var(--u));
+  max-width: calc(720 * var(--u)); /* keeps lines a comfortable reading length */
+  line-height: var(--explainer-line);
+  text-box: trim-start cap alphabetic;
+}
+
+/* Browsers without text-box trimming (Firefox): close enough by hand */
+@supports not (text-box: trim-both cap alphabetic) {
+  .explainer__label { margin-top: -0.12em; margin-bottom: -0.18em; }
+  .explainer__copy { margin-top: calc((var(--explainer-line) - 0.7em) / -2); }
+}
+
+.explainer__copy p {
+  margin: 0 0 0.8em;
+}
+
+.explainer__copy p:last-child {
+  margin-bottom: 0;
+}
+
+.explainer__tbd {
+  opacity: 0.45;
+}
+
+/* Desktop: the explainer becomes a column on the left that stays in view
+   while the work scrolls past on the right. Phones keep it stacked on top. */
+@media (min-width: 901px) {
+  .page--project:has(> .explainer, > .project-aside) {
+    display: grid;
+    grid-template-columns: calc(420 * var(--u)) minmax(0, 1fr);
+    column-gap: calc(64 * var(--u));
+    align-content: center;
+    padding-left: calc(80 * var(--u));
+    padding-right: calc(80 * var(--u));
+  }
+
+  .page--project:has(> .explainer, > .project-aside) > * {
+    grid-column: 2;
+  }
+
+  .page--project > .explainer,
+  .page--project > .project-aside {
+    grid-column: 1;
+    grid-row: 1 / span 10;
+    align-self: start;
+    position: sticky;
+    top: calc(40 * var(--u));
+    margin: calc(28 * var(--u)) 0 0;
+  }
+
+  .page--project > .explainer,
+  .project-aside > .explainer {
+    grid-template-columns: auto 1fr;
+    row-gap: calc(40 * var(--u));
+    max-width: none;
+    padding: 0;
+  }
+
+  .project-aside > .explainer { margin: 0; }
+
+  /* View full project sits under Role, lined up with the copy */
+  .page--project > .project-aside > .project-link {
+    margin: calc(40 * var(--u)) 0 0 calc(39.3 * var(--u));
+  }
+
+  /* star and label on one line, copy underneath, lined up with the label */
+  .page--project .explainer .explainer__copy {
+    grid-column: 2;
+    margin-top: calc(18 * var(--u));
+    font-size: calc(19 * var(--u));
+    line-height: 1.6;
+  }
+
+  .page--project:has(> .explainer, > .project-aside) .project-gallery,
+  .page--project:has(> .explainer, > .project-aside) .project-video {
+    padding: 0;
+  }
+
+  .page--project:has(> .explainer, > .project-aside) > .project-link {
+    justify-self: center;
+  }
+}
+
 /* Two on top, two on bottom, sized so the whole brief fits the first screen */
 .project-gallery {
   display: grid;
@@ -250,7 +382,7 @@ a {
   border: 0;
 }
 
-/* Small link under the video to the full story elsewhere (opens in a new tab) */
+/* Small link under the video to the full story elsewhere (opens in a new tab); underlined on hover */
 .project-link {
   align-self: center;
   width: auto !important;
@@ -258,12 +390,32 @@ a {
   font-family: var(--font-nav);
   font-size: calc(20 * var(--u));
   letter-spacing: calc(2 * var(--u));
-  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+  position: relative;
 }
 
-.project-link:hover,
-.project-link:focus-visible {
-  border-bottom-color: var(--color-ink);
+/* same grow-from-the-middle underline as the nav and Back to Work */
+.project-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(-3 * var(--u));
+  height: max(1px, calc(1.5 * var(--u)));
+  background: rgba(0, 0, 0, 0.3);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.25s ease;
+}
+
+.project-link:hover::after,
+.project-link:focus-visible::after {
+  transform: scaleX(1);
+}
+
+/* explainer plus View full project, kept together (stacked on phones, left column on desktop) */
+.project-aside > .project-link {
+  display: inline-block;
+  margin: 24px 16px 0;
 }
 
 /* Small line of project details, e.g. awards */
@@ -315,6 +467,44 @@ a {
 .back-link:hover::after,
 .back-link:focus-visible::after {
   transform: scaleX(1);
+}
+
+/* Back to All Work and More Work sit side by side at the bottom of each project */
+.project-nav {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: calc(16 * var(--u)) calc(72 * var(--u));
+  margin-top: calc(28 * var(--u));
+}
+
+.project-nav .back-link {
+  margin-top: 0;
+}
+
+@media (max-width: 900px) {
+  .project-nav { gap: 12px 32px; }
+  .project-nav .back-link { font-size: 18px; letter-spacing: 1.5px; }
+}
+
+/* More Work flips through the projects like a slideshow: the page slides out left, the next slides in from the right */
+.page--project.is-leaving {
+  opacity: 0;
+  transform: translateX(-60px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.slide-in .page--project {
+  animation: slide-in 0.45s ease backwards;
+}
+
+@keyframes slide-in {
+  from { opacity: 0; transform: translateX(60px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page--project.is-leaving { transition: none; transform: none; }
+  .slide-in .page--project { animation: none; }
 }
 
 /* ---------- Lightbox (full-screen image viewer) ---------- */
@@ -684,6 +874,7 @@ a {
   position: absolute;
   inset: 0;
   text-align: center;
+  white-space: nowrap; /* longer roles like Country Music Defender stay on one line */
   opacity: 0;
   transform: rotateX(-90deg);
   transform-origin: 50% 50% -2cqw;
@@ -766,6 +957,204 @@ a {
   background: radial-gradient(ellipse 70% 55% at 28% 18%, rgba(255, 255, 255, 0.12), transparent 70%);
 }
 
+/* Power button: an invisible hit area over the button drawn on the TV */
+.tv__power {
+  position: absolute;
+  left: 81.3%;
+  top: 42.2%;
+  width: 5.8%;
+  height: 4.2%;
+  z-index: 3;
+  padding: 0;
+  border: 0;
+  border-radius: 12%;
+  background: transparent;
+  cursor: pointer;
+}
+
+.tv__power:active {
+  background: rgba(0, 0, 0, 0.25); /* reads as the button pushing in */
+}
+
+.tv__power:focus-visible {
+  outline: 2px solid #f4f1ea;
+  outline-offset: 2px;
+}
+
+/* Channel buttons 1-6: hit areas over the rocker buttons drawn on the set */
+.tv__channels {
+  position: absolute;
+  left: 81.2%;
+  top: 49.4%;
+  width: 12.8%;
+  height: 7.2%;
+  z-index: 3;
+}
+
+.tv__channel {
+  position: absolute;
+  top: 0;
+  left: calc(var(--i) * 16.625%); /* button pitch on the art */
+  width: 15.6%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: 10%;
+  background: transparent;
+  cursor: pointer;
+}
+
+/* the chosen channel's button looks pushed in */
+.tv__channel[aria-pressed="true"],
+.tv__channel:active {
+  background: rgba(0, 0, 0, 0.28);
+}
+
+.tv__channel:focus-visible {
+  outline: 2px solid #f4f1ea;
+  outline-offset: 2px;
+}
+
+/* Channel 2: "dark mode", a bright screen with the name and roles in black */
+.tv__light {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, #f4f1ea 0%, #e4dfd4 60%, #b9b4aa 100%);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.tv[data-channel="2"] .tv__light { opacity: 1; }
+
+.tv[data-channel="2"] .tv__title,
+.tv[data-channel="2"] .tv__roles {
+  color: #111;
+  text-shadow: none;
+}
+
+/* Channel 3: the landscape film with the name written out in red script */
+.tv__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  filter: url(#crt-warp); /* same barrel bulge as the name, so the footage sits on the curved glass */
+}
+
+.tv[data-channel="3"] .tv__video { opacity: 1; }
+.tv[data-channel="3"] .tv__name,
+.tv[data-channel="3"] .tv__star { visibility: hidden; }
+
+/* Channel 3: a red star spins in 3D over the footage, the name sits still in its middle */
+.tv__spin {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  perspective: 90cqw;
+  visibility: hidden;
+}
+
+.tv[data-channel="3"] .tv__spin { visibility: visible; }
+
+.tv__spin-star {
+  grid-area: 1 / 1;
+  position: relative;
+  width: 66cqw;
+  aspect-ratio: 1 / 0.95;
+  transform-style: preserve-3d;
+  animation: tv-spin 5s linear infinite;
+}
+
+/* front and back faces, plus ten side walls along the star's edges, so it reads as one solid piece at every angle */
+.tv__spin-star i {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, #f27a93, #e44e6c 55%, #c73c5a);
+  clip-path: polygon(50% 0%, 61.2% 34.5%, 97.6% 34.5%, 68.2% 55.9%, 79.4% 90.5%, 50% 69.1%, 20.6% 90.5%, 31.8% 55.9%, 2.4% 34.5%, 38.8% 34.5%);
+  transform: translateZ(2.5cqw);
+}
+
+.tv__spin-star i + i { transform: rotateY(180deg) translateZ(2.5cqw); }
+
+.tv__spin-star b {
+  position: absolute;
+  height: 5cqw;
+  background: #b8334f;
+}
+
+@keyframes tv-spin {
+  to { transform: rotateY(360deg); }
+}
+
+.tv__spin-name {
+  grid-area: 1 / 1;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 6.5cqw 0 0; /* the star's visual middle sits a little below its box centre */
+  font-family: var(--font-accent);
+  font-weight: 400;
+  font-synthesis: none;
+  font-size: 10cqw;
+  letter-spacing: 0.4cqw;
+  line-height: 0.9;
+  color: #fff;
+  text-shadow: 0 0.4cqw 1.2cqw rgba(0, 0, 0, 0.45);
+  transform: rotate(-6deg);
+}
+
+/* Channel 3 click: the footage tears and splits colour with the rest of the picture */
+.tv.is-glitching .tv__video {
+  animation: tv-glitch 0.6s steps(1) both, tv-glitch-color 0.6s steps(1) both;
+}
+
+@keyframes tv-glitch-color {
+  0%   { filter: url(#crt-warp); }
+  10%  { filter: url(#crt-warp) hue-rotate(90deg) saturate(3) contrast(1.4); }
+  30%  { filter: url(#crt-warp) invert(0.15) saturate(2); }
+  45%  { filter: url(#crt-warp) hue-rotate(-120deg) contrast(1.6); }
+  60%  { filter: url(#crt-warp) brightness(1.6) saturate(0.3); }
+  80%  { filter: url(#crt-warp) hue-rotate(40deg) saturate(2.5); }
+  100% { filter: url(#crt-warp); }
+}
+
+/* Switching off: the picture squeezes into a bright line, then a dot, then black */
+.tv.is-off .tv__beam,
+.tv.is-off .tv__light,
+.tv.is-off .tv__video,
+.tv.is-off .tv__content,
+.tv.is-off .tv__static,
+.tv.is-off .tv__scanlines {
+  animation: tv-off 0.55s ease-in forwards;
+}
+
+@keyframes tv-off {
+  0%   { transform: scale(1, 1);        filter: brightness(1); opacity: 1; }
+  45%  { transform: scale(1, 0.006);    filter: brightness(4); opacity: 1; }
+  80%  { transform: scale(0.015, 0.006); filter: brightness(5); opacity: 1; }
+  100% { transform: scale(0, 0);        filter: brightness(5); opacity: 0; }
+}
+
+/* Switching back on replays the warm-up, and the picture fades up once the tube is lit */
+.tv.is-waking .tv__beam {
+  animation: tv-on 1.6s cubic-bezier(0.2, 0.7, 0.3, 1) forwards;
+}
+
+.tv.is-waking .tv__content {
+  animation: tv-wake 1.6s ease-out both;
+}
+
+@keyframes tv-wake {
+  0%, 55% { opacity: 0; }
+  100%    { opacity: 1; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .tv__beam {
     animation: none;
@@ -793,9 +1182,27 @@ a {
   }
 
   .tv.is-glitching .tv__content,
+  .tv.is-glitching .tv__video,
   .tv.is-glitching .tv__scanlines {
     animation: none;
   }
+
+  .tv.is-off .tv__beam,
+  .tv.is-off .tv__light,
+  .tv.is-off .tv__video,
+  .tv.is-off .tv__content,
+  .tv.is-off .tv__static,
+  .tv.is-off .tv__scanlines {
+    animation: none;
+    opacity: 0;
+  }
+
+  .tv.is-waking .tv__beam,
+  .tv.is-waking .tv__content {
+    animation: none;
+  }
+
+  .tv__spin-star { animation: none; }
 }
 
 .sr-only {
@@ -948,44 +1355,30 @@ a {
   gap: calc(40 * var(--u));
   position: relative;
   z-index: 1;
-  padding: calc(40 * var(--u)) 16px 0;
+  padding: calc(80 * var(--u)) 16px calc(80 * var(--u));
 }
 
-.lost__scene {
-  --v: calc(0.6 * var(--u)); /* one video pixel; the cowboy art is ~13.2v per pixel */
-  position: relative;
-  flex: none;
-  width: calc(402 * var(--v));
-  height: calc(533 * var(--v));
-}
-
-.lost__cactus {
-  position: absolute;
-  left: calc(217 * var(--v));
-  bottom: 0;
-  width: calc(185 * var(--v));
-  height: auto;
-  image-rendering: pixelated;
-}
-
-/* pixel legs and boots under the animated head and shoulders */
-.lost__body {
-  position: absolute;
-  left: calc(56 * var(--v));
-  top: calc(309 * var(--v));
-  width: calc(264 * var(--v));
-  height: auto;
-  image-rendering: pixelated;
-}
-
+/* Kyla's pixel cowboy leaning on a cactus: six frames, he takes a drag and blows a smoke ring */
 .lost__cowboy {
-  position: absolute;
-  left: 0;
-  top: calc(24 * var(--v));
-  width: calc(370 * var(--v));
-  height: auto;
+  flex: none;
+  width: calc(260 * var(--u));
+  aspect-ratio: 250 / 233;
+  background: url("../assets/images/lost-cowboy.png") 0 0 / 600% 100% no-repeat;
   image-rendering: pixelated;
-  mix-blend-mode: multiply; /* drops the video's white box so he overlaps the cactus cleanly */
+  animation: lost-smoke 6.5s steps(1) infinite;
+}
+
+@keyframes lost-smoke {
+  0%     { background-position-x: 0; }
+  25%    { background-position-x: 20%; }
+  37.5%  { background-position-x: 40%; }
+  50%    { background-position-x: 60%; }
+  62.5%  { background-position-x: 80%; }
+  75%    { background-position-x: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lost__cowboy { animation: none; }
 }
 
 /* Pixel western landscape footer with a rolling tumbleweed */
@@ -1027,61 +1420,29 @@ a {
   .landscape__tumbleweed { animation: none; transform: translateX(70vw); }
 }
 
-/* Pixel-style speech bubble */
+/* Plain text beside the cowboy: three loading dots, then the line and a link back up */
 .lost__bubble {
   position: relative;
   flex: none;
-  width: calc(440 * var(--u)); /* fixed so the scene doesn't shift when the dots turn into words */
-  min-height: calc(150 * var(--u));
-  box-sizing: border-box;
-  padding: calc(24 * var(--u)) calc(32 * var(--u));
-  border: calc(5 * var(--u)) solid #1c1c1c;
-  background: #fff;
-  box-shadow: calc(8 * var(--u)) calc(8 * var(--u)) 0 #1c1c1c;
-  font-family: var(--font-nav);
+  width: calc(320 * var(--u)); /* fixed so the cowboy doesn't shift when the dots turn into words */
+  font-family: var(--font-body);
   opacity: 0;
-  transform: scale(0.6);
-  transform-origin: left center;
-  transition: opacity 0.25s ease, transform 0.3s cubic-bezier(0.3, 1.6, 0.5, 1);
-}
-
-/* Stepped tail pointing back at the cowboy */
-.lost__bubble::before,
-.lost__bubble::after {
-  content: "";
-  position: absolute;
-  background: #1c1c1c;
-}
-
-.lost__bubble::before {
-  left: calc(-29 * var(--u)); /* measured from inside the border; runs under it so there's no gap */
-  top: 50%;
-  width: calc(30 * var(--u));
-  height: calc(12 * var(--u));
-}
-
-.lost__bubble::after {
-  left: calc(-41 * var(--u));
-  top: calc(50% + 12 * var(--u));
-  width: calc(12 * var(--u));
-  height: calc(12 * var(--u));
+  transition: opacity 0.3s ease;
 }
 
 .lost.is-talking .lost__bubble {
   opacity: 1;
-  transform: scale(1);
 }
 
 .lost__dots {
   display: flex;
-  gap: calc(14 * var(--u));
-  justify-content: center;
-  padding: calc(26 * var(--u)) 0;
+  gap: calc(10 * var(--u));
+  padding: calc(12 * var(--u)) 0;
 }
 
 .lost__dots i {
-  width: calc(16 * var(--u));
-  height: calc(16 * var(--u));
+  width: calc(10 * var(--u));
+  height: calc(10 * var(--u));
   background: #1c1c1c;
   animation: lost-dot 0.9s steps(1) infinite;
 }
@@ -1105,9 +1466,9 @@ a {
 .lost.has-links .lost__links { display: flex; animation: lost-in 0.3s ease both; }
 
 .lost__text {
-  font-size: calc(44 * var(--u));
-  letter-spacing: calc(2 * var(--u));
-  line-height: 1.1;
+  font-size: calc(24 * var(--u));
+  line-height: 1.3;
+  white-space: nowrap;
 }
 
 .lost__links {
@@ -1117,8 +1478,9 @@ a {
 
 .lost__links a {
   position: relative;
-  font-size: calc(28 * var(--u));
-  letter-spacing: calc(1.5 * var(--u));
+  font-family: var(--font-nav);
+  font-size: calc(24 * var(--u));
+  letter-spacing: calc(2 * var(--u));
   color: inherit;
   text-decoration: none;
 }
@@ -1129,9 +1491,10 @@ a {
   left: 0;
   right: 0;
   bottom: calc(-3 * var(--u));
-  height: max(1px, calc(2 * var(--u)));
-  background: currentColor;
+  height: max(1px, calc(1.5 * var(--u)));
+  background: rgba(0, 0, 0, 0.3); /* same grow-from-the-middle underline as the nav and Back to All Work */
   transform: scaleX(0);
+  transform-origin: center;
   transition: transform 0.25s ease;
 }
 
@@ -1291,6 +1654,18 @@ a {
     letter-spacing: 1.5px;
   }
 
+  /* Phones: star and label on one line, copy underneath */
+  .explainer {
+    grid-template-columns: auto 1fr;
+    column-gap: 10px;
+    row-gap: 22px;
+    margin-top: 12px;
+  }
+
+  .explainer__row::before { height: calc(26px * 0.7); font-size: 22px; }
+  .explainer__label { font-size: 26px; letter-spacing: 1.2px; }
+  .explainer__copy { grid-column: 1 / -1; margin-top: 14px; font-size: 16px; line-height: 1.6; }
+
   .ornament {
     width: 110px;
     height: 106px;
@@ -1348,27 +1723,18 @@ a {
     gap: 36px;
   }
 
-  .lost__scene { --v: 0.45px; }
+  .lost__cowboy { width: 180px; }
 
   .lost { padding-bottom: 40px; }
   .landscape { margin-top: 0; }
 
-  .lost__bubble {
-    width: min(320px, 100%);
-    min-height: 110px;
-    transform-origin: center top;
-    padding: 16px 22px;
-    border-width: 4px;
-    box-shadow: 6px 6px 0 #1c1c1c;
-  }
+  .lost__bubble { width: auto; text-align: center; }
+  .lost__dots { justify-content: center; }
+  .lost__links { justify-content: center; }
 
-  /* tail points up at the cowboy on phones */
-  .lost__bubble::before { left: 30%; top: -18px; width: 10px; height: 14px; }
-  .lost__bubble::after  { left: calc(30% - 10px); top: -28px; width: 10px; height: 10px; }
-
-  .lost__text { font-size: 28px; }
+  .lost__text { font-size: 18px; }
   .lost__links a { font-size: 20px; }
-  .lost__dots i { width: 10px; height: 10px; }
+  .lost__dots i { width: 8px; height: 8px; }
 
 
   .work-grid {
@@ -1431,13 +1797,39 @@ a {
   z-index: 2;
 }
 
-/* wrangle.png is six 114 x 44 pixel frames side by side: four galloping with the lasso overhead, two throwing it */
+/* wrangle.png is eight 114 x 44 pixel frames side by side: four galloping with the
+   lasso overhead, two throwing it, and two catching the horse (only on click).
+   The rider rides on .wrangle; the frames play on its ::before so a click can swap
+   the frames without restarting the ride. */
 .wrangle {
   width: min(calc(570 * var(--u)), 70vw);
   aspect-ratio: 114 / 44;
-  background: url("../assets/images/rodeo/wrangle.png") 0 0 / 600% 100% no-repeat;
+  cursor: pointer;
+  animation: ride 9s linear infinite;
+}
+
+.wrangle::before {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: url("../assets/images/rodeo/wrangle.png") 0 0 / 800% 100% no-repeat;
   image-rendering: pixelated;
-  animation: wrangle 9s step-end infinite, ride 9s linear infinite;
+  animation: wrangle 9s step-end infinite;
+  animation-delay: var(--wrangle-sync, 0s); /* set by the click code so the frames rejoin the ride in step */
+}
+
+/* Clicked: throw, the loop lands on the horse, then the rope pulls tight for about a second */
+.wrangle.is-catching::before {
+  animation: wrangle-catch 1.65s step-end forwards;
+}
+
+@keyframes wrangle-catch {
+  0%   { background-position-x: 57.143%; }
+  12%  { background-position-x: 71.429%; }
+  24%  { background-position-x: 85.714%; }
+  39%  { background-position-x: 100.000%; }
+  100% { background-position-x: 100.000%; }
 }
 
 @keyframes ride {
@@ -1447,73 +1839,72 @@ a {
 
 /* one 9s pass, in step with the ride: frames 0-3 gallop with the lasso
    swinging overhead, then near the right ornament he throws it (frames 4-5)
-   as he fades out; the rope never lands on the horse */
+   as he fades out; the rope never lands on the horse unless you click him */
 @keyframes wrangle {
-  0.000% { background-position-x: 0%; }
-  1.562% { background-position-x: 20%; }
-  3.125% { background-position-x: 40%; }
-  4.688% { background-position-x: 60%; }
-  6.250% { background-position-x: 0%; }
-  7.812% { background-position-x: 20%; }
-  9.375% { background-position-x: 40%; }
-  10.938% { background-position-x: 60%; }
-  12.500% { background-position-x: 0%; }
-  14.062% { background-position-x: 20%; }
-  15.625% { background-position-x: 40%; }
-  17.188% { background-position-x: 60%; }
-  18.750% { background-position-x: 0%; }
-  20.312% { background-position-x: 20%; }
-  21.875% { background-position-x: 40%; }
-  23.438% { background-position-x: 60%; }
-  25.000% { background-position-x: 0%; }
-  26.562% { background-position-x: 20%; }
-  28.125% { background-position-x: 40%; }
-  29.688% { background-position-x: 60%; }
-  31.250% { background-position-x: 0%; }
-  32.812% { background-position-x: 20%; }
-  34.375% { background-position-x: 40%; }
-  35.938% { background-position-x: 60%; }
-  37.500% { background-position-x: 0%; }
-  39.062% { background-position-x: 20%; }
-  40.625% { background-position-x: 40%; }
-  42.188% { background-position-x: 60%; }
-  43.750% { background-position-x: 0%; }
-  45.312% { background-position-x: 20%; }
-  46.875% { background-position-x: 40%; }
-  48.438% { background-position-x: 60%; }
-  50.000% { background-position-x: 0%; }
-  51.562% { background-position-x: 20%; }
-  53.125% { background-position-x: 40%; }
-  54.688% { background-position-x: 60%; }
-  56.250% { background-position-x: 0%; }
-  57.812% { background-position-x: 20%; }
-  59.375% { background-position-x: 40%; }
-  60.938% { background-position-x: 60%; }
-  62.500% { background-position-x: 0%; }
-  64.062% { background-position-x: 20%; }
-  65.625% { background-position-x: 40%; }
-  67.188% { background-position-x: 60%; }
-  68.750% { background-position-x: 0%; }
-  70.312% { background-position-x: 20%; }
-  71.875% { background-position-x: 40%; }
-  73.438% { background-position-x: 60%; }
-  75.000% { background-position-x: 0%; }
-  76.562% { background-position-x: 20%; }
-  78.125% { background-position-x: 40%; }
-  79.688% { background-position-x: 60%; }
-  81.250% { background-position-x: 0%; }
-  82.812% { background-position-x: 20%; }
-  84.375% { background-position-x: 80%; }
-  85.938% { background-position-x: 100%; }
-  87.500% { background-position-x: 80%; }
-  89.062% { background-position-x: 100%; }
-  90.625% { background-position-x: 80%; }
-  92.188% { background-position-x: 100%; }
-  93.750% { background-position-x: 80%; }
-  95.312% { background-position-x: 100%; }
-  96.875% { background-position-x: 80%; }
-  98.438% { background-position-x: 100%; }
-  100% { background-position-x: 100%; }
+  0.000% { background-position-x: 0.000%; }
+  1.562% { background-position-x: 14.286%; }
+  3.125% { background-position-x: 28.571%; }
+  4.688% { background-position-x: 42.857%; }
+  6.250% { background-position-x: 0.000%; }
+  7.812% { background-position-x: 14.286%; }
+  9.375% { background-position-x: 28.571%; }
+  10.938% { background-position-x: 42.857%; }
+  12.500% { background-position-x: 0.000%; }
+  14.062% { background-position-x: 14.286%; }
+  15.625% { background-position-x: 28.571%; }
+  17.188% { background-position-x: 42.857%; }
+  18.750% { background-position-x: 0.000%; }
+  20.312% { background-position-x: 14.286%; }
+  21.875% { background-position-x: 28.571%; }
+  23.438% { background-position-x: 42.857%; }
+  25.000% { background-position-x: 0.000%; }
+  26.562% { background-position-x: 14.286%; }
+  28.125% { background-position-x: 28.571%; }
+  29.688% { background-position-x: 42.857%; }
+  31.250% { background-position-x: 0.000%; }
+  32.812% { background-position-x: 14.286%; }
+  34.375% { background-position-x: 28.571%; }
+  35.938% { background-position-x: 42.857%; }
+  37.500% { background-position-x: 0.000%; }
+  39.062% { background-position-x: 14.286%; }
+  40.625% { background-position-x: 28.571%; }
+  42.188% { background-position-x: 42.857%; }
+  43.750% { background-position-x: 0.000%; }
+  45.312% { background-position-x: 14.286%; }
+  46.875% { background-position-x: 28.571%; }
+  48.438% { background-position-x: 42.857%; }
+  50.000% { background-position-x: 0.000%; }
+  51.562% { background-position-x: 14.286%; }
+  53.125% { background-position-x: 28.571%; }
+  54.688% { background-position-x: 42.857%; }
+  56.250% { background-position-x: 0.000%; }
+  57.812% { background-position-x: 14.286%; }
+  59.375% { background-position-x: 28.571%; }
+  60.938% { background-position-x: 42.857%; }
+  62.500% { background-position-x: 0.000%; }
+  64.062% { background-position-x: 14.286%; }
+  65.625% { background-position-x: 28.571%; }
+  67.188% { background-position-x: 42.857%; }
+  68.750% { background-position-x: 0.000%; }
+  70.312% { background-position-x: 14.286%; }
+  71.875% { background-position-x: 28.571%; }
+  73.438% { background-position-x: 42.857%; }
+  75.000% { background-position-x: 0.000%; }
+  76.562% { background-position-x: 14.286%; }
+  78.125% { background-position-x: 28.571%; }
+  79.688% { background-position-x: 42.857%; }
+  81.250% { background-position-x: 0.000%; }
+  82.812% { background-position-x: 14.286%; }
+  84.375% { background-position-x: 57.143%; }
+  85.938% { background-position-x: 71.429%; }
+  87.500% { background-position-x: 57.143%; }
+  89.062% { background-position-x: 71.429%; }
+  90.625% { background-position-x: 57.143%; }
+  92.188% { background-position-x: 71.429%; }
+  93.750% { background-position-x: 57.143%; }
+  95.312% { background-position-x: 71.429%; }
+  96.875% { background-position-x: 57.143%; }
+  98.438% { background-position-x: 71.429%; }
 }
 
 .rodeo-title {
@@ -1561,7 +1952,8 @@ a {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .wrangle { animation: none; background-position-x: 0; margin: 0 auto; }
+  .wrangle { animation: none; margin: 0 auto; cursor: default; }
+  .wrangle::before, .wrangle.is-catching::before { animation: none; background-position-x: 0; }
 }
 
 @media (max-width: 900px) {
@@ -1577,16 +1969,113 @@ a {
 }
 
 @media (max-width: 480px) {
-  .rodeo-gallery__grid { columns: 1; }
+  .rodeo-gallery__grid, .rodeo-gallery__grid--big { columns: 1; }
 }
 
 .rodeo-gallery__item img {
   cursor: zoom-in;
 }
 
-/* Red Dead infographic runs across the whole gallery */
+/* pieces pop up slightly on hover */
+.rodeo-gallery__item > img,
+.sizzle {
+  display: block;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .rodeo-gallery__item > img:hover,
+  .sizzle:hover {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.18);
+  }
+}
+
+/* Swing ride and Red Dead infographic run across the whole gallery */
 .rodeo-gallery__item--feature {
   column-span: all;
+}
+
+/* Red Dead infographic shares a row with a photo; each flex value is the image's width / height,
+   so both come out the same height and the row fills the full width */
+.rodeo-gallery__row {
+  display: flex;
+  gap: calc(28 * var(--u));
+}
+
+.rodeo-gallery__row > img {
+  min-width: 0;
+  width: 100%;
+}
+
+@media (max-width: 900px) {
+  .rodeo-gallery__row { gap: 12px; }
+}
+
+/* Videos scattered through the gallery: a YouTube embed and two of Kyla's own clips */
+.rodeo-gallery__item--video iframe,
+.rodeo-gallery__item--video video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 0;
+  background: #000;
+}
+
+/* packed layout (js/main.js): photos fill in around videos that span two columns */
+.rodeo-gallery__grid.is-packed {
+  position: relative;
+  columns: auto;
+}
+
+.rodeo-gallery__grid.is-packed > .rodeo-gallery__item {
+  position: absolute;
+  margin: 0;
+}
+
+/* video thumbnails: a short muted sizzle plays on its own, click plays the full video */
+.sizzle {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  padding: 0;
+  border: 0;
+  background: #000;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.sizzle img,
+.sizzle__preview,
+.sizzle__preview iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* crops the letterbox off YouTube's 4:3 thumbnails */
+  border: 0;
+}
+
+.sizzle__preview {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.sizzle__preview.is-playing {
+  opacity: 1;
+}
+
+.sizzle__preview iframe {
+  /* overscan so YouTube's title bar and logo sit outside the frame */
+  inset: -60px 0;
+  height: calc(100% + 120px);
+}
+
+/* the featured pieces sit two to a row, so they show larger than the rest */
+.rodeo-gallery__grid--big {
+  columns: 2;
 }
 
 /* ---------- Growing vine ornaments (js/vines.js) ---------- */
@@ -1633,4 +2122,55 @@ a {
 @media (prefers-reduced-motion: reduce) {
   .vine-ornament.is-growing .vine,
   .vine-ornament.is-growing .vine__bud { animation: none; }
+}
+
+/* Copyright line at the very bottom of every page */
+/* Footer on every page: contact links over the copyright line */
+.site-footer__links {
+  display: flex;
+  justify-content: center;
+  gap: calc(48 * var(--u));
+  padding-top: calc(32 * var(--u));
+}
+
+.site-footer__links a {
+  position: relative;
+  font-family: var(--font-nav);
+  font-size: calc(24 * var(--u));
+  letter-spacing: calc(2 * var(--u));
+  color: inherit;
+  text-decoration: none;
+}
+
+.site-footer__links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(-3 * var(--u));
+  height: max(1px, calc(1.5 * var(--u)));
+  background: rgba(0, 0, 0, 0.3); /* same grow-from-the-middle underline as the nav */
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.25s ease;
+}
+
+.site-footer__links a:hover::after,
+.site-footer__links a:focus-visible::after {
+  transform: scaleX(1);
+}
+
+.copyright {
+  margin: 0;
+  padding: calc(16 * var(--u)) 16px calc(28 * var(--u));
+  font-family: var(--font-body);
+  font-size: calc(14 * var(--u));
+  text-align: center;
+  color: rgba(0, 0, 0, 0.55);
+}
+
+@media (max-width: 900px) {
+  .copyright { font-size: 12px; padding: 12px 16px 24px; }
+  .site-footer__links { gap: 32px; padding-top: 24px; }
+  .site-footer__links a { font-size: 18px; }
 }

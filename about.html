@@ -6,7 +6,7 @@
   <title>Kyla Joyner | About</title>
   <!-- Adobe Fonts kit: West End + Narkiss Yair -->
   <link rel="stylesheet" href="https://use.typekit.net/ijs5kav.css">
-  <link rel="stylesheet" href="css/style.css?v=68">
+  <link rel="stylesheet" href="css/style.css?v=115">
 </head>
 <body>
   <header class="site-header">
@@ -23,17 +23,20 @@
   <main class="page page--about">
     <section class="about-hero">
     <!-- Old TV switching on, then the name fades up on screen with stars circling it -->
-    <div class="tv" data-tv role="button" tabindex="0" aria-label="Kyla Joyner: Creative, Storyteller, Designer, Photographer, Gamer, Nerd, Musician, Artist. Press to glitch the TV picture.">
+    <div class="tv" data-tv data-channel="1" role="button" tabindex="0" aria-label="Kyla Joyner: Creative, Storyteller, Designer, Photographer, Gamer, Nerd, Musician, Artist, Country Music Defender, Screamo Lover, Documentarian. Press to glitch the TV picture.">
       <div class="tv__screen">
         <div class="tv__beam"></div>
+        <div class="tv__light"></div>
+        <video class="tv__video" src="assets/videos/about/channel-3.mp4" muted loop playsinline preload="none" aria-hidden="true"></video>
         <div class="tv__content" data-stars>
           <div class="tv__name">
             <p class="tv__title"><span>Kyla</span><span>Joyner</span></p>
             <p class="tv__roles" data-roles aria-hidden="true">
-              <span>Creative.</span><span>Storyteller.</span><span>Designer.</span><span>Photographer.</span><span>Gamer.</span><span>Nerd.</span><span>Musician.</span><span>Artist.</span>
+              <span>Creative</span><span>Storyteller</span><span>Designer</span><span>Photographer</span><span>Gamer</span><span>Nerd</span><span>Musician</span><span>Artist</span><span>Country Music Defender</span><span>Screamo Lover</span><span>Documentarian</span>
             </p>
           </div>
-          <p class="sr-only">Creative. Storyteller. Designer. Photographer. Gamer. Nerd. Musician. Artist.</p>
+          <div class="tv__spin" aria-hidden="true"><div class="tv__spin-star"><i></i><i></i><b style="left: 55.60%; top: 17.25%; width: 23.01cqw; transform: translate(-50%, -50%) rotate(71.13deg) rotateX(90deg); filter: brightness(0.66)"></b><b style="left: 79.40%; top: 34.50%; width: 24.17cqw; transform: translate(-50%, -50%) rotate(0.00deg) rotateX(90deg); filter: brightness(0.90)"></b><b style="left: 82.90%; top: 45.20%; width: 23.74cqw; transform: translate(-50%, -50%) rotate(145.34deg) rotateX(90deg); filter: brightness(0.84)"></b><b style="left: 73.80%; top: 73.20%; width: 23.07cqw; transform: translate(-50%, -50%) rotate(71.18deg) rotateX(90deg); filter: brightness(0.66)"></b><b style="left: 64.70%; top: 79.80%; width: 23.74cqw; transform: translate(-50%, -50%) rotate(-145.34deg) rotateX(90deg); filter: brightness(0.84)"></b><b style="left: 35.30%; top: 79.80%; width: 23.74cqw; transform: translate(-50%, -50%) rotate(145.34deg) rotateX(90deg); filter: brightness(0.84)"></b><b style="left: 26.20%; top: 73.20%; width: 23.07cqw; transform: translate(-50%, -50%) rotate(-71.18deg) rotateX(90deg); filter: brightness(0.66)"></b><b style="left: 17.10%; top: 45.20%; width: 23.74cqw; transform: translate(-50%, -50%) rotate(-145.34deg) rotateX(90deg); filter: brightness(0.84)"></b><b style="left: 20.60%; top: 34.50%; width: 24.17cqw; transform: translate(-50%, -50%) rotate(0.00deg) rotateX(90deg); filter: brightness(0.90)"></b><b style="left: 44.40%; top: 17.25%; width: 23.01cqw; transform: translate(-50%, -50%) rotate(-71.13deg) rotateX(90deg); filter: brightness(0.66)"></b></div><p class="tv__spin-name"><span>Kyla</span><span>Joyner</span></p></div>
+          <p class="sr-only">Creative, Storyteller, Designer, Photographer, Gamer, Nerd, Musician, Artist, Country Music Defender, Screamo Lover, Documentarian</p>
         </div>
         <div class="tv__static"></div>
         <div class="tv__scanlines"></div>
@@ -46,6 +49,14 @@
         </filter>
       </svg>
       <img class="tv__frame" src="assets/images/about/tv.webp" alt="">
+      <!-- Sits over the power button in the TV art: switches the set off and back on -->
+      <button class="tv__power" type="button" aria-label="Turn the TV off" aria-pressed="false"></button>
+      <!-- Channel buttons 1-6 on the set change the picture (4-6 still to come) -->
+      <div class="tv__channels">
+        <button class="tv__channel" type="button" data-channel="1" style="--i: 0" aria-label="Channel 1" aria-pressed="true"></button>
+        <button class="tv__channel" type="button" data-channel="2" style="--i: 1" aria-label="Channel 2" aria-pressed="false"></button>
+        <button class="tv__channel" type="button" data-channel="3" style="--i: 2" aria-label="Channel 3" aria-pressed="false"></button>
+      </div>
     </div>
     </section>
 
@@ -133,12 +144,50 @@
             <span>Big Thief</span>
             <span>Faye Webster</span>
             <span>Hozier</span>
+            <span>Ida</span>
+            <span>ryad</span>
+            <span>The Waterboys</span>
+            <span>Michael Angelo</span>
+            <span>Duster</span>
+            <span>The Cure</span>
+            <span>Bijou Bliss</span>
+            <span>Ethel Meserve</span>
+            <span>The Vulcan</span>
+            <span>Sorority Noise</span>
+            <span>Girlfriends</span>
+            <span>Mom Jeans.</span>
+            <span>Algernon Cadwallader</span>
+            <span>Merchant Ships</span>
+            <span>Everyone Asked About You</span>
+            <span>Midwest Pen Pals</span>
+            <span>Camping In Alaska</span>
+            <span>American Football</span>
+            <span>Slaughter Beach, Dog</span>
+            <span>Primrose</span>
+            <span>Vs Self</span>
           </div>
         </div>
       </div>
     </section>
+    <!-- Lost partner: the cowboy talks once he scrolls into view -->
+    <section class="lost" data-lost>
+      <div class="lost__cowboy" aria-hidden="true"></div>
+      <div class="lost__bubble" aria-live="polite">
+        <span class="lost__dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        <p class="lost__text">You seem lost partner</p>
+        <p class="lost__links"><a href="#top" data-top>Back to top</a></p>
+      </div>
+    </section>
   </main>
 
-  <script src="js/main.js?v=68"></script>
+  <footer class="site-footer">
+    <nav class="site-footer__links" aria-label="Contact">
+      <a href="https://www.linkedin.com/in/kyla-joyner/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="mailto:kylaajoyner@gmail.com">Email me</a>
+    </nav>
+    <p class="copyright">&copy; <span data-year>2026</span> Kyla Joyner. All rights reserved.</p>
+  </footer>
+
+  <script src="js/main.js?v=115"></script>
 </body>
 </html>
