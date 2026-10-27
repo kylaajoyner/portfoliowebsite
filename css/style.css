@@ -2160,6 +2160,16 @@ a {
   transform: scaleX(1);
 }
 
+/* Project pages: the links line up with the Project / Role column instead of centring */
+.page--project ~ .site-footer .site-footer__links {
+  justify-content: flex-start;
+  padding-left: calc(80 * var(--u));
+}
+
+@media (max-width: 900px) {
+  .page--project ~ .site-footer .site-footer__links { padding-left: 16px; }
+}
+
 .copyright {
   margin: 0;
   padding: calc(16 * var(--u)) 16px calc(28 * var(--u));
