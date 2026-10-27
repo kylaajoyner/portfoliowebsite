@@ -229,7 +229,7 @@
       const ch = btn.dataset.channel;
       channels.forEach(function (b) { b.setAttribute("aria-pressed", String(b === btn)); });
       tv.dataset.channel = "";
-      void tv.offsetWidth; // replays the written-out name when channel 3 is picked again
+      void tv.offsetWidth;
       tv.dataset.channel = ch;
       glitch();
       if (video) {

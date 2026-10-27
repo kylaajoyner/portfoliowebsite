@@ -1042,52 +1042,23 @@ a {
   opacity: 0;
 }
 
-.tv__script {
-  position: absolute;
-  z-index: 3;
-  left: 0;
-  right: 0;
-  top: 50%;
-  display: flex;
-  flex-direction: column; /* Kyla over Joyner, stacked like the name on channel 1 */
-  align-items: center;
-  margin: 0;
-  font-family: var(--font-accent);
-  font-weight: 400;
-  font-synthesis: none;
-  font-size: 15cqw;
-  line-height: 0.95;
-  white-space: nowrap;
-  color: #fff;
-  -webkit-text-stroke: 1.1cqw #e44e6c; /* red outline */
-  paint-order: stroke fill; /* outline sits behind the white so the letters keep their weight */
-  transform: translateY(-50%) rotate(-6deg);
-  visibility: hidden;
-}
-
-.tv__line { display: flex; }
-
-.tv__line span {
-  display: inline-block;
-  transform-origin: 50% 90%;
-}
-
 .tv[data-channel="3"] .tv__video { opacity: 1; }
 .tv[data-channel="3"] .tv__name,
 .tv[data-channel="3"] .tv__star { visibility: hidden; }
-.tv[data-channel="3"] .tv__script { visibility: visible; }
 
-/* Looney Tunes style: each letter springs up from nothing, overshoots, squashes and settles, one after another */
-.tv[data-channel="3"] .tv__line span {
-  animation: tv-toon 0.7s cubic-bezier(0.3, 0, 0.3, 1) calc(0.35s + var(--n, 0) * 0.08s) both;
+/* Channel 3 click: the footage tears and splits colour with the rest of the picture */
+.tv.is-glitching .tv__video {
+  animation: tv-glitch 0.6s steps(1) both, tv-glitch-color 0.6s steps(1) both;
 }
 
-@keyframes tv-toon {
-  0%   { transform: translateY(40%) scale(0) rotate(-25deg); opacity: 0; }
-  45%  { transform: translateY(-18%) scale(1.35, 1.25) rotate(8deg); opacity: 1; }
-  65%  { transform: translateY(4%) scale(0.85, 1.12) rotate(-4deg); }
-  80%  { transform: translateY(-3%) scale(1.06, 0.95) rotate(2deg); }
-  100% { transform: none; opacity: 1; }
+@keyframes tv-glitch-color {
+  0%   { filter: none; }
+  10%  { filter: hue-rotate(90deg) saturate(3) contrast(1.4); }
+  30%  { filter: invert(0.15) saturate(2); }
+  45%  { filter: hue-rotate(-120deg) contrast(1.6); }
+  60%  { filter: brightness(1.6) saturate(0.3); }
+  80%  { filter: hue-rotate(40deg) saturate(2.5); }
+  100% { filter: none; }
 }
 
 /* Switching off: the picture squeezes into a bright line, then a dot, then black */
@@ -1148,6 +1119,7 @@ a {
   }
 
   .tv.is-glitching .tv__content,
+  .tv.is-glitching .tv__video,
   .tv.is-glitching .tv__scanlines {
     animation: none;
   }
@@ -1167,7 +1139,6 @@ a {
     animation: none;
   }
 
-  .tv[data-channel="3"] .tv__line span { animation: none; }
 }
 
 .sr-only {
