@@ -684,24 +684,20 @@ a {
 
 /* Résumé: dark pill under the social links, red underline under the word */
 .resume-btn {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   margin-top: calc(36 * var(--u));
-  padding: calc(14 * var(--u)) calc(76 * var(--u)) calc(16 * var(--u));
-  border-radius: calc(20 * var(--u));
+  padding: calc(13 * var(--u)) calc(48 * var(--u)) calc(11 * var(--u));
+  border-radius: calc(14 * var(--u));
   background: #231f20;
   color: #fff;
   font-family: var(--font-nav);
-  font-size: calc(44 * var(--u));
+  font-size: calc(32 * var(--u));
   letter-spacing: calc(1 * var(--u));
   line-height: 1;
   text-decoration: none;
   transition: transform 0.25s ease, background-color 0.25s ease;
-}
-
-.resume-btn span {
-  display: inline-block;
-  padding-bottom: calc(6 * var(--u));
-  border-bottom: max(1px, calc(2 * var(--u))) solid #c4263f;
 }
 
 .resume-btn:hover,
@@ -1744,9 +1740,9 @@ a {
 
   .resume-btn {
     margin-top: 24px;
-    padding: 10px 44px 12px;
-    border-radius: 12px;
-    font-size: 26px;
+    padding: 9px 32px 7px;
+    border-radius: 10px;
+    font-size: 21px;
   }
 
   .radio__title {
