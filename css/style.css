@@ -235,6 +235,58 @@ a {
   min-width: 0;
 }
 
+/* Main video on a project page, 16:9 like the film */
+.project-video {
+  max-width: calc(1120 * var(--u));
+  margin: calc(28 * var(--u)) auto 0;
+  padding: 0 16px;
+}
+
+.project-video iframe {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 0;
+}
+
+/* Small link under the video to the full story elsewhere (opens in a new tab) */
+.project-link {
+  align-self: center;
+  width: auto !important;
+  margin-top: calc(14 * var(--u));
+  font-family: var(--font-nav);
+  font-size: calc(20 * var(--u));
+  letter-spacing: calc(2 * var(--u));
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.project-link:hover,
+.project-link:focus-visible {
+  border-bottom-color: var(--color-ink);
+}
+
+/* Small line of project details, e.g. awards */
+.project-note {
+  margin: calc(10 * var(--u)) 0 0;
+  padding: 0 16px;
+  font-family: var(--font-nav);
+  font-size: calc(18 * var(--u));
+  letter-spacing: calc(1.8 * var(--u));
+  text-align: center;
+  color: rgba(0, 0, 0, 0.7);
+}
+
+/* Photo story under the video. A shared 16:9 frame keeps the rows even
+   (a couple of stills are a hair taller); the slideshow shows them uncropped. */
+.project-gallery--story {
+  margin-top: calc(48 * var(--u));
+}
+
+.project-gallery--story img {
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
 /* Back to Work link under the gallery, same grow-from-center underline as the nav */
 .back-link {
   position: relative;
