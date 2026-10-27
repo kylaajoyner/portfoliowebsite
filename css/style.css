@@ -1047,6 +1047,65 @@ a {
 .tv[data-channel="3"] .tv__name,
 .tv[data-channel="3"] .tv__star { visibility: hidden; }
 
+/* Channel 3: a red star spins in 3D over the footage, the name sits still in its middle */
+.tv__spin {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  perspective: 90cqw;
+  visibility: hidden;
+}
+
+.tv[data-channel="3"] .tv__spin { visibility: visible; }
+
+.tv__spin-star {
+  grid-area: 1 / 1;
+  position: relative;
+  width: 66cqw;
+  aspect-ratio: 1 / 0.95;
+  transform-style: preserve-3d;
+  animation: tv-spin 5s linear infinite;
+}
+
+/* ten stacked cut-outs give the star its thickness */
+.tv__spin-star i {
+  position: absolute;
+  inset: 0;
+  background: #b8334f;
+  clip-path: polygon(50% 0%, 61.2% 34.5%, 97.6% 34.5%, 68.2% 55.9%, 79.4% 90.5%, 50% 69.1%, 20.6% 90.5%, 31.8% 55.9%, 2.4% 34.5%, 38.8% 34.5%);
+  transform: translateZ(calc((var(--z) - 4.5) * 0.6cqw));
+}
+
+.tv__spin-star i:first-child,
+.tv__spin-star i:last-child {
+  background: linear-gradient(160deg, #f27a93, #e44e6c 55%, #c73c5a);
+}
+
+@keyframes tv-spin {
+  to { transform: rotateY(360deg); }
+}
+
+.tv__spin-name {
+  grid-area: 1 / 1;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 6.5cqw 0 0; /* the star's visual middle sits a little below its box centre */
+  font-family: var(--font-accent);
+  font-weight: 400;
+  font-synthesis: none;
+  font-size: 10cqw;
+  letter-spacing: 0.4cqw;
+  line-height: 0.9;
+  color: #fff;
+  text-shadow: 0 0.4cqw 1.2cqw rgba(0, 0, 0, 0.45);
+  transform: rotate(-6deg);
+}
+
 /* Channel 3 click: the footage tears and splits colour with the rest of the picture */
 .tv.is-glitching .tv__video {
   animation: tv-glitch 0.6s steps(1) both, tv-glitch-color 0.6s steps(1) both;
@@ -1140,6 +1199,7 @@ a {
     animation: none;
   }
 
+  .tv__spin-star { animation: none; }
 }
 
 .sr-only {
