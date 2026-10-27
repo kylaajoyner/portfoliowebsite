@@ -216,6 +216,25 @@ a {
   max-width: calc(860 * var(--u));
 }
 
+/* Mixed shapes in rows: images in a row share a height, and each one's width
+   follows its aspect ratio (--ar), so nothing gets cropped */
+.project-gallery--rows {
+  display: flex;
+  flex-direction: column;
+  gap: calc(20 * var(--u));
+  max-width: calc(1060 * var(--u));
+}
+
+.gallery-row {
+  display: flex;
+  gap: calc(20 * var(--u));
+}
+
+.gallery-row img {
+  flex: var(--ar) 1 0;
+  min-width: 0;
+}
+
 /* Back to Work link under the gallery, same grow-from-center underline as the nav */
 .back-link {
   position: relative;
@@ -438,6 +457,10 @@ a {
 
   .project-gallery--portrait {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .gallery-row {
+    flex-direction: column;
   }
 
   .lightbox__image {
