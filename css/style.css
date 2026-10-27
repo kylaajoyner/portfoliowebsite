@@ -1040,6 +1040,7 @@ a {
   height: 100%;
   object-fit: cover;
   opacity: 0;
+  filter: url(#crt-warp); /* same barrel bulge as the name, so the footage sits on the curved glass */
 }
 
 .tv[data-channel="3"] .tv__video { opacity: 1; }
@@ -1052,13 +1053,13 @@ a {
 }
 
 @keyframes tv-glitch-color {
-  0%   { filter: none; }
-  10%  { filter: hue-rotate(90deg) saturate(3) contrast(1.4); }
-  30%  { filter: invert(0.15) saturate(2); }
-  45%  { filter: hue-rotate(-120deg) contrast(1.6); }
-  60%  { filter: brightness(1.6) saturate(0.3); }
-  80%  { filter: hue-rotate(40deg) saturate(2.5); }
-  100% { filter: none; }
+  0%   { filter: url(#crt-warp); }
+  10%  { filter: url(#crt-warp) hue-rotate(90deg) saturate(3) contrast(1.4); }
+  30%  { filter: url(#crt-warp) invert(0.15) saturate(2); }
+  45%  { filter: url(#crt-warp) hue-rotate(-120deg) contrast(1.6); }
+  60%  { filter: url(#crt-warp) brightness(1.6) saturate(0.3); }
+  80%  { filter: url(#crt-warp) hue-rotate(40deg) saturate(2.5); }
+  100% { filter: url(#crt-warp); }
 }
 
 /* Switching off: the picture squeezes into a bright line, then a dot, then black */
