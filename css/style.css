@@ -1398,3 +1398,193 @@ a {
     letter-spacing: 1px;
   }
 }
+
+/* ---------- Rodeo: wrangling animation + gallery ---------- */
+
+.page--rodeo {
+  height: auto;
+  overflow-y: visible;
+  padding: calc(46 * var(--u)) 0 calc(260 * var(--u)); /* lane top lines up with the ornament tops */
+}
+
+.rodeo-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(56 * var(--u));
+}
+
+/* lane fenced by the two top ornaments: its sides sit on the ornaments' inner
+   edges and its top on their tops, so the rider appears out of the left one
+   and vanishes into the right one without ever drawing over them */
+.wrangle-track {
+  align-self: stretch;
+  margin: 0 calc(167 * var(--u)) 0 calc(170 * var(--u));
+  overflow: hidden;
+  container-type: inline-size;
+  /* soft edges: he fades in from the left ornament and out into the right one */
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,.08) 6%, rgba(0,0,0,.3) 13%, rgba(0,0,0,.65) 21%, #000 30%, #000 70%, rgba(0,0,0,.65) 79%, rgba(0,0,0,.3) 87%, rgba(0,0,0,.08) 94%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,.08) 6%, rgba(0,0,0,.3) 13%, rgba(0,0,0,.65) 21%, #000 30%, #000 70%, rgba(0,0,0,.65) 79%, rgba(0,0,0,.3) 87%, rgba(0,0,0,.08) 94%, transparent 100%);
+}
+
+.page--rodeo .ornament {
+  z-index: 2;
+}
+
+/* wrangle.png is six 114 x 44 pixel frames side by side: four galloping with the lasso overhead, two throwing it */
+.wrangle {
+  width: min(calc(570 * var(--u)), 70vw);
+  aspect-ratio: 114 / 44;
+  background: url("../assets/images/rodeo/wrangle.png") 0 0 / 600% 100% no-repeat;
+  image-rendering: pixelated;
+  animation: wrangle 9s step-end infinite, ride 9s linear infinite;
+}
+
+@keyframes ride {
+  from { transform: translateX(-100%); }
+  to   { transform: translateX(100cqw); }
+}
+
+/* one 9s pass, in step with the ride: frames 0-3 gallop with the lasso
+   swinging overhead, then near the right ornament he throws it (frames 4-5)
+   as he fades out; the rope never lands on the horse */
+@keyframes wrangle {
+  0.000% { background-position-x: 0%; }
+  1.562% { background-position-x: 20%; }
+  3.125% { background-position-x: 40%; }
+  4.688% { background-position-x: 60%; }
+  6.250% { background-position-x: 0%; }
+  7.812% { background-position-x: 20%; }
+  9.375% { background-position-x: 40%; }
+  10.938% { background-position-x: 60%; }
+  12.500% { background-position-x: 0%; }
+  14.062% { background-position-x: 20%; }
+  15.625% { background-position-x: 40%; }
+  17.188% { background-position-x: 60%; }
+  18.750% { background-position-x: 0%; }
+  20.312% { background-position-x: 20%; }
+  21.875% { background-position-x: 40%; }
+  23.438% { background-position-x: 60%; }
+  25.000% { background-position-x: 0%; }
+  26.562% { background-position-x: 20%; }
+  28.125% { background-position-x: 40%; }
+  29.688% { background-position-x: 60%; }
+  31.250% { background-position-x: 0%; }
+  32.812% { background-position-x: 20%; }
+  34.375% { background-position-x: 40%; }
+  35.938% { background-position-x: 60%; }
+  37.500% { background-position-x: 0%; }
+  39.062% { background-position-x: 20%; }
+  40.625% { background-position-x: 40%; }
+  42.188% { background-position-x: 60%; }
+  43.750% { background-position-x: 0%; }
+  45.312% { background-position-x: 20%; }
+  46.875% { background-position-x: 40%; }
+  48.438% { background-position-x: 60%; }
+  50.000% { background-position-x: 0%; }
+  51.562% { background-position-x: 20%; }
+  53.125% { background-position-x: 40%; }
+  54.688% { background-position-x: 60%; }
+  56.250% { background-position-x: 0%; }
+  57.812% { background-position-x: 20%; }
+  59.375% { background-position-x: 40%; }
+  60.938% { background-position-x: 60%; }
+  62.500% { background-position-x: 0%; }
+  64.062% { background-position-x: 20%; }
+  65.625% { background-position-x: 40%; }
+  67.188% { background-position-x: 60%; }
+  68.750% { background-position-x: 0%; }
+  70.312% { background-position-x: 20%; }
+  71.875% { background-position-x: 40%; }
+  73.438% { background-position-x: 60%; }
+  75.000% { background-position-x: 0%; }
+  76.562% { background-position-x: 20%; }
+  78.125% { background-position-x: 40%; }
+  79.688% { background-position-x: 60%; }
+  81.250% { background-position-x: 0%; }
+  82.812% { background-position-x: 20%; }
+  84.375% { background-position-x: 80%; }
+  85.938% { background-position-x: 100%; }
+  87.500% { background-position-x: 80%; }
+  89.062% { background-position-x: 100%; }
+  90.625% { background-position-x: 80%; }
+  92.188% { background-position-x: 100%; }
+  93.750% { background-position-x: 80%; }
+  95.312% { background-position-x: 100%; }
+  96.875% { background-position-x: 80%; }
+  98.438% { background-position-x: 100%; }
+  100% { background-position-x: 100%; }
+}
+
+.rodeo-title {
+  margin: 0;
+  padding: 0 16px;
+  font-family: var(--font-nav);
+  font-weight: 400;
+  font-size: calc(64 * var(--u));
+  letter-spacing: calc(3 * var(--u));
+  text-align: center;
+}
+
+.rodeo-intro {
+  margin: calc(-36 * var(--u)) 0 0; /* sits close under the headline */
+  padding: 0 16px;
+  font-family: var(--font-body);
+  font-size: calc(26 * var(--u));
+  line-height: 1.5;
+  text-align: center;
+}
+
+.rodeo-gallery {
+  max-width: calc(1260 * var(--u));
+  margin: calc(90 * var(--u)) auto 0;
+  padding: 0 16px;
+}
+
+/* masonry-style columns so posters and landscape pieces keep their shapes */
+.rodeo-gallery__grid {
+  columns: 3;
+  column-gap: calc(28 * var(--u));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rodeo-gallery__item {
+  break-inside: avoid;
+  margin-bottom: calc(28 * var(--u));
+}
+
+.rodeo-gallery__item img {
+  width: 100%;
+  height: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wrangle { animation: none; background-position-x: 0; margin: 0 auto; }
+}
+
+@media (max-width: 900px) {
+  .page--rodeo { padding: 37px 0 80px; }
+  .wrangle-track { margin: 0 75px 0 78px; }
+  .wrangle { width: 50vw; }
+  .rodeo-hero { gap: 28px; }
+  .rodeo-title { font-size: 30px; letter-spacing: 1.5px; }
+  .rodeo-intro { margin-top: -16px; font-size: 16px; }
+  .rodeo-gallery { margin-top: 40px; }
+  .rodeo-gallery__grid { columns: 2; column-gap: 12px; }
+  .rodeo-gallery__item { margin-bottom: 12px; }
+}
+
+@media (max-width: 480px) {
+  .rodeo-gallery__grid { columns: 1; }
+}
+
+.rodeo-gallery__item img {
+  cursor: zoom-in;
+}
+
+/* Red Dead infographic runs across the whole gallery */
+.rodeo-gallery__item--feature {
+  column-span: all;
+}
