@@ -233,7 +233,7 @@
       tv.dataset.channel = ch;
       glitch();
       if (video) {
-        if (ch === "3") video.play().catch(function () {});
+        if (ch === "3") { video.currentTime = 0; video.play().catch(function () {}); }
         else video.pause();
       }
     });
