@@ -127,6 +127,7 @@ a {
   position: relative;
   height: calc(100vh - var(--header-height));
   overflow: hidden;
+  overflow-x: clip; /* stays on even where a page lets content run long; ornaments hang off the edge */
   padding-top: calc(44 * var(--u));
 }
 
@@ -162,7 +163,7 @@ a {
 .page--project {
   height: auto;
   min-height: calc(100vh - var(--header-height));
-  overflow: visible;
+  overflow-y: visible;
   display: flex;
   flex-direction: column;
   justify-content: center; /* title, intro and gallery sit centered in the space under the header */
@@ -390,6 +391,765 @@ a {
   pointer-events: none; /* never blocks the arrows beside it */
 }
 
+/* ---------- About: old TV turning on ---------- */
+
+.page--about {
+  height: auto;
+  overflow-y: visible;
+  padding-top: 0;
+}
+
+/* First screen: just the TV, centred under the header */
+.about-hero {
+  height: calc(100vh - var(--header-height));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Second screen: headshot and bio, framed by the corner ornaments */
+.about-me {
+  position: relative;
+  min-height: calc(100vh - var(--header-height));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(120 * var(--u)) 16px;
+}
+
+/* The ornaments hug the corners of the headshot */
+.about-me__frame {
+  position: relative;
+  flex: 0 0 auto;
+  padding: calc(84 * var(--u)); /* far enough out that the ornaments never touch the photo */
+}
+
+.about-me__frame .ornament {
+  width: calc(150 * var(--u));
+  height: calc(145 * var(--u));
+}
+
+.about-me__frame .ornament--top-left     { top: 0;    left: 0; }
+.about-me__frame .ornament--top-right    { top: 0;    right: 0; }
+.about-me__frame .ornament--bottom-left  { bottom: 0; left: 0; }
+.about-me__frame .ornament--bottom-right { bottom: 0; right: 0; }
+
+.about-me__inner {
+  display: flex;
+  align-items: center;
+  gap: calc(110 * var(--u));
+  max-width: calc(1260 * var(--u));
+}
+
+.about-me__photo {
+  display: block;
+  width: calc(480 * var(--u));
+  height: auto;
+}
+
+.about-me__heading {
+  margin: 0 0 calc(16 * var(--u));
+  font-family: var(--font-nav);
+  font-size: calc(64 * var(--u));
+  font-weight: 400;
+  letter-spacing: calc(3 * var(--u));
+  line-height: 1;
+}
+
+/* Social and email links, with the same grow-from-the-middle underline as the nav */
+.about-me__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(14 * var(--u)) calc(28 * var(--u));
+  margin: calc(32 * var(--u)) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.about-me__links a {
+  position: relative;
+  font-family: var(--font-body);
+  font-size: calc(24 * var(--u));
+  color: inherit;
+  text-decoration: none;
+}
+
+.about-me__links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(-4 * var(--u));
+  height: max(1px, calc(1.5 * var(--u)));
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.25s ease;
+}
+
+.about-me__links a:hover::after,
+.about-me__links a:focus-visible::after {
+  transform: scaleX(1);
+}
+
+.about-me__copy {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: calc(30 * var(--u));
+  line-height: 1.6;
+}
+
+/* Kyla's TV art sits on top; the screen glows through its cut-out */
+.tv {
+  position: relative;
+  width: calc(1100 * var(--u));
+  max-width: calc(100vw - 32px);
+  aspect-ratio: 2350 / 1782;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tv:focus-visible {
+  outline: 2px solid #000;
+  outline-offset: 6px;
+}
+
+/* Click the TV: the picture tears, splits colour and the snow spikes for a moment */
+.tv.is-glitching .tv__content {
+  animation: tv-glitch 0.6s steps(1) both;
+}
+
+.tv.is-glitching .tv__title,
+.tv.is-glitching .tv__roles {
+  text-shadow: -0.8cqw 0 rgba(255, 40, 80, 0.8), 0.8cqw 0 rgba(40, 220, 255, 0.8);
+}
+
+.tv.is-glitching .tv__static {
+  opacity: 0.75 !important;
+}
+
+.tv.is-glitching .tv__scanlines {
+  animation: tv-roll 0.6s linear both;
+}
+
+@keyframes tv-glitch {
+  0%   { transform: translate(0, 0); clip-path: inset(0 0 0 0); }
+  10%  { transform: translate(-3cqw, 0) skewX(12deg); clip-path: inset(10% 0 55% 0); }
+  20%  { transform: translate(2cqw, 1cqw); clip-path: inset(45% 0 20% 0); }
+  30%  { transform: translate(0, -2cqw) scaleY(1.1); clip-path: inset(0 0 0 0); }
+  40%  { transform: translate(4cqw, 0) skewX(-18deg); clip-path: inset(65% 0 5% 0); }
+  50%  { transform: translate(-2cqw, 3cqw); clip-path: inset(25% 0 40% 0); }
+  60%  { transform: translate(1cqw, 0); clip-path: inset(0 0 0 0); opacity: 0.4; }
+  75%  { transform: translate(-1cqw, -1cqw) skewX(6deg); clip-path: inset(5% 0 70% 0); opacity: 1; }
+  90%  { transform: translate(0.5cqw, 0); clip-path: inset(0 0 0 0); }
+  100% { transform: none; clip-path: none; }
+}
+
+@keyframes tv-roll {
+  from { transform: translateY(-30%); }
+  to   { transform: translateY(0); }
+}
+
+.tv__frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+  filter: drop-shadow(0 calc(10 * var(--u)) calc(14 * var(--u)) rgba(0, 0, 0, 0.28));
+}
+
+/* Soft contact shadow on the "floor" under the legs */
+.tv::after {
+  content: "";
+  position: absolute;
+  left: 6%;
+  right: 6%;
+  bottom: -2.5%;
+  height: 6%;
+  z-index: 0;
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.12) 45%, transparent 72%);
+  pointer-events: none;
+}
+
+/* Lines up with the screen hole in tv.webp, a little oversized so the bezel hides the edge */
+.tv__screen {
+  position: absolute;
+  left: 7%;
+  top: 9.3%;
+  width: 67.2%;
+  height: 70.8%;
+  overflow: hidden;
+  border-radius: 9% / 12%;
+  background: #0c0c0c;
+  container-type: inline-size;
+  isolation: isolate; /* keeps the star layering inside the screen */
+}
+
+/* The picture tube warming up: a dot, then a line, then the full screen */
+.tv__beam {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, #f4f1ea 0%, #cfcac0 55%, #6d6a64 100%);
+  transform: scale(0, 0);
+  animation: tv-on 1.6s cubic-bezier(0.2, 0.7, 0.3, 1) 0.4s forwards;
+}
+
+@keyframes tv-on {
+  0%   { transform: scale(0, 0);         filter: brightness(3); }
+  20%  { transform: scale(0.02, 0.004);  filter: brightness(3); }
+  45%  { transform: scale(1, 0.004);     filter: brightness(3); }
+  70%  { transform: scale(1, 1);         filter: brightness(2); }
+  100% { transform: scale(1, 1);         filter: brightness(0.25); }
+}
+
+/* Name, rotating roles and the orbiting stars share one layer so stars can pass in front of and behind the text */
+.tv__content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3cqw;
+  filter: url(#crt-warp); /* slight barrel bulge, like the picture sits on curved glass */
+}
+
+.tv__title {
+  position: relative;
+  z-index: 2;
+  margin: 0;
+  font-family: var(--font-accent);
+  font-weight: 400;
+  font-synthesis: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 13cqw;
+  letter-spacing: 0.6cqw;
+  line-height: 0.9;
+  color: #f4f1ea;
+  text-shadow: 0 0 2cqw rgba(255, 255, 255, 0.55);
+  opacity: 0;
+  animation: tv-title 1.2s ease-out 1.9s forwards, tv-flicker 4s steps(1) 3.1s infinite;
+}
+
+@keyframes tv-title {
+  0%   { opacity: 0;   filter: blur(6px); }
+  30%  { opacity: 0.8; filter: blur(2px); }
+  40%  { opacity: 0.2; }
+  60%  { opacity: 1;   filter: blur(0); }
+  100% { opacity: 1;   filter: blur(0); }
+}
+
+/* An occasional faint flicker once the picture is up */
+@keyframes tv-flicker {
+  0%, 100% { opacity: 1; }
+  47%      { opacity: 0.85; }
+  48%      { opacity: 1; }
+  82%      { opacity: 0.9; }
+  83%      { opacity: 1; }
+}
+
+/* Name and roles tilt together so the roles stay centred under Joyner */
+.tv__name {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.4cqw;
+  transform: rotate(-6deg);
+}
+
+/* One role at a time, flipping over like a sign */
+.tv__roles {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 4.2cqw;
+  margin: 0;
+  perspective: 40cqw;
+  font-family: var(--font-nav);
+  font-size: 3.6cqw;
+  letter-spacing: 0.5cqw;
+  color: #f4f1ea;
+  text-shadow: 0 0 1.2cqw rgba(255, 255, 255, 0.45);
+  opacity: 0;
+  animation: tv-title 1.2s ease-out 2.4s forwards;
+}
+
+.tv__roles span {
+  position: absolute;
+  inset: 0;
+  text-align: center;
+  opacity: 0;
+  transform: rotateX(-90deg);
+  transform-origin: 50% 50% -2cqw;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+.tv__roles span.is-in {
+  opacity: 1;
+  transform: rotateX(0);
+}
+
+.tv__roles span.is-out {
+  opacity: 0;
+  transform: rotateX(90deg);
+}
+
+.tv__star {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 7cqw;
+  height: auto;
+  /* stacked shadows give the flat star some thickness */
+  filter: drop-shadow(0.2cqw 0.25cqw 0 #8a2238) drop-shadow(0.2cqw 0.25cqw 0 #5c1424) drop-shadow(0 0 1cqw rgba(255, 210, 220, 0.3));
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+/* Moving TV static (snow) that stays on once the picture is up */
+.tv__static {
+  position: absolute;
+  z-index: 4;
+  inset: -50%;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  3 0 0 0 -1.1'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 240px 240px;
+  opacity: 0;
+  animation: tv-static-in 0.6s ease-out 1.2s forwards, tv-static 0.4s steps(1) infinite;
+}
+
+@keyframes tv-static-in {
+  to { opacity: 0.3; }
+}
+
+/* Jump the noise around every frame so it reads as moving snow */
+@keyframes tv-static {
+  0%   { transform: translate(0, 0); }
+  12%  { transform: translate(-6%, 4%); }
+  25%  { transform: translate(5%, -7%); }
+  37%  { transform: translate(-8%, -3%); }
+  50%  { transform: translate(3%, 8%); }
+  62%  { transform: translate(-4%, -9%); }
+  75%  { transform: translate(9%, 2%); }
+  87%  { transform: translate(-2%, 6%); }
+}
+
+.tv__scanlines {
+  position: absolute;
+  z-index: 5;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.18) 0,
+    rgba(0, 0, 0, 0.18) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  box-shadow: inset 0 0 8cqw rgba(0, 0, 0, 0.85); /* dark edges like curved glass */
+}
+
+/* Soft glare on the glass */
+.tv__screen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  pointer-events: none;
+  background: radial-gradient(ellipse 70% 55% at 28% 18%, rgba(255, 255, 255, 0.12), transparent 70%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tv__beam {
+    animation: none;
+    transform: none;
+    filter: brightness(0.25);
+  }
+
+  .tv__title {
+    animation: none;
+    opacity: 1;
+  }
+
+  .tv__static {
+    animation: none;
+    opacity: 0.15;
+  }
+
+  .tv__roles {
+    animation: none;
+    opacity: 1;
+  }
+
+  .tv__roles span {
+    transition: none;
+  }
+
+  .tv.is-glitching .tv__content,
+  .tv.is-glitching .tv__scanlines {
+    animation: none;
+  }
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ---------- What's Kyla Spinning (radio) ---------- */
+
+.radio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: calc(40 * var(--u)) 16px calc(160 * var(--u));
+}
+
+.radio__title {
+  margin: 0 0 calc(40 * var(--u));
+  font-family: var(--font-nav);
+  font-weight: 400;
+  font-synthesis: none;
+  font-size: calc(72 * var(--u));
+  letter-spacing: calc(4 * var(--u));
+  text-align: center;
+}
+
+.radio__set {
+  position: relative;
+  width: calc(1100 * var(--u));
+  max-width: 100%;
+}
+
+.radio__img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Sits exactly over the white cassette label in radio.jpg */
+.radio__display {
+  position: absolute;
+  left: 31.2%;
+  top: 41.3%;
+  width: 37.5%;
+  height: 26.4%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  background: #f6f4ef;
+  box-shadow: inset 0 calc(4 * var(--u)) calc(6 * var(--u)) rgba(0, 0, 0, 0.18);
+  container-type: inline-size;
+}
+
+/* Red stripe from the original label, kept as a nod to it */
+.radio__display::after {
+  content: "";
+  position: absolute;
+  left: 2%;
+  right: 4%;
+  bottom: 16%;
+  height: 2px;
+  background: #c4263f;
+}
+
+.radio__track {
+  display: flex;
+  flex: none;
+  white-space: nowrap;
+  font-family: var(--font-nav);
+  font-size: 11cqw;
+  letter-spacing: 0.6cqw;
+  color: #1a1a1a;
+  animation: radio-scroll var(--marquee-time, 30s) linear infinite;
+}
+
+.radio__track span {
+  padding-right: 6cqw;
+}
+
+.radio__track span::after {
+  content: "\2605"; /* star between songs */
+  padding-left: 6cqw;
+  font-size: 0.6em;
+  vertical-align: 0.25em;
+  color: #c4263f;
+}
+
+/* Radio off (after EJECT): the label goes blank */
+.radio__display.is-off .radio__track,
+.radio__display.is-off::after {
+  opacity: 0;
+}
+
+.radio__track,
+.radio__display::after {
+  transition: opacity 0.3s ease;
+}
+
+/* Invisible hit areas laid over the knob and buttons in the photo */
+.radio__btn {
+  position: absolute;
+  z-index: 1;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+  transition: background-color 0.1s ease;
+}
+
+.radio__btn.is-held,
+.radio__btn:active {
+  background: rgba(0, 0, 0, 0.18); /* reads as the button being pushed in */
+}
+
+.radio__btn:focus-visible {
+  outline: 2px solid #000;
+  outline-offset: 3px;
+}
+
+.radio__btn--tune  { left: 81.7%; top: 22.5%; width: 16%;   height: 58.3%; border-radius: 50%; }
+.radio__btn--ffwd  { left: 61.1%; top: 78.2%; width: 14%;   height: 10.4%; border-radius: 2px; }
+.radio__btn--vol   { left: 2.9%;  top: 25.5%; width: 15.25%; height: 53.4%; border-radius: 50%; }
+.radio__btn--eject { left: 24.9%; top: 78.4%; width: 14.1%; height: 10.7%; border-radius: 2px; }
+
+@keyframes radio-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .radio__track {
+    animation: none;
+  }
+}
+
+/* ---------- Lost partner (bottom of About) ---------- */
+
+.lost {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(40 * var(--u));
+  position: relative;
+  z-index: 1;
+  padding: calc(40 * var(--u)) 16px 0;
+}
+
+.lost__scene {
+  --v: calc(0.6 * var(--u)); /* one video pixel; the cowboy art is ~13.2v per pixel */
+  position: relative;
+  flex: none;
+  width: calc(402 * var(--v));
+  height: calc(533 * var(--v));
+}
+
+.lost__cactus {
+  position: absolute;
+  left: calc(217 * var(--v));
+  bottom: 0;
+  width: calc(185 * var(--v));
+  height: auto;
+  image-rendering: pixelated;
+}
+
+/* pixel legs and boots under the animated head and shoulders */
+.lost__body {
+  position: absolute;
+  left: calc(56 * var(--v));
+  top: calc(309 * var(--v));
+  width: calc(264 * var(--v));
+  height: auto;
+  image-rendering: pixelated;
+}
+
+.lost__cowboy {
+  position: absolute;
+  left: 0;
+  top: calc(24 * var(--v));
+  width: calc(370 * var(--v));
+  height: auto;
+  image-rendering: pixelated;
+  mix-blend-mode: multiply; /* drops the video's white box so he overlaps the cactus cleanly */
+}
+
+/* Pixel western landscape footer with a rolling tumbleweed */
+.landscape {
+  --h: max(120px, 15vw);
+  position: relative;
+  height: var(--h);
+  background: url("../assets/images/about/landscape.svg") center bottom / auto 100% repeat-x;
+  image-rendering: pixelated;
+  overflow: hidden;
+  margin-top: calc(var(--h) * -28 / 36); /* the cowboy sits right on the ground line */
+}
+
+.landscape__tumbleweed {
+  position: absolute;
+  left: 0;
+  bottom: calc(var(--h) * 7.6 / 36); /* rolls along the ground line */
+  width: calc(var(--h) * 7 / 36);
+  height: auto;
+  image-rendering: pixelated;
+  animation: tumble-across 14s linear infinite;
+}
+
+@keyframes tumble-across {
+  0%   { transform: translateX(110vw) translateY(0) rotate(0deg); }
+  10%  { transform: translateX(99vw) translateY(-40%) rotate(-90deg); }
+  20%  { transform: translateX(88vw) translateY(0) rotate(-180deg); }
+  30%  { transform: translateX(77vw) translateY(-25%) rotate(-270deg); }
+  40%  { transform: translateX(66vw) translateY(0) rotate(-360deg); }
+  50%  { transform: translateX(55vw) translateY(-45%) rotate(-450deg); }
+  60%  { transform: translateX(44vw) translateY(0) rotate(-540deg); }
+  70%  { transform: translateX(33vw) translateY(-30%) rotate(-630deg); }
+  80%  { transform: translateX(22vw) translateY(0) rotate(-720deg); }
+  90%  { transform: translateX(11vw) translateY(-35%) rotate(-810deg); }
+  100% { transform: translateX(-12vw) translateY(0) rotate(-900deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .landscape__tumbleweed { animation: none; transform: translateX(70vw); }
+}
+
+/* Pixel-style speech bubble */
+.lost__bubble {
+  position: relative;
+  flex: none;
+  width: calc(440 * var(--u)); /* fixed so the scene doesn't shift when the dots turn into words */
+  min-height: calc(150 * var(--u));
+  box-sizing: border-box;
+  padding: calc(24 * var(--u)) calc(32 * var(--u));
+  border: calc(5 * var(--u)) solid #1c1c1c;
+  background: #fff;
+  box-shadow: calc(8 * var(--u)) calc(8 * var(--u)) 0 #1c1c1c;
+  font-family: var(--font-nav);
+  opacity: 0;
+  transform: scale(0.6);
+  transform-origin: left center;
+  transition: opacity 0.25s ease, transform 0.3s cubic-bezier(0.3, 1.6, 0.5, 1);
+}
+
+/* Stepped tail pointing back at the cowboy */
+.lost__bubble::before,
+.lost__bubble::after {
+  content: "";
+  position: absolute;
+  background: #1c1c1c;
+}
+
+.lost__bubble::before {
+  left: calc(-29 * var(--u)); /* measured from inside the border; runs under it so there's no gap */
+  top: 50%;
+  width: calc(30 * var(--u));
+  height: calc(12 * var(--u));
+}
+
+.lost__bubble::after {
+  left: calc(-41 * var(--u));
+  top: calc(50% + 12 * var(--u));
+  width: calc(12 * var(--u));
+  height: calc(12 * var(--u));
+}
+
+.lost.is-talking .lost__bubble {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.lost__dots {
+  display: flex;
+  gap: calc(14 * var(--u));
+  justify-content: center;
+  padding: calc(26 * var(--u)) 0;
+}
+
+.lost__dots i {
+  width: calc(16 * var(--u));
+  height: calc(16 * var(--u));
+  background: #1c1c1c;
+  animation: lost-dot 0.9s steps(1) infinite;
+}
+
+.lost__dots i:nth-child(2) { animation-delay: 0.3s; }
+.lost__dots i:nth-child(3) { animation-delay: 0.6s; }
+
+@keyframes lost-dot {
+  0%, 100% { opacity: 0.2; }
+  33%      { opacity: 1; }
+}
+
+.lost__text,
+.lost__links {
+  display: none;
+  margin: 0;
+}
+
+.lost.has-spoken .lost__dots { display: none; }
+.lost.has-spoken .lost__text { display: block; animation: lost-in 0.3s ease both; }
+.lost.has-links .lost__links { display: flex; animation: lost-in 0.3s ease both; }
+
+.lost__text {
+  font-size: calc(44 * var(--u));
+  letter-spacing: calc(2 * var(--u));
+  line-height: 1.1;
+}
+
+.lost__links {
+  gap: calc(32 * var(--u));
+  margin-top: calc(16 * var(--u));
+}
+
+.lost__links a {
+  position: relative;
+  font-size: calc(28 * var(--u));
+  letter-spacing: calc(1.5 * var(--u));
+  color: inherit;
+  text-decoration: none;
+}
+
+.lost__links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(-3 * var(--u));
+  height: max(1px, calc(2 * var(--u)));
+  background: currentColor;
+  transform: scaleX(0);
+  transition: transform 0.25s ease;
+}
+
+.lost__links a:hover::after,
+.lost__links a:focus-visible::after {
+  transform: scaleX(1);
+}
+
+@keyframes lost-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lost__bubble { transition: none; }
+  .lost__dots i { animation: none; opacity: 1; }
+}
+
 /* ---------- Work grid ---------- */
 
 .work-grid {
@@ -475,7 +1235,7 @@ a {
   .page {
     height: auto;
     min-height: calc(100vh - var(--header-height));
-    overflow: visible;
+    overflow-y: visible;
     padding-bottom: 120px;
   }
 
@@ -535,6 +1295,81 @@ a {
     width: 110px;
     height: 106px;
   }
+
+  .page--about {
+    padding-bottom: 0;
+  }
+
+  .about-hero {
+    height: auto;
+    padding: 120px 0 40px;
+  }
+
+  .about-me {
+    padding: 60px 16px 80px;
+  }
+
+  .about-me__inner {
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .about-me__frame {
+    padding: 50px;
+  }
+
+  .about-me__frame .ornament {
+    width: 80px;
+    height: 77px;
+  }
+
+  .about-me__photo {
+    width: min(270px, calc(100vw - 132px));
+  }
+
+  .about-me__copy {
+    font-size: 17px;
+  }
+
+  .about-me__heading {
+    font-size: 26px;
+  }
+
+  .about-me__links a {
+    font-size: 16px;
+  }
+
+  .radio__title {
+    font-size: 30px;
+  }
+
+  .lost {
+    flex-direction: column;
+    gap: 36px;
+  }
+
+  .lost__scene { --v: 0.45px; }
+
+  .lost { padding-bottom: 40px; }
+  .landscape { margin-top: 0; }
+
+  .lost__bubble {
+    width: min(320px, 100%);
+    min-height: 110px;
+    transform-origin: center top;
+    padding: 16px 22px;
+    border-width: 4px;
+    box-shadow: 6px 6px 0 #1c1c1c;
+  }
+
+  /* tail points up at the cowboy on phones */
+  .lost__bubble::before { left: 30%; top: -18px; width: 10px; height: 14px; }
+  .lost__bubble::after  { left: calc(30% - 10px); top: -28px; width: 10px; height: 10px; }
+
+  .lost__text { font-size: 28px; }
+  .lost__links a { font-size: 20px; }
+  .lost__dots i { width: 10px; height: 10px; }
+
 
   .work-grid {
     margin-top: 100px; /* clears the smaller corner ornaments */
