@@ -1069,18 +1069,21 @@ a {
   animation: tv-spin 5s linear infinite;
 }
 
-/* ten stacked cut-outs give the star its thickness */
+/* front and back faces, plus ten side walls along the star's edges, so it reads as one solid piece at every angle */
 .tv__spin-star i {
   position: absolute;
   inset: 0;
-  background: #b8334f;
+  background: linear-gradient(160deg, #f27a93, #e44e6c 55%, #c73c5a);
   clip-path: polygon(50% 0%, 61.2% 34.5%, 97.6% 34.5%, 68.2% 55.9%, 79.4% 90.5%, 50% 69.1%, 20.6% 90.5%, 31.8% 55.9%, 2.4% 34.5%, 38.8% 34.5%);
-  transform: translateZ(calc((var(--z) - 4.5) * 0.6cqw));
+  transform: translateZ(2.5cqw);
 }
 
-.tv__spin-star i:first-child,
-.tv__spin-star i:last-child {
-  background: linear-gradient(160deg, #f27a93, #e44e6c 55%, #c73c5a);
+.tv__spin-star i + i { transform: rotateY(180deg) translateZ(2.5cqw); }
+
+.tv__spin-star b {
+  position: absolute;
+  height: 5cqw;
+  background: #b8334f;
 }
 
 @keyframes tv-spin {
