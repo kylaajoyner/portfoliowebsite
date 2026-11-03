@@ -21,7 +21,7 @@
   <meta name="twitter:image" content="https://kylajoyner.com/assets/images/og-star.png">
   <!-- Adobe Fonts kit: West End + Narkiss Yair -->
   <link rel="stylesheet" href="https://use.typekit.net/ijs5kav.css">
-  <link rel="stylesheet" href="css/style.css?v=119">
+  <link rel="stylesheet" href="css/style.css?v=129">
   <script>try{if(sessionStorage.getItem("slide-in"))document.documentElement.classList.add("slide-in")}catch(e){}</script>
 </head>
 <body>
@@ -38,9 +38,16 @@
 
   <main class="page page--project">
     <dl class="explainer">
+      <div class="explainer__row explainer__row--nostar">
+        <dt class="explainer__label explainer__label--full">Client: Old Spice &ldquo;Pure Sport&rdquo;</dt>
+      </div>
       <div class="explainer__row">
-        <dt class="explainer__label">Project:</dt>
-        <dd class="explainer__copy">Unofficially reworking and reimagining official Old Spice branding and assets as well as receiving feedback from company leaders. The goal was to target a younger male audience, while still maintaining brand authenticity and noticeability.</dd>
+        <dt class="explainer__label">Problem:</dt>
+        <dd class="explainer__copy">Old Spice needed a way to capture a key target audience of young men ages 18&ndash;24 for their &ldquo;Pure Sport&rdquo; line of deodorant while still maintaining brand authenticity and noticeability.</dd>
+      </div>
+      <div class="explainer__row">
+        <dt class="explainer__label">Solution:</dt>
+        <dd class="explainer__copy">My design draws on vintage gym branding, a trending aesthetic for Gen Z &amp; millennial young men.</dd>
       </div>
       <div class="explainer__row">
         <dt class="explainer__label">Role:</dt>
@@ -48,20 +55,35 @@
       </div>
     </dl>
 
-    <div class="project-gallery project-gallery--portrait">
-      <img src="assets/images/old-spice/old-spice-1.jpg" decoding="async" alt="Old Spice Pure Sport cover" width="1300" height="2010">
-      <img src="assets/images/old-spice/old-spice-2.jpg" decoding="async" alt="Logo page: the new Pure Sport badge logo on the deodorant label, inspired by vintage sportswear and gym logos" width="1300" height="2010">
-      <img src="assets/images/old-spice/old-spice-3.jpg" decoding="async" alt="Logo breakdown: stars, captain's wheel and athletic sock stripes explained" width="1300" height="2010">
-      <img src="assets/images/old-spice/old-spice-4.jpg" decoding="async" alt="Branding page: the redesigned Pure Sport deodorant stick" width="1300" height="2010">
-      <img src="assets/images/old-spice/old-spice-5.jpg" decoding="async" alt="Meme culture implementation divider page" width="1300" height="2010">
-      <img src="assets/images/old-spice/old-spice-6.jpg" decoding="async" alt="The meme page: the popular 'Clavicular frame mog incident' meme that inspired the campaign" width="1300" height="2010">
-      <img src="assets/images/old-spice/old-spice-7.jpg" decoding="async" alt="Sketch page: hand-drawn concept sketch for the Scent Mogged ad" width="1300" height="2010">
-      <img src="assets/images/old-spice/old-spice-8.jpg" decoding="async" alt="Final ad: 'Scent Mogged. Just be Old Spice Bro, Brutal.'" width="1300" height="2010">
+    <!-- Pure Sport stick in 3D: drag to spin it -->
+    <div class="product-3d" data-product-3d data-texture="assets/images/old-spice/pure-sport-wrap.jpg?v=2">
+      <canvas class="product-3d__canvas" role="img" aria-label="3D model of the redesigned Old Spice Pure Sport deodorant stick. Drag to rotate it."></canvas>
+      <p class="product-3d__hint" aria-hidden="true">Drag to spin</p>
     </div>
 
+    <p class="project-note">Awards: Chosen as Best Design by Old Spice CFO</p>
+
+    <!-- The three pieces of the Pure Sport badge, each with its story -->
+    <ul class="logo-parts">
+      <li class="logo-parts__item">
+        <img src="assets/images/old-spice/asset-stripes.png" width="640" height="640" alt="Red label with diagonal white stripes" loading="lazy" decoding="async">
+        <h2 class="logo-parts__title">Stripes</h2>
+        <p class="logo-parts__copy">The two lines resemble the stripes of athletic socks while drawing the eye to the &ldquo;Pure Sport&rdquo;.</p>
+      </li>
+      <li class="logo-parts__item">
+        <img src="assets/images/old-spice/asset-wheel.png" width="640" height="640" alt="Thin red circle crossed by an X" loading="lazy" decoding="async">
+        <h2 class="logo-parts__title">Wheel</h2>
+        <p class="logo-parts__copy">Resembles a captain&rsquo;s steering wheel and a barbell plate.</p>
+      </li>
+      <li class="logo-parts__item">
+        <img src="assets/images/old-spice/asset-stars.png" width="640" height="640" alt="Three red stars in a curved column" loading="lazy" decoding="async">
+        <h2 class="logo-parts__title">Stars</h2>
+        <p class="logo-parts__copy">Represents heritage, pride and valor. Combined with the Old Spice plate, it creates the classic Old Spice patch.</p>
+      </li>
+    </ul>
     <nav class="project-nav" aria-label="More projects">
       <a class="back-link" href="index.html">&larr; Back to All Work</a>
-      <a class="back-link more-link" href="daily-tar-heel.html">More Work &rarr;</a>
+      <a class="back-link more-link" href="old-spice-ad.html">More Work &rarr;</a>
     </nav>
   </main>
 
@@ -73,6 +95,8 @@
     <p class="copyright">&copy; <span data-year>2026</span> Kyla Joyner. All rights reserved.</p>
   </footer>
 
+  <script src="js/vendor/three.min.js?v=149"></script>
+  <script src="js/deodorant.js?v=122"></script>
   <script src="js/main.js?v=119"></script>
 </body>
 </html>

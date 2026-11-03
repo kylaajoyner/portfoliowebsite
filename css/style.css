@@ -235,6 +235,22 @@ a {
   text-box: trim-both cap alphabetic;
 }
 
+/* A label that carries its answer on the same line (Old Spice's client) */
+.explainer__label--full {
+  contain: inline-size; /* stays on one line without widening the column; spills into the gap instead */
+  margin-bottom: 8px; /* no copy under it, so give the next row the usual breathing room */
+}
+
+/* A row without a star (UNC WBB's client): the header starts at the page's left edge */
+.explainer__row--nostar::before { content: none; }
+.explainer__row--nostar .explainer__label,
+.page--project .explainer .explainer__row--nostar .explainer__copy { grid-column: 1 / -1; }
+
+/* very narrow phones: shrink the one-line Client header just enough to fit */
+@media (max-width: 350px) {
+  .explainer .explainer__label--full { font-size: 23px; }
+}
+
 .explainer__copy {
   margin: 0;
   font-family: var(--font-body);
@@ -347,6 +363,95 @@ a {
   grid-template-columns: repeat(4, 1fr);
   gap: calc(20 * var(--u));
   max-width: calc(860 * var(--u));
+}
+
+/* Old Spice: the Pure Sport stick as a 3D model you can drag to spin */
+.explainer:has(+ .product-3d) { max-width: calc(860 * var(--u)); }
+
+.product-3d {
+  position: relative;
+  max-width: calc(860 * var(--u));
+  height: min(calc(620 * var(--u)), 70vh);
+  margin: calc(28 * var(--u)) auto 0;
+  padding: 0 16px;
+}
+
+.product-3d__canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+  touch-action: pan-y; /* sideways drags spin it, vertical swipes still scroll the page */
+}
+
+.product-3d.is-dragging .product-3d__canvas { cursor: grabbing; }
+
+.product-3d__hint {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + 10px); /* just under the model, clear of the stick */
+  margin: 0;
+  text-align: center;
+  font-family: var(--font-nav);
+  font-size: calc(18 * var(--u));
+  letter-spacing: 2px;
+  opacity: 0.5;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.product-3d.has-spun .product-3d__hint { opacity: 0; }
+
+/* the awards line sits under the "Drag to spin" hint */
+.product-3d + .project-note { margin-top: calc(48 * var(--u)); }
+
+/* Old Spice: the badge's three parts in a row under the model, each with its story */
+.logo-parts {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: calc(40 * var(--u));
+  max-width: calc(860 * var(--u));
+  margin: calc(48 * var(--u)) auto 0;
+  padding: 0 16px;
+  list-style: none;
+}
+
+/* more room between the badge story and the page nav */
+.logo-parts + .project-nav { margin-top: calc(80 * var(--u)); }
+
+.logo-parts__item img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.logo-parts__title {
+  margin: calc(16 * var(--u)) 0 0;
+  font-family: var(--font-nav);
+  font-size: calc(32 * var(--u));
+  font-weight: normal;
+  letter-spacing: calc(2 * var(--u));
+  line-height: 1;
+}
+
+.logo-parts__copy {
+  margin: calc(10 * var(--u)) 0 0;
+  font-family: var(--font-body);
+  font-size: calc(17 * var(--u));
+  line-height: 1.6;
+}
+
+/* One tall page on its own (Old Spice Ad Campaign): as tall as the screen allows */
+.project-gallery--single {
+  grid-template-columns: 1fr;
+  justify-items: center;
+}
+
+.project-gallery--single img {
+  width: auto;
+  max-width: 100%;
+  max-height: calc(100vh - var(--header-height) - 140px);
 }
 
 /* Mixed shapes in rows: images in a row share a height, and each one's width
@@ -1656,6 +1761,36 @@ a {
 
   .project-gallery--portrait {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .product-3d {
+    height: 70vh;
+  }
+
+  .logo-parts {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    max-width: 420px;
+    margin-top: 40px;
+  }
+
+  .logo-parts__item img {
+    width: 200px;
+  }
+
+  .logo-parts + .project-nav { margin-top: 56px; }
+
+  .logo-parts__title {
+    margin-top: 12px;
+    font-size: 28px;
+  }
+
+  .logo-parts__copy {
+    font-size: 16px;
+  }
+
+  .product-3d__hint {
+    font-size: 16px;
   }
 
   .gallery-row {

@@ -1,0 +1,205 @@
+// Old Spice: Kyla's Pure Sport stick as a 3D model, her front art on the front and
+// the back label on the back; drag (or swipe sideways) to spin it, and it idles in a slow turn.
+(function () {
+  const stage = document.querySelector("[data-product-3d]");
+  if (!stage || !window.THREE) return;
+  const canvas = stage.querySelector("canvas");
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  let renderer;
+  try {
+    renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  } catch (e) {
+    return; // no WebGL: leave the space empty rather than break the page
+  }
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.outputEncoding = THREE.sRGBEncoding;
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(30, 1, 0.1, 50);
+  camera.position.set(0, 0.25, 7.2);
+  camera.lookAt(0, 0, 0);
+
+  scene.add(new THREE.HemisphereLight(0xffffff, 0xd9d9d9, 0.9));
+  const key = new THREE.DirectionalLight(0xffffff, 0.75);
+  key.position.set(3, 4, 5);
+  scene.add(key);
+  const rim = new THREE.DirectionalLight(0xffffff, 0.35);
+  rim.position.set(-4, 2, -3);
+  scene.add(rim);
+
+  // Stick proportions follow the art (653 x 1531 px); depth is a typical stick's
+  const W = 1.3;
+  const H = W * (1531 / 653);
+  const D = 0.6;
+  const BEVEL = 0.07;
+  const CAP = 0.26; // the cap is the top quarter of the art
+
+  // Cross-section: a superellipse, so the front is one smooth gentle curve that rolls
+  // into rounded ends (no flat-to-round seam to break the label)
+  const shape = new THREE.Shape();
+  const N = 3.6, SEGS = 160;
+  for (let i = 0; i <= SEGS; i++) {
+    const t = (i / SEGS) * Math.PI * 2;
+    const c = Math.cos(t), s = Math.sin(t);
+    const x = (W / 2 - BEVEL) * Math.sign(c) * Math.pow(Math.abs(c), 2 / N);
+    const z = (D / 2 - BEVEL) * Math.sign(s) * Math.pow(Math.abs(s), 2 / N);
+    if (i === 0) shape.moveTo(x, z);
+    else shape.lineTo(x, z);
+  }
+
+  const geo = new THREE.ExtrudeGeometry(shape, {
+    depth: H - BEVEL * 2,
+    steps: 48, // rows up the sides so the cap can bend
+    bevelEnabled: true,
+    bevelThickness: BEVEL,
+    bevelSize: BEVEL,
+    bevelSegments: 6,
+    curveSegments: 1,
+  });
+  geo.rotateX(-Math.PI / 2); // extrude along y instead of z
+  geo.computeBoundingBox();
+  const box = geo.boundingBox;
+  geo.translate(0, -(box.min.y + box.max.y) / 2, 0);
+  geo.computeBoundingBox();
+  geo.computeVertexNormals();
+
+  // The texture is two panels side by side: Kyla's front art on the left, the back
+  // label on the right. Each is projected straight on (the back mirrored so it reads
+  // correctly from behind); every triangle takes the panel its centre faces, so none
+  // stretches across the seam. The flat top takes the cap red, the bottom the base white.
+  const pos = geo.attributes.position;
+  const nrm = geo.attributes.normal;
+  const uv = geo.attributes.uv;
+  const bb = geo.boundingBox;
+  const spanX = bb.max.x - bb.min.x;
+  const spanY = bb.max.y - bb.min.y;
+  for (let i = 0; i < pos.count; i += 3) {
+    const back = pos.getZ(i) + pos.getZ(i + 1) + pos.getZ(i + 2) < 0;
+    for (let j = i; j < i + 3; j++) {
+      const ny = nrm.getY(j);
+      if (ny > 0.9) { uv.setXY(j, back ? 0.75 : 0.25, 0.99); continue; } // cap red
+      if (ny < -0.9) { uv.setXY(j, back ? 0.75 : 0.25, 0.01); continue; } // base white
+      const u = Math.min(Math.max((pos.getX(j) - bb.min.x) / spanX, 0.004), 0.996);
+      uv.setXY(j, back ? 0.5 + (1 - u) * 0.5 : u * 0.5, (pos.getY(j) - bb.min.y) / spanY);
+    }
+  }
+  uv.needsUpdate = true;
+
+  // Old Spice's sculpted cap: the top rides high along the left-right ridge and the
+  // ends, and swoops down toward the front and back faces in the middle
+  const DIP = 0.34;
+  const capFrom = bb.max.y - spanY * CAP;
+  for (let i = 0; i < pos.count; i++) {
+    const y = pos.getY(i);
+    if (y <= capFrom) continue;
+    const k = Math.pow((y - capFrom) / (bb.max.y - capFrom), 2.2);
+    const fx = pos.getX(i) / (W / 2), fz = pos.getZ(i) / (D / 2);
+    pos.setY(i, y - DIP * k * fz * fz * Math.max(0, 1 - fx * fx));
+  }
+
+  // Smooth shading: average the face normals of every corner that shares a point
+  const sums = new Map();
+  const keyOf = (i) => pos.getX(i).toFixed(4) + "," + pos.getY(i).toFixed(4) + "," + pos.getZ(i).toFixed(4);
+  const a = new THREE.Vector3(), b = new THREE.Vector3(), c = new THREE.Vector3(), n = new THREE.Vector3();
+  for (let i = 0; i < pos.count; i += 3) {
+    a.fromBufferAttribute(pos, i); b.fromBufferAttribute(pos, i + 1); c.fromBufferAttribute(pos, i + 2);
+    n.subVectors(c, b).cross(b.clone().sub(a)).negate(); // area-weighted face normal
+    for (let j = i; j < i + 3; j++) {
+      const k = keyOf(j);
+      const s = sums.get(k);
+      if (s) s.add(n); else sums.set(k, n.clone());
+    }
+  }
+  for (let i = 0; i < pos.count; i++) {
+    const s = sums.get(keyOf(i)).clone().normalize();
+    nrm.setXYZ(i, s.x, s.y, s.z);
+  }
+  nrm.needsUpdate = true;
+
+  const tex = new THREE.TextureLoader().load(stage.dataset.texture, render);
+  tex.encoding = THREE.sRGBEncoding;
+  tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+
+  const stick = new THREE.Mesh(
+    geo,
+    new THREE.MeshStandardMaterial({ map: tex, roughness: 0.38, metalness: 0 })
+  );
+  stick.rotation.x = 0.08;
+  scene.add(stick);
+
+  function resize() {
+    const w = canvas.clientWidth, h = canvas.clientHeight;
+    if (!w || !h) return;
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h;
+    // keep the whole stick in frame on narrow screens
+    const fitH = (H * 1.18) / (2 * Math.tan((camera.fov * Math.PI) / 360));
+    const fitW = (W * 1.6) / (2 * Math.tan((camera.fov * Math.PI) / 360) * camera.aspect);
+    camera.position.z = Math.max(fitH, fitW);
+    camera.updateProjectionMatrix();
+    render();
+  }
+
+  function render() {
+    renderer.render(scene, camera);
+  }
+
+  // Drag to spin, with a little momentum; idle spin when left alone
+  const IDLE_SPEED = reduceMotion ? 0 : 0.35; // radians per second
+  let velocity = 0;
+  let dragging = false;
+  let lastX = 0, lastT = 0, idleAt = 0;
+
+  canvas.addEventListener("pointerdown", (e) => {
+    dragging = true;
+    lastX = e.clientX;
+    lastT = performance.now();
+    velocity = 0;
+    stage.classList.add("is-dragging", "has-spun");
+    canvas.setPointerCapture(e.pointerId);
+  });
+  canvas.addEventListener("pointermove", (e) => {
+    if (!dragging) return;
+    const now = performance.now();
+    const dx = e.clientX - lastX;
+    const turn = (dx / canvas.clientWidth) * Math.PI * 1.6;
+    stick.rotation.y += turn;
+    velocity = turn / Math.max((now - lastT) / 1000, 0.008);
+    lastX = e.clientX;
+    lastT = now;
+  });
+  function release() {
+    if (!dragging) return;
+    dragging = false;
+    stage.classList.remove("is-dragging");
+    if (performance.now() - lastT > 80) velocity = 0; // held still before letting go
+    idleAt = performance.now() + 2500;
+  }
+  canvas.addEventListener("pointerup", release);
+  canvas.addEventListener("pointercancel", release);
+
+  // Only animate while it's on screen
+  let visible = false, raf = 0, prev = 0;
+  function tick(t) {
+    const dt = Math.min((t - prev) / 1000, 0.05);
+    prev = t;
+    if (!dragging) {
+      if (Math.abs(velocity) > 0.01) {
+        stick.rotation.y += velocity * dt;
+        velocity *= Math.pow(0.04, dt); // ease out
+      } else if (t > idleAt) {
+        stick.rotation.y += IDLE_SPEED * dt;
+      }
+    }
+    render();
+    raf = visible ? requestAnimationFrame(tick) : 0;
+  }
+  new IntersectionObserver(([entry]) => {
+    visible = entry.isIntersecting;
+    if (visible && !raf) { prev = performance.now(); raf = requestAnimationFrame(tick); }
+  }).observe(stage);
+
+  window.addEventListener("resize", resize);
+  resize();
+})();
