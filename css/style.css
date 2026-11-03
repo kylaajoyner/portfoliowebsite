@@ -385,7 +385,7 @@ a {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 0;
+  top: calc(100% + 10px); /* just under the model, clear of the stick */
   margin: 0;
   text-align: center;
   font-family: var(--font-nav);
@@ -408,6 +408,9 @@ a {
   padding: 0 16px;
   list-style: none;
 }
+
+/* more room between the badge story and the page nav */
+.logo-parts + .project-nav { margin-top: calc(80 * var(--u)); }
 
 .logo-parts__item img {
   display: block;
@@ -1754,6 +1757,8 @@ a {
   .logo-parts__item img {
     width: 200px;
   }
+
+  .logo-parts + .project-nav { margin-top: 56px; }
 
   .logo-parts__title {
     margin-top: 12px;
