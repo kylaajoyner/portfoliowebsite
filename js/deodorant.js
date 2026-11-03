@@ -28,29 +28,34 @@
   rim.position.set(-4, 2, -3);
   scene.add(rim);
 
-  // Stick proportions follow the art (665 x 1531 px); depth is a typical stick's
+  // Stick proportions follow the art (653 x 1531 px); depth is a typical stick's
   const W = 1.3;
-  const H = W * (1531 / 665);
-  const D = 0.62;
-  const BEVEL = 0.06;
+  const H = W * (1531 / 653);
+  const D = 0.6;
+  const BEVEL = 0.07;
+  const CAP = 0.26; // the cap is the top quarter of the art
 
-  // Cross-section: a stadium (flat front and back, round ends), extruded upward
-  const r = D / 2;
-  const half = W / 2 - r;
+  // Cross-section: a superellipse, so the front is one smooth gentle curve that rolls
+  // into rounded ends (no flat-to-round seam to break the label)
   const shape = new THREE.Shape();
-  shape.moveTo(-half, -r);
-  shape.lineTo(half, -r);
-  shape.absarc(half, 0, r, -Math.PI / 2, Math.PI / 2, false);
-  shape.lineTo(-half, r);
-  shape.absarc(-half, 0, r, Math.PI / 2, Math.PI * 1.5, false);
+  const N = 3.6, SEGS = 160;
+  for (let i = 0; i <= SEGS; i++) {
+    const t = (i / SEGS) * Math.PI * 2;
+    const c = Math.cos(t), s = Math.sin(t);
+    const x = (W / 2 - BEVEL) * Math.sign(c) * Math.pow(Math.abs(c), 2 / N);
+    const z = (D / 2 - BEVEL) * Math.sign(s) * Math.pow(Math.abs(s), 2 / N);
+    if (i === 0) shape.moveTo(x, z);
+    else shape.lineTo(x, z);
+  }
 
   const geo = new THREE.ExtrudeGeometry(shape, {
     depth: H - BEVEL * 2,
+    steps: 48, // rows up the sides so the cap can bend
     bevelEnabled: true,
     bevelThickness: BEVEL,
     bevelSize: BEVEL,
-    bevelSegments: 4,
-    curveSegments: 32,
+    bevelSegments: 6,
+    curveSegments: 1,
   });
   geo.rotateX(-Math.PI / 2); // extrude along y instead of z
   geo.computeBoundingBox();
@@ -73,13 +78,44 @@
     const back = pos.getZ(i) + pos.getZ(i + 1) + pos.getZ(i + 2) < 0;
     for (let j = i; j < i + 3; j++) {
       const ny = nrm.getY(j);
-      if (ny > 0.95) { uv.setXY(j, back ? 0.75 : 0.25, 0.97); continue; } // cap red
-      if (ny < -0.95) { uv.setXY(j, back ? 0.75 : 0.25, 0.02); continue; } // base white
-      const u = (pos.getX(j) - bb.min.x) / spanX;
+      if (ny > 0.9) { uv.setXY(j, back ? 0.75 : 0.25, 0.99); continue; } // cap red
+      if (ny < -0.9) { uv.setXY(j, back ? 0.75 : 0.25, 0.01); continue; } // base white
+      const u = Math.min(Math.max((pos.getX(j) - bb.min.x) / spanX, 0.004), 0.996);
       uv.setXY(j, back ? 0.5 + (1 - u) * 0.5 : u * 0.5, (pos.getY(j) - bb.min.y) / spanY);
     }
   }
   uv.needsUpdate = true;
+
+  // Old Spice's sculpted cap: the top rides high along the left-right ridge and the
+  // ends, and swoops down toward the front and back faces in the middle
+  const DIP = 0.34;
+  const capFrom = bb.max.y - spanY * CAP;
+  for (let i = 0; i < pos.count; i++) {
+    const y = pos.getY(i);
+    if (y <= capFrom) continue;
+    const k = Math.pow((y - capFrom) / (bb.max.y - capFrom), 2.2);
+    const fx = pos.getX(i) / (W / 2), fz = pos.getZ(i) / (D / 2);
+    pos.setY(i, y - DIP * k * fz * fz * Math.max(0, 1 - fx * fx));
+  }
+
+  // Smooth shading: average the face normals of every corner that shares a point
+  const sums = new Map();
+  const keyOf = (i) => pos.getX(i).toFixed(4) + "," + pos.getY(i).toFixed(4) + "," + pos.getZ(i).toFixed(4);
+  const a = new THREE.Vector3(), b = new THREE.Vector3(), c = new THREE.Vector3(), n = new THREE.Vector3();
+  for (let i = 0; i < pos.count; i += 3) {
+    a.fromBufferAttribute(pos, i); b.fromBufferAttribute(pos, i + 1); c.fromBufferAttribute(pos, i + 2);
+    n.subVectors(c, b).cross(b.clone().sub(a)).negate(); // area-weighted face normal
+    for (let j = i; j < i + 3; j++) {
+      const k = keyOf(j);
+      const s = sums.get(k);
+      if (s) s.add(n); else sums.set(k, n.clone());
+    }
+  }
+  for (let i = 0; i < pos.count; i++) {
+    const s = sums.get(keyOf(i)).clone().normalize();
+    nrm.setXYZ(i, s.x, s.y, s.z);
+  }
+  nrm.needsUpdate = true;
 
   const tex = new THREE.TextureLoader().load(stage.dataset.texture, render);
   tex.encoding = THREE.sRGBEncoding;
