@@ -1,5 +1,5 @@
-// Old Spice: Kyla's Pure Sport stick as a 3D model. Her front-view art wraps the
-// stick front and back; drag (or swipe sideways) to spin it, and it idles in a slow turn.
+// Old Spice: Kyla's Pure Sport stick as a 3D model, her front art on the front and
+// the back label on the back; drag (or swipe sideways) to spin it, and it idles in a slow turn.
 (function () {
   const stage = document.querySelector("[data-product-3d]");
   if (!stage || !window.THREE) return;
@@ -59,19 +59,25 @@
   geo.computeBoundingBox();
   geo.computeVertexNormals();
 
-  // Project the art straight on from the front (mirrored for the back so it reads
-  // correctly); the flat top takes the cap red and the flat bottom the base white
+  // The texture is two panels side by side: Kyla's front art on the left, the back
+  // label on the right. Each is projected straight on (the back mirrored so it reads
+  // correctly from behind); every triangle takes the panel its centre faces, so none
+  // stretches across the seam. The flat top takes the cap red, the bottom the base white.
   const pos = geo.attributes.position;
   const nrm = geo.attributes.normal;
   const uv = geo.attributes.uv;
   const bb = geo.boundingBox;
-  for (let i = 0; i < pos.count; i++) {
-    const x = pos.getX(i), y = pos.getY(i), z = pos.getZ(i), ny = nrm.getY(i);
-    if (ny > 0.95) { uv.setXY(i, 0.5, 0.97); continue; } // cap red
-    if (ny < -0.95) { uv.setXY(i, 0.5, 0.02); continue; } // base white
-    let u = (x - bb.min.x) / (bb.max.x - bb.min.x);
-    if (z < 0) u = 1 - u;
-    uv.setXY(i, u, (y - bb.min.y) / (bb.max.y - bb.min.y));
+  const spanX = bb.max.x - bb.min.x;
+  const spanY = bb.max.y - bb.min.y;
+  for (let i = 0; i < pos.count; i += 3) {
+    const back = pos.getZ(i) + pos.getZ(i + 1) + pos.getZ(i + 2) < 0;
+    for (let j = i; j < i + 3; j++) {
+      const ny = nrm.getY(j);
+      if (ny > 0.95) { uv.setXY(j, back ? 0.75 : 0.25, 0.97); continue; } // cap red
+      if (ny < -0.95) { uv.setXY(j, back ? 0.75 : 0.25, 0.02); continue; } // base white
+      const u = (pos.getX(j) - bb.min.x) / spanX;
+      uv.setXY(j, back ? 0.5 + (1 - u) * 0.5 : u * 0.5, (pos.getY(j) - bb.min.y) / spanY);
+    }
   }
   uv.needsUpdate = true;
 
