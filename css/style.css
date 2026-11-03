@@ -237,12 +237,14 @@ a {
 
 /* A label that carries its answer on the same line (Old Spice's client) */
 .explainer__label--full {
-  white-space: normal;
-  line-height: 1.15;
+  contain: inline-size; /* stays on one line without widening the column; spills into the gap instead */
   margin-bottom: 8px; /* no copy under it, so give the next row the usual breathing room */
 }
 
-.nowrap { white-space: nowrap; }
+/* very narrow phones: shrink the one-line Client header just enough to fit */
+@media (max-width: 350px) {
+  .explainer .explainer__label--full { font-size: 23px; }
+}
 
 .explainer__copy {
   margin: 0;
