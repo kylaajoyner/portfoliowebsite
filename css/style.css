@@ -241,6 +241,10 @@ a {
   margin-bottom: 8px; /* no copy under it, so give the next row the usual breathing room */
 }
 
+/* A row without a star (UNC WBB's client): the header starts at the page's left edge */
+.explainer__row--nostar::before { content: none; }
+.explainer__row--nostar .explainer__label { grid-column: 1 / -1; }
+
 /* very narrow phones: shrink the one-line Client header just enough to fit */
 @media (max-width: 350px) {
   .explainer .explainer__label--full { font-size: 23px; }
