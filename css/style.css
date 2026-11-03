@@ -387,6 +387,39 @@ a {
 
 .product-3d.has-spun .product-3d__hint { opacity: 0; }
 
+/* Old Spice: the badge's three parts in a row under the model, each with its story */
+.logo-parts {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: calc(40 * var(--u));
+  max-width: calc(860 * var(--u));
+  margin: calc(48 * var(--u)) auto 0;
+  padding: 0 16px;
+  list-style: none;
+}
+
+.logo-parts__item img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.logo-parts__title {
+  margin: calc(16 * var(--u)) 0 0;
+  font-family: var(--font-nav);
+  font-size: calc(32 * var(--u));
+  font-weight: normal;
+  letter-spacing: calc(2 * var(--u));
+  line-height: 1;
+}
+
+.logo-parts__copy {
+  margin: calc(10 * var(--u)) 0 0;
+  font-family: var(--font-body);
+  font-size: calc(17 * var(--u));
+  line-height: 1.6;
+}
+
 /* Mixed shapes in rows: images in a row share a height, and each one's width
    follows its aspect ratio (--ar), so nothing gets cropped */
 .project-gallery--rows {
@@ -1698,6 +1731,26 @@ a {
 
   .product-3d {
     height: 70vh;
+  }
+
+  .logo-parts {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    max-width: 420px;
+    margin-top: 40px;
+  }
+
+  .logo-parts__item img {
+    width: 200px;
+  }
+
+  .logo-parts__title {
+    margin-top: 12px;
+    font-size: 28px;
+  }
+
+  .logo-parts__copy {
+    font-size: 16px;
   }
 
   .product-3d__hint {
