@@ -235,6 +235,15 @@ a {
   text-box: trim-both cap alphabetic;
 }
 
+/* A label that carries its answer on the same line (Old Spice's client) */
+.explainer__label--full {
+  white-space: normal;
+  line-height: 1.15;
+  margin-bottom: 8px; /* no copy under it, so give the next row the usual breathing room */
+}
+
+.nowrap { white-space: nowrap; }
+
 .explainer__copy {
   margin: 0;
   font-family: var(--font-body);
