@@ -437,6 +437,18 @@ a {
   line-height: 1.6;
 }
 
+/* One tall page on its own (Old Spice Ad Campaign): as tall as the screen allows */
+.project-gallery--single {
+  grid-template-columns: 1fr;
+  justify-items: center;
+}
+
+.project-gallery--single img {
+  width: auto;
+  max-width: 100%;
+  max-height: calc(100vh - var(--header-height) - 140px);
+}
+
 /* Mixed shapes in rows: images in a row share a height, and each one's width
    follows its aspect ratio (--ar), so nothing gets cropped */
 .project-gallery--rows {
