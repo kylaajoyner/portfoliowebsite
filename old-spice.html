@@ -21,7 +21,7 @@
   <meta name="twitter:image" content="https://kylajoyner.com/assets/images/og-star.png">
   <!-- Adobe Fonts kit: West End + Narkiss Yair -->
   <link rel="stylesheet" href="https://use.typekit.net/ijs5kav.css">
-  <link rel="stylesheet" href="css/style.css?v=119">
+  <link rel="stylesheet" href="css/style.css?v=120">
   <script>try{if(sessionStorage.getItem("slide-in"))document.documentElement.classList.add("slide-in")}catch(e){}</script>
 </head>
 <body>
@@ -48,15 +48,10 @@
       </div>
     </dl>
 
-    <div class="project-gallery project-gallery--portrait">
-      <img src="assets/images/old-spice/old-spice-1.jpg" decoding="async" alt="Old Spice Pure Sport cover" width="1300" height="2010">
-      <img src="assets/images/old-spice/old-spice-2.jpg" decoding="async" alt="Logo page: the new Pure Sport badge logo on the deodorant label, inspired by vintage sportswear and gym logos" width="1300" height="2010">
-      <img src="assets/images/old-spice/old-spice-3.jpg" decoding="async" alt="Logo breakdown: stars, captain's wheel and athletic sock stripes explained" width="1300" height="2010">
-      <img src="assets/images/old-spice/old-spice-4.jpg" decoding="async" alt="Branding page: the redesigned Pure Sport deodorant stick" width="1300" height="2010">
-      <img src="assets/images/old-spice/old-spice-5.jpg" decoding="async" alt="Meme culture implementation divider page" width="1300" height="2010">
-      <img src="assets/images/old-spice/old-spice-6.jpg" decoding="async" alt="The meme page: the popular 'Clavicular frame mog incident' meme that inspired the campaign" width="1300" height="2010">
-      <img src="assets/images/old-spice/old-spice-7.jpg" decoding="async" alt="Sketch page: hand-drawn concept sketch for the Scent Mogged ad" width="1300" height="2010">
-      <img src="assets/images/old-spice/old-spice-8.jpg" decoding="async" alt="Final ad: 'Scent Mogged. Just be Old Spice Bro, Brutal.'" width="1300" height="2010">
+    <!-- Pure Sport stick in 3D: drag to spin it -->
+    <div class="product-3d" data-product-3d data-texture="assets/images/old-spice/pure-sport-label.jpg">
+      <canvas class="product-3d__canvas" role="img" aria-label="3D model of the redesigned Old Spice Pure Sport deodorant stick. Drag to rotate it."></canvas>
+      <p class="product-3d__hint" aria-hidden="true">Drag to spin</p>
     </div>
 
     <nav class="project-nav" aria-label="More projects">
@@ -73,6 +68,8 @@
     <p class="copyright">&copy; <span data-year>2026</span> Kyla Joyner. All rights reserved.</p>
   </footer>
 
+  <script src="js/vendor/three.min.js?v=149"></script>
+  <script src="js/deodorant.js?v=120"></script>
   <script src="js/main.js?v=119"></script>
 </body>
 </html>

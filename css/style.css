@@ -349,6 +349,44 @@ a {
   max-width: calc(860 * var(--u));
 }
 
+/* Old Spice: the Pure Sport stick as a 3D model you can drag to spin */
+.explainer:has(+ .product-3d) { max-width: calc(860 * var(--u)); }
+
+.product-3d {
+  position: relative;
+  max-width: calc(860 * var(--u));
+  height: min(calc(620 * var(--u)), 70vh);
+  margin: calc(28 * var(--u)) auto 0;
+  padding: 0 16px;
+}
+
+.product-3d__canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+  touch-action: pan-y; /* sideways drags spin it, vertical swipes still scroll the page */
+}
+
+.product-3d.is-dragging .product-3d__canvas { cursor: grabbing; }
+
+.product-3d__hint {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0;
+  text-align: center;
+  font-family: var(--font-nav);
+  font-size: calc(18 * var(--u));
+  letter-spacing: 2px;
+  opacity: 0.5;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.product-3d.has-spun .product-3d__hint { opacity: 0; }
+
 /* Mixed shapes in rows: images in a row share a height, and each one's width
    follows its aspect ratio (--ar), so nothing gets cropped */
 .project-gallery--rows {
@@ -1656,6 +1694,14 @@ a {
 
   .project-gallery--portrait {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .product-3d {
+    height: 70vh;
+  }
+
+  .product-3d__hint {
+    font-size: 16px;
   }
 
   .gallery-row {
