@@ -398,6 +398,9 @@ a {
 
 .product-3d.has-spun .product-3d__hint { opacity: 0; }
 
+/* the awards line sits under the "Drag to spin" hint */
+.product-3d + .project-note { margin-top: calc(48 * var(--u)); }
+
 /* Old Spice: the badge's three parts in a row under the model, each with its story */
 .logo-parts {
   display: grid;
