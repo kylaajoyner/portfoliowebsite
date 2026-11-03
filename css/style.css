@@ -224,10 +224,6 @@ a {
   color: #c4263f;
 }
 
-/* Client row (UNC WBB): no star, header in the star red */
-.explainer__row--client::before { content: ""; }
-.explainer__row--client .explainer__label { color: #c4263f; }
-
 /* Both the label and the copy are trimmed to the top of their capitals,
    so the first line of copy starts exactly level with "PROJECT:" / "ROLE:" */
 .explainer__label {
