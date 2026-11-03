@@ -243,7 +243,8 @@ a {
 
 /* A row without a star (UNC WBB's client): the header starts at the page's left edge */
 .explainer__row--nostar::before { content: none; }
-.explainer__row--nostar .explainer__label { grid-column: 1 / -1; }
+.explainer__row--nostar .explainer__label,
+.page--project .explainer .explainer__row--nostar .explainer__copy { grid-column: 1 / -1; }
 
 /* very narrow phones: shrink the one-line Client header just enough to fit */
 @media (max-width: 350px) {
