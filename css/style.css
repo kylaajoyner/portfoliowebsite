@@ -2376,10 +2376,10 @@ a {
   --c: calc(100cqw / 1268);
   position: relative;
   display: grid;
-  grid-template-columns: 1fr calc(401 * var(--c));
+  grid-template-columns: 1fr calc(430 * var(--c)); /* = the 380u cover tile at full width */
+  gap: calc(40 * var(--c));
   align-items: center;
-  aspect-ratio: 1268 / 626;
-  padding: calc(48 * var(--c)) calc(129 * var(--c)) calc(48 * var(--c)) calc(48 * var(--c));
+  padding: calc(110 * var(--c)) calc(129 * var(--c)) calc(110 * var(--c)) calc(48 * var(--c));
   background: var(--color-paper);
   color: var(--color-ink);
   text-decoration: none;
@@ -2435,12 +2435,12 @@ a {
   content: "\2605"; /* ★ */
   flex: none;
   font-size: 0.72em;
-  color: #d9d9d9;
+  color: #c4263f; /* same red star as the explainers and the Jukebox */
 }
 
 .bento-card__media {
   display: block;
-  height: 100%;
+  aspect-ratio: 380 / 214; /* same landscape format as the cover tiles */
   overflow: hidden;
   background: #000;
 }
@@ -2449,7 +2449,6 @@ a {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 53% center; /* centers the Carolina logo in the tall frame */
   transition: transform 0.4s ease;
 }
 
