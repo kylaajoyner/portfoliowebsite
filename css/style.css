@@ -2352,3 +2352,120 @@ a {
   .site-footer__links { gap: 32px; padding-top: 24px; }
   .site-footer__links a { font-size: 18px; }
 }
+
+/* ---------- Work page redo: bento cards (in progress, one card at a time) ---------- */
+/* Each card scales with its own width, so the same card works at any size in the bento.
+   --c = one pixel of Kyla's Figma card (1268 wide). */
+
+.page--work-redo {
+  height: auto;
+  min-height: calc(100vh - var(--header-height));
+  padding-bottom: calc(120 * var(--u));
+}
+
+.bento {
+  max-width: calc(1120 * var(--u));
+  margin: calc(150 * var(--u)) auto 0;
+  padding: 0;
+  list-style: none;
+}
+
+.bento__item { container-type: inline-size; }
+
+.bento-card {
+  --c: calc(100cqw / 1268);
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr calc(401 * var(--c));
+  align-items: center;
+  aspect-ratio: 1268 / 626;
+  padding: calc(48 * var(--c)) calc(129 * var(--c)) calc(48 * var(--c)) calc(48 * var(--c));
+  background: var(--color-paper);
+  color: var(--color-ink);
+  text-decoration: none;
+  outline: 1px solid rgba(0, 0, 0, 0.12); /* keeps the white card visible on the white page */
+}
+
+.bento-card__ornament {
+  position: absolute;
+  width: calc(84 * var(--c));
+  height: auto;
+  pointer-events: none;
+}
+/* The ornament art points to the bottom-right corner; the others are flipped. */
+.bento-card__ornament--tl { top: calc(32 * var(--c)); left: calc(26 * var(--c)); transform: rotate(180deg); }
+.bento-card__ornament--tr { top: calc(32 * var(--c)); right: calc(32 * var(--c)); transform: scaleY(-1); }
+.bento-card__ornament--bl { bottom: calc(40 * var(--c)); left: calc(26 * var(--c)); transform: scaleX(-1); }
+.bento-card__ornament--br { bottom: calc(40 * var(--c)); right: calc(32 * var(--c)); }
+
+.bento-card__facts {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--font-nav);
+  font-size: calc(60 * var(--c));
+  line-height: 1.08;
+  text-transform: uppercase;
+}
+
+.bento-card__text { display: block; padding-bottom: calc(40 * var(--c)); }
+
+/* "Explore more" in Narkiss, lined up with the text after the stars */
+.bento-card__more {
+  display: inline-block;
+  margin: calc(30 * var(--c)) 0 0 calc(65 * var(--c));
+  font-family: var(--font-body);
+  font-size: calc(30 * var(--c));
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.3s ease;
+}
+
+.bento-card:hover .bento-card__more,
+.bento-card:focus-visible .bento-card__more { border-bottom-color: currentColor; }
+
+.bento-card__facts li {
+  display: flex;
+  align-items: baseline;
+  gap: calc(22 * var(--c));
+}
+
+.bento-card__facts li + li { margin-top: calc(14 * var(--c)); }
+
+.bento-card__facts li::before {
+  content: "\2605"; /* ★ */
+  flex: none;
+  font-size: 0.72em;
+  color: #d9d9d9;
+}
+
+.bento-card__media {
+  display: block;
+  height: 100%;
+  overflow: hidden;
+  background: #000;
+}
+
+.bento-card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 53% center; /* centers the Carolina logo in the tall frame */
+  transition: transform 0.4s ease;
+}
+
+.bento-card:hover .bento-card__media img,
+.bento-card:focus-visible .bento-card__media img {
+  transform: scale(1.04);
+}
+
+/* the older tiles that haven't been converted yet sit underneath */
+.page--work-redo .work-grid { margin-top: calc(80 * var(--u)); }
+
+@media (max-width: 900px) {
+  .bento { margin-top: 100px; padding: 0 16px; }
+  .page--work-redo .work-grid { margin-top: 40px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bento-card__media img { transition: none; }
+}
