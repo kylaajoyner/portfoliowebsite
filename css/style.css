@@ -2421,9 +2421,20 @@ a {
 
 /* Section signs: Kyla's pixel saloon boards, each heading its group of cards */
 .work-sign {
+  position: relative;
   width: calc(640 * var(--u));
   max-width: 100%;
   margin: 0 auto calc(40 * var(--u));
+}
+/* the sign hangs from a thin black line running across the whole page */
+.work-sign::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: calc(50% - 50vw);
+  width: 100vw;
+  height: 2px;
+  background: #000;
 }
 .work-sign img {
   display: block;
