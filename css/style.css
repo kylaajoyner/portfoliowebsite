@@ -2422,7 +2422,8 @@ a {
 /* Section signs: Kyla's pixel saloon boards, each heading its group of cards */
 .work-sign {
   position: relative;
-  width: calc(640 * var(--u));
+  container-type: inline-size; /* the title scales with the board */
+  width: calc(600 * var(--u));
   max-width: 100%;
   margin: 0 auto calc(40 * var(--u));
 }
@@ -2442,9 +2443,23 @@ a {
   height: auto;
   image-rendering: pixelated;
 }
+/* the title sits on the plain middle of the board */
+.work-sign__label {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 65.8%;
+  transform: translateY(-50%);
+  font-family: var(--font-nav);
+  font-weight: 400;
+  font-size: 13.5cqw;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  text-align: center;
+  color: #000;
+}
 .bento + .bento { margin-top: calc(40 * var(--u)); }
 .bento + .work-sign { margin-top: calc(100 * var(--u)); }
-.work-sign--design { width: calc(600 * var(--u)); } /* same pixel scale as the Art Direction sign */
 
 .bento {
   max-width: calc(1120 * var(--u));
@@ -2589,7 +2604,6 @@ a {
   .work-intro__copy { min-height: 140px; }
   .ride { --tile: calc(100vw - 32px); }
   .work-sign { width: calc(100% - 64px); margin-bottom: 24px; }
-  .work-sign--design { width: calc((100% - 64px) * 0.94); }
   .bento + .work-sign { margin-top: 56px; }
   .bento { padding: 0 16px; }
   .page--work-redo .work-grid { margin-top: 40px; }
