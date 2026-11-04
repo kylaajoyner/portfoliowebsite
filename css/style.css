@@ -2475,6 +2475,9 @@ a {
 .bento-card:hover .bento-card__media--light img,
 .bento-card:focus-visible .bento-card__media--light img { transform: none; }
 
+/* covers shown whole, at their own shape (same width as the other covers) */
+.bento-card__media.bento-card__media--full { aspect-ratio: 2000 / 1333; }
+
 /* space between cards (placeholder until the bento arrangement is designed) */
 .bento__item + .bento__item { margin-top: calc(40 * var(--u)); }
 
