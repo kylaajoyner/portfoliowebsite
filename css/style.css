@@ -2475,13 +2475,6 @@ a {
 .bento-card:hover .bento-card__media--light img,
 .bento-card:focus-visible .bento-card__media--light img { transform: none; }
 
-/* DTH: the wordmark sits on white inside the same thin border as its old tile */
-.bento-card__media--wordmark {
-  background: var(--color-paper);
-  outline: 0.5px solid var(--color-thumb-border);
-}
-.bento-card__media.bento-card__media--wordmark img { object-fit: contain; padding: 0 8%; }
-
 /* space between cards (placeholder until the bento arrangement is designed) */
 .bento__item + .bento__item { margin-top: calc(40 * var(--u)); }
 
