@@ -2380,19 +2380,19 @@ a {
    gallop in place on top (her leaping frame left out at her ask). Keyframe names are work-only so they don't clash with
    the Rodeo page's "ride". */
 .ride {
+  --tile: calc(960 * var(--u)); /* one copy of the desert strip; the ride's height follows it */
   position: relative;
   overflow: hidden;
-  width: calc(960 * var(--u));
-  aspect-ratio: 1024 / 200;
-  margin: 0 auto;
+  width: 100vw; /* full-bleed: runs edge to edge of the screen */
+  height: calc(var(--tile) * 200 / 1024);
+  margin: 0 calc(50% - 50vw);
   image-rendering: pixelated;
 }
 .ride::before {
   content: "";
   position: absolute;
-  inset: 0 auto 0 0;
-  width: 200%;
-  background: url("../assets/images/work/ride-desert.png") 0 100% / 50% 68% repeat-x;
+  inset: 0;
+  background: url("../assets/images/work/ride-desert.png") 0 100% / var(--tile) 68% repeat-x;
   animation: ride-scroll 10s linear infinite;
 }
 .ride__horse {
@@ -2407,7 +2407,7 @@ a {
 }
 
 @keyframes ride-scroll {
-  to { transform: translateX(-50%); }
+  to { background-position-x: calc(-1 * var(--tile)); }
 }
 @keyframes ride-gallop {
   to { background-position-x: 125%; }
@@ -2558,7 +2558,7 @@ a {
 @media (max-width: 900px) {
   .work-intro { min-height: calc(100svh - var(--header-height) - 44px); padding: 100px 0 40px; } /* clears the smaller corner ornaments */
   .work-intro__copy { min-height: 140px; }
-  .ride { width: calc(100% - 32px); }
+  .ride { --tile: calc(100vw - 32px); }
   .bento { padding: 0 16px; }
   .page--work-redo .work-grid { margin-top: 40px; }
 }
