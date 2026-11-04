@@ -2458,11 +2458,15 @@ a {
   background: #000;
 }
 
-/* the stick GIF sits on white, so it gets the same thin border as the cover tiles */
+/* the stick GIF sits on white with no border, a little bigger than the cover tiles */
 .bento-card__media--light {
   background: var(--color-paper);
-  outline: 0.5px solid var(--color-thumb-border);
+  overflow: visible;
+  transform: scale(1.2);
 }
+
+.bento-card:hover .bento-card__media--light img,
+.bento-card:focus-visible .bento-card__media--light img { transform: none; }
 
 /* space between cards (placeholder until the bento arrangement is designed) */
 .bento__item + .bento__item { margin-top: calc(40 * var(--u)); }
