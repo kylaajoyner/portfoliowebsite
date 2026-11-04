@@ -2419,6 +2419,20 @@ a {
   z-index: 1; /* always in front of the scrolling desert */
 }
 
+/* Section signs: Kyla's pixel saloon boards, each heading its group of cards */
+.work-sign {
+  width: calc(640 * var(--u));
+  max-width: 100%;
+  margin: 0 auto calc(40 * var(--u));
+}
+.work-sign img {
+  display: block;
+  width: 100%;
+  height: auto;
+  image-rendering: pixelated;
+}
+.bento + .bento { margin-top: calc(40 * var(--u)); }
+
 .bento {
   max-width: calc(1120 * var(--u));
   margin: 0 auto;
@@ -2561,6 +2575,7 @@ a {
   .work-intro { min-height: calc(100svh - var(--header-height) - 44px); padding: 100px 0 40px; } /* clears the smaller corner ornaments */
   .work-intro__copy { min-height: 140px; }
   .ride { --tile: calc(100vw - 32px); }
+  .work-sign { width: calc(100% - 64px); margin-bottom: 24px; }
   .bento { padding: 0 16px; }
   .page--work-redo .work-grid { margin-top: 40px; }
 }
