@@ -2443,6 +2443,8 @@ a {
   image-rendering: pixelated;
 }
 .bento + .bento { margin-top: calc(40 * var(--u)); }
+.bento + .work-sign { margin-top: calc(100 * var(--u)); }
+.work-sign--design { width: calc(600 * var(--u)); } /* same pixel scale as the Art Direction sign */
 
 .bento {
   max-width: calc(1120 * var(--u));
@@ -2587,6 +2589,8 @@ a {
   .work-intro__copy { min-height: 140px; }
   .ride { --tile: calc(100vw - 32px); }
   .work-sign { width: calc(100% - 64px); margin-bottom: 24px; }
+  .work-sign--design { width: calc((100% - 64px) * 0.94); }
+  .bento + .work-sign { margin-top: 56px; }
   .bento { padding: 0 16px; }
   .page--work-redo .work-grid { margin-top: 40px; }
 }
