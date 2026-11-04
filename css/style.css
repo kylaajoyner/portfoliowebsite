@@ -2375,15 +2375,15 @@ a {
 }
 .work-intro__copy { min-height: calc(220 * var(--u)); }
 
-/* Pixel cowgirl ride: Kyla's desert (her four background panels joined into one
-   990x263 strip) scrolls left on a seamless loop while her horse frames
+/* Pixel cowgirl ride: Kyla's saloon desert (1024x136 strip, the last row of her
+   background sheet) scrolls left along the bottom on a seamless loop while her horse frames
    gallop in place on top (her leaping frame left out at her ask). Keyframe names are work-only so they don't clash with
    the Rodeo page's "ride". */
 .ride {
   position: relative;
   overflow: hidden;
   width: calc(960 * var(--u));
-  aspect-ratio: 990 / 263;
+  aspect-ratio: 1024 / 200;
   margin: 0 auto;
   image-rendering: pixelated;
 }
@@ -2392,14 +2392,14 @@ a {
   position: absolute;
   inset: 0 auto 0 0;
   width: 200%;
-  background: url("../assets/images/work/ride-desert.png") 0 0 / 50% 100% repeat-x;
-  animation: ride-scroll 12s linear infinite;
+  background: url("../assets/images/work/ride-desert.png") 0 100% / 50% 68% repeat-x;
+  animation: ride-scroll 10s linear infinite;
 }
 .ride__horse {
   position: absolute;
   left: 50%;
-  bottom: 4%;
-  height: 64%;
+  bottom: 1%;
+  height: 80%;
   aspect-ratio: 181 / 203;
   transform: translateX(-50%);
   background: url("../assets/images/work/ride-horse.png") 0 0 / 500% 100% no-repeat;
