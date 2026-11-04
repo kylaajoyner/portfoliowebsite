@@ -2403,8 +2403,9 @@ a {
   padding: 0;
   list-style: none;
   font-family: var(--font-nav);
-  font-size: calc(60 * var(--c));
+  font-size: calc(50 * var(--c));
   line-height: 1.08;
+  white-space: nowrap; /* each line stays on one line */
   text-transform: uppercase;
 }
 
@@ -2463,9 +2464,12 @@ a {
   background: var(--color-paper);
 }
 
-/* the stick card gives its GIF a 20% wider column, so it is bigger without covering the text */
-.bento-card:has(.bento-card__media--light) {
-  grid-template-columns: 1fr calc(516 * var(--c));
+/* the stick GIF is cropped tall around the stick: 20% taller than the cover tiles,
+   and narrow, so the text keeps its room */
+.bento-card__media--light {
+  aspect-ratio: 280 / 428;
+  width: calc(190 * var(--c));
+  justify-self: center; /* centered where the cover image sits on the other cards */
 }
 
 .bento-card:hover .bento-card__media--light img,
