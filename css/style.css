@@ -2461,8 +2461,11 @@ a {
 /* the stick GIF sits on white with no border, a little bigger than the cover tiles */
 .bento-card__media--light {
   background: var(--color-paper);
-  overflow: visible;
-  transform: scale(1.2);
+}
+
+/* the stick card gives its GIF a 20% wider column, so it is bigger without covering the text */
+.bento-card:has(.bento-card__media--light) {
+  grid-template-columns: 1fr calc(516 * var(--c));
 }
 
 .bento-card:hover .bento-card__media--light img,
