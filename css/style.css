@@ -2363,9 +2363,31 @@ a {
   padding-bottom: calc(120 * var(--u));
 }
 
+/* Pixel cowgirl ride: the four panels of Kyla's storyboard (one 1024x1024 sheet,
+   four 1024x256 rows) shown one after another, looping. Sits between the top ornaments. */
+.ride {
+  width: calc(960 * var(--u));
+  aspect-ratio: 1024 / 256;
+  margin: 0 auto;
+  background: url("../assets/images/work/cowgirl-ride.png") 0 0 / 100% 400% no-repeat;
+  image-rendering: pixelated;
+  animation: ride 2.4s infinite;
+}
+
+@keyframes ride {
+  0%, 24.99%   { background-position: 0 0; }
+  25%, 49.99%  { background-position: 0 33.333%; }
+  50%, 74.99%  { background-position: 0 66.667%; }
+  75%, 100%    { background-position: 0 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ride { animation: none; }
+}
+
 .bento {
   max-width: calc(1120 * var(--u));
-  margin: calc(150 * var(--u)) auto 0;
+  margin: calc(60 * var(--u)) auto 0;
   padding: 0;
   list-style: none;
 }
@@ -2502,7 +2524,8 @@ a {
 .page--work-redo .work-grid { margin-top: calc(80 * var(--u)); }
 
 @media (max-width: 900px) {
-  .bento { margin-top: 100px; padding: 0 16px; }
+  .ride { width: calc(100% - 32px); margin-top: 100px; } /* clears the smaller corner ornaments */
+  .bento { margin-top: 24px; padding: 0 16px; }
   .page--work-redo .work-grid { margin-top: 40px; }
 }
 
