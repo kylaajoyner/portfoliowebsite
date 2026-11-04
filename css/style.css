@@ -2416,12 +2416,25 @@ a {
   margin: calc(30 * var(--c)) 0 0 calc(65 * var(--c));
   font-family: var(--font-body);
   font-size: calc(30 * var(--c));
-  border-bottom: 1px solid transparent;
-  transition: border-color 0.3s ease;
+  position: relative;
 }
 
-.bento-card:hover .bento-card__more,
-.bento-card:focus-visible .bento-card__more { border-bottom-color: currentColor; }
+/* same grow-from-the-middle underline as the nav and the other page links */
+.bento-card__more::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(-3 * var(--c));
+  height: max(1px, calc(1.5 * var(--u)));
+  background: rgba(0, 0, 0, 0.3);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.25s ease;
+}
+
+.bento-card:hover .bento-card__more::after,
+.bento-card:focus-visible .bento-card__more::after { transform: scaleX(1); }
 
 .bento-card__facts li {
   display: flex;
