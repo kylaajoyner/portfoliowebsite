@@ -2443,6 +2443,9 @@ a {
   gap: calc(22 * var(--c));
 }
 
+/* a name too long for one line beside the cover wraps instead of running under it */
+.bento-card__facts li.bento-card__fact--wrap { white-space: normal; }
+
 .bento-card__facts li + li { margin-top: calc(14 * var(--c)); }
 
 .bento-card__facts li::before {
