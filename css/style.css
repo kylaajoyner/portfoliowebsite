@@ -2396,13 +2396,14 @@ a {
   animation: ride-scroll 10s linear infinite;
 }
 .ride__horse {
+  z-index: 1; /* always in front of the scrolling desert */
   position: absolute;
   left: 50%;
   bottom: 1%;
   height: 80%;
   aspect-ratio: 341 / 276;
   transform: translateX(-50%);
-  background: url("../assets/images/work/ride-horse.png") 0 0 / 700% 100% no-repeat;
+  background: url("../assets/images/work/ride-horse.png?v=2") 0 0 / 700% 100% no-repeat;
   animation: ride-gallop 0.7s steps(7) infinite;
 }
 
@@ -2415,6 +2416,7 @@ a {
 
 @media (prefers-reduced-motion: reduce) {
   .ride::before, .ride__horse { animation: none; }
+  z-index: 1; /* always in front of the scrolling desert */
 }
 
 .bento {
