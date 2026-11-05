@@ -45,7 +45,7 @@
   // frames, then the next grows on from its end, like one vine creeping down the page.
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const FRAMES = 8, RATIO = 370 / 300; // frame height / width
-  const BASE_X = 0.652;  // where the sprout's stem sits across a frame (from the left)
+  const BASE_X = 0.82;   // where the grown vine's main stem runs down a frame (from the left)
   const STEM_X = 0.111;  // where the ornament's stem sits, in from its outer edge
   const sides = document.createElement("div");
   sides.className = "side-vines";
