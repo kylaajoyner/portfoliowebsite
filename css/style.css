@@ -2411,7 +2411,11 @@ a {
 .speech__line.is-said { opacity: 1; transform: none; filter: none; }
 /* the trailing "..." hangs past the end so the words themselves sit on the page's center line */
 .speech__hang { position: absolute; }
-.speech__clues { text-align: center; font-size: calc(96 * var(--u)); }
+.speech__clues { text-align: center; font-size: calc(100 * var(--u)); }
+/* the opening line: bigger, wraps onto balanced lines (its "..." stays inline) */
+.speech__open { font-size: calc(66 * var(--u)); max-width: calc(1260 * var(--u)); text-wrap: balance; }
+.speech__open .speech__hang { position: static; }
+.speech__cowpoke { text-align: center; font-size: calc(66 * var(--u)); }
 /* Scroll hint: Kyla's-ride-style pixel arrow bouncing under "We have some clues" */
 .scroll-hint {
   display: block;
@@ -2431,17 +2435,22 @@ a {
 /* "We have some clues" sits centered in the box between the ride's ground line and
    the sign's line: the copy and the clues share the free space of the first screen */
 .work-intro .work-intro__copy { flex: 1 0 auto; }
-.work-intro .speech__clues {
+.work-intro .work-intro__end {
   flex: 1 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-top: calc(-40 * var(--u)); /* cancel the intro gap so the box starts at the ground line */
+  gap: calc(14 * var(--u));
+}
+.work-intro .speech__clues {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 /* The descriptors share one spot: each one replaces the one before it */
 /* They flip over like a sign, the same motion as the roles on the About page TV */
-.speech__roles { display: grid; justify-items: center; perspective: 11em; font-size: calc(130 * var(--u)); }
+.speech__roles { display: grid; justify-items: center; perspective: 11em; font-size: calc(124 * var(--u)); }
 .speech__roles .speech__line {
   grid-area: 1 / 1;
   color: #c4263f;
@@ -2487,6 +2496,9 @@ a {
   margin: 0 calc(50% - 50vw);
   image-rendering: pixelated;
 }
+/* on the Work intro the ride starts hidden and fades in slowly with the opening line */
+.work-intro--full .ride { opacity: 0; transition: opacity 3s ease-in-out; }
+.work-intro--full .ride.is-shown { opacity: 1; }
 .ride::before {
   content: "";
   position: absolute;
@@ -2717,8 +2729,9 @@ a {
   .work-intro--full { min-height: 100svh; padding-inline: 16px; }
   .work-intro__copy { min-height: 140px; }
   .speech__line { font-size: 19px; }
-  .speech__clues { font-size: 34px; }
-  .speech__roles { font-size: 34px; }
+  .speech__clues { font-size: 36px; }
+  .speech__open, .speech__cowpoke { font-size: 22px; }
+  .speech__roles { font-size: 36px; }
   .scroll-hint { width: 30px; margin-top: 14px; padding: 6px; }
   .speech__dots { bottom: -24px; gap: 7px; }
   .speech__dots i { width: 7px; height: 7px; }

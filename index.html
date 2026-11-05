@@ -21,7 +21,7 @@
   <meta name="twitter:image" content="https://kylajoyner.com/assets/images/og-star.png">
   <!-- Adobe Fonts kit: West End + Narkiss Yair -->
   <link rel="stylesheet" href="https://use.typekit.net/ijs5kav.css">
-  <link rel="stylesheet" href="css/style.css?v=176">
+  <link rel="stylesheet" href="css/style.css?v=177">
 </head>
 <body>
   <!-- Full-screen intro (scroll to enter): it fills the whole screen before the header.
@@ -31,10 +31,10 @@
     <img class="ornament ornament--top-right" src="assets/images/ornament.png" alt="">
     <img class="ornament ornament--bottom-left" src="assets/images/ornament.png" alt="">
     <img class="ornament ornament--bottom-right" src="assets/images/ornament.png" alt="">
-      <!-- Intro speech (Kyla's storyboard): "..." like the lost cowboy, then each line arrives one after another -->
+      <!-- Intro speech (Kyla's storyboard): a blank framed screen, then each line arrives one after another -->
       <div class="work-intro__copy" data-speech aria-live="polite">
         <span class="speech__dots" aria-hidden="true"><i></i><i></i><i></i></span>
-        <p class="speech__line">There have been tales of an outlaw<span class="speech__hang">&hellip;</span></p>
+        <p class="speech__line speech__open">For some time now there have been tales of an outlaw<span class="speech__hang">&hellip;</span></p>
         <div class="speech__roles">
           <p class="speech__line speech__role">A creative</p>
           <p class="speech__line speech__role">An art director</p>
@@ -43,12 +43,15 @@
       </div>
       <!-- Kyla's pixel cowgirl ride: her horse frames gallop over her scrolling desert -->
       <div class="ride" role="img" aria-label="Pixel-art cowgirl galloping on horseback through the desert"><span class="ride__horse"></span></div>
-      <p class="speech__line speech__clues" data-speech-last>We have some clues
-        <!-- scroll hint: a pixel arrow that bounces, and jumps to the first sign on click -->
-        <a class="scroll-hint" href="#work-start" aria-label="Scroll to the work">
-          <svg viewBox="0 0 7 7" width="7" height="7" shape-rendering="crispEdges" aria-hidden="true"><path d="M2 0h3v3H2zM0 3h7v1H0zM1 4h5v1H1zM2 5h3v1H2zM3 6h1v1H3z" fill="#1c1c1c"/></svg>
-        </a>
-      </p>
+      <div class="work-intro__end">
+        <p class="speech__line speech__cowpoke">We&rsquo;re counting on you Cowpoke.</p>
+        <p class="speech__line speech__clues">We have some clues
+          <!-- scroll hint: a pixel arrow that bounces, and jumps to the first sign on click -->
+          <a class="scroll-hint" href="#work-start" aria-label="Scroll to the work">
+            <svg viewBox="0 0 7 7" width="7" height="7" shape-rendering="crispEdges" aria-hidden="true"><path d="M2 0h3v3H2zM0 3h7v1H0zM1 4h5v1H1zM2 5h3v1H2zM3 6h1v1H3z" fill="#1c1c1c"/></svg>
+          </a>
+        </p>
+      </div>
   </section>
 
   <header class="site-header">
@@ -192,6 +195,6 @@
     <p class="copyright">&copy; <span data-year>2026</span> Kyla Joyner. All rights reserved.</p>
   </footer>
 
-  <script src="js/main.js?v=133"></script>
+  <script src="js/main.js?v=134"></script>
 </body>
 </html>

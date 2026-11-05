@@ -668,36 +668,46 @@
   }
 })();
 
-// Work page intro speech: "..." first, then the outlaw line, then each descriptor
-// replaces the one before it in the same spot, then "We have some clues" under the
-// ride (about 4s in all). After that the descriptors keep looping.
+// Work page intro speech (Kyla's sequence): the framed screen starts blank, then
+// "For some time now there have been tales of an outlaw..." fades in while the ride
+// slowly fades in, then each descriptor replaces the one before it, then
+// "We're counting on you Cowpoke." and "We have some clues". After that the
+// descriptors keep looping.
 (function () {
   const box = document.querySelector("[data-speech]");
   if (!box) return;
+  const intro = box.closest(".work-intro") || document;
   const dots = box.querySelector(".speech__dots");
-  const lines = Array.prototype.slice.call(box.querySelectorAll(".speech__line"));
-  const last = document.querySelector("[data-speech-last]");
-  if (last) lines.push(last);
+  const ride = intro.querySelector(".ride");
+  const lines = Array.prototype.slice.call(intro.querySelectorAll(".speech__line"));
 
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    // No motion: show the opening line, the final descriptor and the clues line
+    // No motion: show everything at once, with the last descriptor
     const roles = box.querySelectorAll(".speech__role");
     lines.forEach(function (l) {
       if (!l.classList.contains("speech__role") || l === roles[roles.length - 1]) l.classList.add("is-said");
     });
+    if (ride) ride.classList.add("is-shown");
     return;
   }
 
-  let t = 300;
+  let t = 900; // a moment of blank, framed screen first
   let prevRole = null;
-  let prevRoleQueued = false;
-  dots.classList.add("is-typing");
+  let firstRole = true;
   lines.forEach(function (line, i) {
-    // descriptors get longer on screen than the other lines
-    t += line.classList.contains("speech__role") ? 1500 : 800;
-    if (line.classList.contains("speech__role") && !prevRoleQueued) { t += 1000; prevRoleQueued = true; } // a beat after the outlaw line
+    const isRole = line.classList.contains("speech__role");
+    if (i > 0) {
+      // descriptors get longer on screen than the other lines
+      t += isRole ? 1500 : 1300;
+      if (isRole && firstRole) t += 1200; // a beat after the opening line
+    }
+    if (isRole) firstRole = false;
     setTimeout(function () {
-      if (line.classList.contains("speech__role")) {
+      if (i === 0) {
+        if (ride) ride.classList.add("is-shown");
+        dots.classList.add("is-typing");
+      }
+      if (isRole) {
         if (prevRole) {
           const out = prevRole;
           out.classList.add("is-gone");
