@@ -2526,17 +2526,18 @@ a {
   max-width: 100%;
   margin: 0 auto calc(40 * var(--u));
 }
-/* the sign hangs from a thin black line running across the whole page */
+/* the sign hangs from Kyla's vine running across the whole page */
 .work-sign::before {
   content: "";
   position: absolute;
-  top: 0;
+  top: calc(-44 * var(--u));
   left: calc(50% - 50vw);
   width: 100vw;
-  height: 2px;
-  background: #000;
+  height: calc(88 * var(--u));
+  background: url("../assets/images/work/vine-line.png") center / auto 100% repeat-x;
 }
 .work-sign img {
+  position: relative; /* in front of the vine */
   display: block;
   width: 100%;
   height: auto;
@@ -2724,6 +2725,7 @@ a {
   .ride { --tile: calc(100vw - 32px); }
   .work-sign { width: calc(100% - 64px); margin-bottom: 24px; }
   .bento + .work-sign { margin-top: 56px; }
+  .work-sign::before { top: -24px; height: 48px; }
   .bento { padding: 0 16px; }
   .page--work-redo .work-grid { margin-top: 40px; }
 }
