@@ -596,7 +596,7 @@ a {
 .page--project.is-leaving {
   opacity: 0;
   transform: translateX(-60px);
-  transition: opacity 0.45s ease, transform 0.45s ease;
+  transition: opacity 0.35s ease, transform 0.35s ease;
 }
 
 .slide-in .page--project {
@@ -2371,7 +2371,7 @@ a {
   justify-content: center;
   gap: calc(40 * var(--u));
   min-height: calc(100vh - var(--header-height) - 44 * var(--u));
-  padding-bottom: calc(60 * var(--u));
+  padding-bottom: 0; /* the clues box runs down to the sign line */
 }
 .work-intro__copy {
   position: relative;
@@ -2389,19 +2389,30 @@ a {
 .speech__line {
   margin: 0;
   font-family: var(--font-nav);
-  font-size: calc(40 * var(--u));
-  line-height: 1.2;
+  font-size: calc(80 * var(--u));
+  line-height: 1.1;
   letter-spacing: 0.02em;
   opacity: 0;
-  transform: translateY(6px);
-  transition: opacity 0.35s ease, transform 0.35s ease;
+  transform: translateY(8px);
+  filter: blur(6px);
+  transition: opacity 0.9s ease-in-out, transform 0.9s ease-in-out, filter 0.9s ease-in-out;
 }
-.speech__line.is-said { opacity: 1; transform: none; }
+.speech__line.is-said { opacity: 1; transform: none; filter: none; }
 .speech__clues { text-align: center; }
+/* "We have some clues" sits centered in the box between the ride's ground line and
+   the sign's line: the copy and the clues share the free space of the first screen */
+.work-intro .work-intro__copy { flex: 1 0 auto; }
+.work-intro .speech__clues {
+  flex: 1 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: calc(-40 * var(--u)); /* cancel the intro gap so the box starts at the ground line */
+}
 /* The descriptors share one spot: each one replaces the one before it */
 .speech__roles { display: grid; justify-items: center; }
-.speech__roles .speech__line { grid-area: 1 / 1; }
-.speech__line.is-gone { opacity: 0; transform: translateY(-6px); }
+.speech__roles .speech__line { grid-area: 1 / 1; color: #c4263f; font-size: calc(200 * var(--u)); }
+.speech__line.is-gone { opacity: 0; transform: translateY(-8px); filter: blur(6px); }
 .speech__dots {
   position: absolute;
   bottom: calc(-36 * var(--u));
@@ -2660,9 +2671,10 @@ a {
 .page--work-redo .work-grid { margin-top: calc(80 * var(--u)); }
 
 @media (max-width: 900px) {
-  .work-intro { min-height: calc(100svh - var(--header-height) - 44px); padding: 100px 0 40px; } /* clears the smaller corner ornaments */
+  .work-intro { min-height: calc(100svh - var(--header-height) - 44px); padding: 100px 0 0; } /* clears the smaller corner ornaments */
   .work-intro__copy { min-height: 140px; }
-  .speech__line { font-size: 26px; }
+  .speech__line { font-size: 29px; }
+  .speech__roles .speech__line { font-size: 54px; }
   .speech__dots { bottom: -24px; gap: 7px; }
   .speech__dots i { width: 7px; height: 7px; }
   .ride { --tile: calc(100vw - 32px); }
