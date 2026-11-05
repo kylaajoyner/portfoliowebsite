@@ -21,7 +21,7 @@
   <meta name="twitter:image" content="https://kylajoyner.com/assets/images/og-star.png">
   <!-- Adobe Fonts kit: West End + Narkiss Yair -->
   <link rel="stylesheet" href="https://use.typekit.net/ijs5kav.css">
-  <link rel="stylesheet" href="css/style.css?v=163">
+  <link rel="stylesheet" href="css/style.css?v=164">
 </head>
 <body>
   <header class="site-header">
@@ -56,12 +56,17 @@
       </div>
       <!-- Kyla's pixel cowgirl ride: her horse frames gallop over her scrolling desert -->
       <div class="ride" role="img" aria-label="Pixel-art cowgirl galloping on horseback through the desert"><span class="ride__horse"></span></div>
-      <p class="speech__line speech__clues" data-speech-last>We have some clues</p>
+      <p class="speech__line speech__clues" data-speech-last>We have some clues
+        <!-- scroll hint: a pixel arrow that bounces, and jumps to the first sign on click -->
+        <a class="scroll-hint" href="#work-start" aria-label="Scroll to the work">
+          <svg viewBox="0 0 7 7" width="7" height="7" shape-rendering="crispEdges" aria-hidden="true"><path d="M2 0h3v3H2zM0 3h7v1H0zM1 4h5v1H1zM2 5h3v1H2zM3 6h1v1H3z" fill="#1c1c1c"/></svg>
+        </a>
+      </p>
     </section>
 
     <!-- Work page redo: new bento cards, built one at a time -->
     <!-- Art Direction section: Kyla's blank pixel saloon sign with the title in Bebas Neue, with the Old Spice projects under it -->
-    <h2 class="work-sign"><img src="assets/images/work/sign-blank.png" alt="" width="942" height="496"><span class="work-sign__label">Art Direction</span></h2>
+    <h2 class="work-sign" id="work-start"><img src="assets/images/work/sign-blank.png" alt="" width="942" height="496"><span class="work-sign__label">Art Direction</span></h2>
     <ul class="bento">
       <li class="bento__item">
         <a class="bento-card" href="old-spice.html">

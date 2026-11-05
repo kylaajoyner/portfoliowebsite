@@ -2389,28 +2389,47 @@ a {
 .speech__line {
   margin: 0;
   font-family: var(--font-body);
-  font-size: calc(60 * var(--u));
+  font-size: calc(54 * var(--u));
   line-height: 1.15;
+  text-transform: uppercase;
   opacity: 0;
   transform: translateY(8px);
   filter: blur(6px);
   transition: opacity 0.9s ease-in-out, transform 0.9s ease-in-out, filter 0.9s ease-in-out;
 }
 .speech__line.is-said { opacity: 1; transform: none; filter: none; }
-.speech__clues { text-align: center; font-size: calc(76 * var(--u)); }
+.speech__clues { text-align: center; font-size: calc(96 * var(--u)); }
+/* Scroll hint: Kyla's-ride-style pixel arrow bouncing under "We have some clues" */
+.scroll-hint {
+  display: block;
+  width: calc(56 * var(--u));
+  margin-top: calc(28 * var(--u));
+  padding: calc(8 * var(--u));
+  box-sizing: content-box;
+  animation: scroll-hint-bob 1.4s ease-in-out infinite;
+}
+.scroll-hint svg { display: block; width: 100%; height: auto; }
+@keyframes scroll-hint-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(calc(14 * var(--u))); }
+}
+@media (prefers-reduced-motion: reduce) { .scroll-hint { animation: none; } }
+/* the arrow glides down to the first sign instead of jumping */
+@media (prefers-reduced-motion: no-preference) { html:has(.scroll-hint) { scroll-behavior: smooth; } }
 /* "We have some clues" sits centered in the box between the ride's ground line and
    the sign's line: the copy and the clues share the free space of the first screen */
 .work-intro .work-intro__copy { flex: 1 0 auto; }
 .work-intro .speech__clues {
   flex: 1 0 auto;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   margin-top: calc(-40 * var(--u)); /* cancel the intro gap so the box starts at the ground line */
 }
 /* The descriptors share one spot: each one replaces the one before it */
 /* They flip over like a sign, the same motion as the roles on the About page TV */
-.speech__roles { display: grid; justify-items: center; perspective: 11em; font-size: calc(150 * var(--u)); }
+.speech__roles { display: grid; justify-items: center; perspective: 11em; font-size: calc(130 * var(--u)); }
 .speech__roles .speech__line {
   grid-area: 1 / 1;
   color: #c4263f;
@@ -2683,9 +2702,10 @@ a {
 @media (max-width: 900px) {
   .work-intro { min-height: calc(100svh - var(--header-height) - 44px); padding: 100px 0 0; } /* clears the smaller corner ornaments */
   .work-intro__copy { min-height: 140px; }
-  .speech__line { font-size: 22px; }
-  .speech__clues { font-size: 28px; }
-  .speech__roles { font-size: 40px; }
+  .speech__line { font-size: 19px; }
+  .speech__clues { font-size: 34px; }
+  .speech__roles { font-size: 34px; }
+  .scroll-hint { width: 30px; margin-top: 14px; padding: 6px; }
   .speech__dots { bottom: -24px; gap: 7px; }
   .speech__dots i { width: 7px; height: 7px; }
   .ride { --tile: calc(100vw - 32px); }
