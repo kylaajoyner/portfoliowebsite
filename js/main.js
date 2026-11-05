@@ -391,7 +391,11 @@
   if (top) {
     top.addEventListener("click", function (e) {
       e.preventDefault();
-      window.scrollTo({ top: 0, behavior: still ? "auto" : "smooth" });
+      // a page can send him somewhere other than the very top (Work: the Art Direction section)
+      const sel = top.getAttribute("data-top");
+      const dest = sel ? document.querySelector(sel) : null;
+      const y = dest ? dest.getBoundingClientRect().top + window.scrollY : 0;
+      window.scrollTo({ top: y, behavior: still ? "auto" : "smooth" });
     });
   }
 })();
