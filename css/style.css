@@ -2287,8 +2287,8 @@ a {
   transition: transform 0.25s ease-out;
 }
 
-/* Rodeo: Kyla's vine stacked down both sides, revealed downward as you scroll.
-   vines.js sets top/height (between the corner ornaments) and --front (how far it has grown). */
+/* Rodeo: Kyla's growth frames stacked down both sides. vines.js places each
+   .side-vine and steps its frame (background-position) as it scrolls into view. */
 .side-vines {
   position: absolute;
   left: 0;
@@ -2296,18 +2296,18 @@ a {
   z-index: -1; /* behind the work, so it creeps through the gaps */
   pointer-events: none;
   overflow: hidden;
-  -webkit-mask-image: linear-gradient(to bottom, #000 calc(var(--front, 0px) - 160px), transparent var(--front, 0px));
-          mask-image: linear-gradient(to bottom, #000 calc(var(--front, 0px) - 160px), transparent var(--front, 0px));
 }
-.side-vines__col {
+.side-vine {
   position: absolute;
-  top: 0;
-  bottom: 0;
-  width: clamp(56px, 10vw, 150px);
-  background: url("../assets/images/rodeo/side-vine.png") 0 0 / 100% auto repeat-y;
+  width: var(--vine-w, 150px);
+  aspect-ratio: 300 / 370;
+  background: url("../assets/images/rodeo/vine-grow.png") 0 0 / 800% 100% no-repeat;
+  visibility: hidden;
 }
-.side-vines__col--left  { left: 4px; }
-.side-vines__col--right { right: 4px; transform: scaleX(-1); background-position: 0 37%; }
+.side-vine.is-on { visibility: visible; }
+/* flipped upside down so each sprout starts at the top and grows down the page */
+.side-vine--right { right: 0; transform: scaleY(-1); }
+.side-vine--left  { left: 0;  transform: scale(-1, -1); }
 
 @keyframes vine-grow {
   from { clip-path: circle(9% at 88.9% 90.1%); }

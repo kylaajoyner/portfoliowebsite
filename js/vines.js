@@ -39,45 +39,73 @@
 
   if (!scrollMode || !grown.length) return;
 
-  // Kyla's single vine (assets/images/rodeo/side-vine.png) stacked down both sides
-  // of the page, between the top and bottom ornaments, revealed as you scroll down.
+  // Kyla's 8 growth frames (assets/images/rodeo/vine-grow.png, a strip of 8) stacked down
+  // both sides of the page between the top and bottom ornaments. Each vine sprouts and
+  // flips through the frames as it scrolls into view, so the page keeps growing as you go.
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const FRAMES = 8, RATIO = 370 / 300; // frame height / width
   const sides = document.createElement("div");
   sides.className = "side-vines";
   sides.setAttribute("aria-hidden", "true");
-  sides.innerHTML = '<div class="side-vines__col side-vines__col--left"></div><div class="side-vines__col side-vines__col--right"></div>';
   document.body.appendChild(sides);
   const topOrn = grown.find((w) => /--top-left/.test(w.className));
   const botOrn = grown.find((w) => /--bottom-left/.test(w.className));
-  let front = 0, target = 0, sidesTop = 0, growing = false;
+  let sprouts = [], layoutKey = "";
   function placeSides() {
     const y = (el, edge) => el.getBoundingClientRect()[edge] + window.scrollY;
-    sidesTop = topOrn ? y(topOrn, "bottom") - 20 : 0;
-    const bottom = botOrn ? y(botOrn, "top") + 20 : document.documentElement.scrollHeight;
-    sides.style.top = sidesTop + "px";
-    sides.style.height = Math.max(0, bottom - sidesTop) + "px";
+    // phones: start at the gallery so the vines stay clear of the title text
+    const gallery = document.querySelector(".rodeo-gallery");
+    const narrow = window.innerWidth < 700 && gallery;
+    const top = narrow ? y(gallery, "top") : topOrn ? y(topOrn, "bottom") - 10 : 0;
+    const bottom = botOrn ? y(botOrn, "top") + 10 : document.documentElement.scrollHeight;
+    const w = Math.min(150, Math.max(44, window.innerWidth * 0.1));
+    const h = w * RATIO, step = h * 0.92;
+    const n = Math.max(1, Math.floor((bottom - top - h) / step) + 1);
+    const key = [Math.round(top), n, Math.round(w)].join();
+    if (key === layoutKey) return;
+    layoutKey = key;
+    sides.style.top = top + "px";
+    sides.style.height = Math.max(0, bottom - top) + "px";
+    sides.style.setProperty("--vine-w", w + "px");
+    const old = sprouts;
+    sides.textContent = "";
+    sprouts = [];
+    for (let i = 0; i < n; i++) {
+      ["left", "right"].forEach((side, k) => {
+        const el = document.createElement("span");
+        el.className = "side-vine side-vine--" + side;
+        el.style.top = i * step + "px";
+        sides.appendChild(el);
+        const prev = old[sprouts.length];
+        sprouts.push({ el, y: top + i * step, frame: -1, reached: prev ? prev.reached : -1 });
+      });
+    }
+    updateSides();
   }
-  function setFront(v) { sides.style.setProperty("--front", v.toFixed(1) + "px"); }
-  function growStep() {
-    // ease toward the furthest point reached; it never ungrows
-    front += (target - front) * 0.06;
-    if (target - front < 0.5) front = target;
-    setFront(front);
-    growing = front !== target;
-    if (growing) requestAnimationFrame(growStep);
+  function setFrame(s, f) {
+    if (f === s.frame) return;
+    s.frame = f;
+    s.el.style.backgroundPositionX = (f * 100) / (FRAMES - 1) + "%";
+    s.el.classList.toggle("is-on", f >= 0);
   }
-  function sideTarget() {
-    const vh = window.innerHeight;
-    const atEnd = window.scrollY + vh >= document.documentElement.scrollHeight - 4;
-    const t = atEnd ? 1e6 : window.scrollY + vh * 0.85 - sidesTop;
-    if (t > target) { target = t; if (!growing) { growing = true; requestAnimationFrame(growStep); } }
+  function updateSides() {
+    if (reduce) { sprouts.forEach((s) => setFrame(s, FRAMES - 1)); return; }
+    const vh = window.innerHeight, sy = window.scrollY;
+    const atEnd = sy + vh >= document.documentElement.scrollHeight - 4;
+    sprouts.forEach((s) => {
+      // sprouts as its top passes 95% down the screen, fully grown by 45%
+      const p = atEnd ? 1 : (sy + vh * 0.95 - s.y) / (vh * 0.5);
+      const f = p <= 0 ? -1 : Math.min(FRAMES - 1, Math.floor(p * FRAMES));
+      if (f > s.reached) s.reached = f; // it never ungrows
+      setFrame(s, s.reached);
+    });
   }
+  let queued = false;
+  const onScroll = () => { if (!queued) { queued = true; requestAnimationFrame(() => { queued = false; updateSides(); }); } };
   placeSides();
-  if (reduce) setFront(1e6);
-  else { setFront(0); sideTarget(); }
   window.addEventListener("load", placeSides);
   window.addEventListener("resize", placeSides);
-  if (!reduce) window.addEventListener("scroll", sideTarget, { passive: true });
+  if (!reduce) window.addEventListener("scroll", onScroll, { passive: true });
 
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     grown.forEach((w) => w.style.setProperty("--grow", 1));
