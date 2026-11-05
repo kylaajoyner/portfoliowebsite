@@ -2398,6 +2398,8 @@ a {
   transition: opacity 0.9s ease-in-out, transform 0.9s ease-in-out, filter 0.9s ease-in-out;
 }
 .speech__line.is-said { opacity: 1; transform: none; filter: none; }
+/* the trailing "..." hangs past the end so the words themselves sit on the page's center line */
+.speech__hang { position: absolute; }
 .speech__clues { text-align: center; font-size: calc(96 * var(--u)); }
 /* Scroll hint: Kyla's-ride-style pixel arrow bouncing under "We have some clues" */
 .scroll-hint {
