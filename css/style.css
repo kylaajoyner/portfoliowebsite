@@ -2417,7 +2417,6 @@ a {
 }
 @media (prefers-reduced-motion: reduce) { .scroll-hint { animation: none; } }
 /* the arrow glides down to the first sign instead of jumping */
-@media (prefers-reduced-motion: no-preference) { html:has(.scroll-hint) { scroll-behavior: smooth; } }
 /* "We have some clues" sits centered in the box between the ride's ground line and
    the sign's line: the copy and the clues share the free space of the first screen */
 .work-intro .work-intro__copy { flex: 1 0 auto; }

@@ -724,3 +724,72 @@
     }, 1800); // same pace as the About TV roles
   }
 })();
+
+// Work page: the intro is a "scroll to enter" screen. While you're on it, the first
+// scroll down (wheel, trackpad, swipe or keys) glides the page to the first sign,
+// and the intro fades out as it leaves. Scrolling back up works as normal.
+(function () {
+  const intro = document.querySelector("[data-enter]");
+  const target = document.getElementById("work-start");
+  if (!intro || !target) return;
+  const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  let busy = false;
+  const dest = function () { return target.getBoundingClientRect().top + window.scrollY; };
+  const onIntro = function () { return window.scrollY < dest() - 4; };
+
+  function enter() {
+    if (busy) return;
+    busy = true;
+    const from = window.scrollY;
+    const to = dest();
+    if (still) {
+      window.scrollTo({ top: to, behavior: "instant" });
+      busy = false;
+      return;
+    }
+    const dur = 1100;
+    const t0 = performance.now();
+    const ease = function (t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; };
+    (function step(now) {
+      const t = Math.min(1, (now - t0) / dur);
+      window.scrollTo({ top: from + (to - from) * ease(t), behavior: "instant" });
+      if (t < 1) requestAnimationFrame(step);
+      else setTimeout(function () { busy = false; }, 450); // swallow trackpad momentum
+    })(t0);
+  }
+
+  window.addEventListener("wheel", function (e) {
+    if (busy) { e.preventDefault(); return; }
+    if (e.deltaY > 0 && onIntro()) { e.preventDefault(); enter(); }
+  }, { passive: false });
+
+  let touchY = null;
+  window.addEventListener("touchstart", function (e) { touchY = e.touches[0].clientY; }, { passive: true });
+  window.addEventListener("touchmove", function (e) {
+    if (busy) { e.preventDefault(); return; }
+    if (touchY === null || !onIntro()) return;
+    if (touchY - e.touches[0].clientY > 12) { e.preventDefault(); touchY = null; enter(); }
+  }, { passive: false });
+
+  window.addEventListener("keydown", function (e) {
+    if (["ArrowDown", "PageDown", " ", "Spacebar"].indexOf(e.key) === -1) return;
+    if (e.target.closest && e.target.closest("input, textarea, [contenteditable]")) return;
+    if (busy) { e.preventDefault(); return; }
+    if (onIntro()) { e.preventDefault(); enter(); }
+  });
+
+  // the arrow uses the same glide
+  const hint = intro.querySelector(".scroll-hint");
+  if (hint) hint.addEventListener("click", function (e) { e.preventDefault(); enter(); });
+
+  // fade the intro out as it scrolls away
+  if (!still) {
+    const fade = function () {
+      const p = Math.min(1, Math.max(0, window.scrollY / (intro.offsetHeight * 0.8)));
+      intro.style.opacity = String(1 - p);
+    };
+    window.addEventListener("scroll", fade, { passive: true });
+    fade();
+  }
+})();
