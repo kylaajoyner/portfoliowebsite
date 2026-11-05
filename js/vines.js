@@ -15,10 +15,6 @@
     BUDS.map(([d, at]) => '<path class="vine__bud" style="--at:' + at + '" d="' + d + '"/>').join("") +
     "</svg>";
 
-  // Rodeo: <body data-vines="scroll"> makes the vines extend as you scroll instead of on hover.
-  const scrollMode = document.body.dataset.vines === "scroll";
-  const grown = [];
-
   ornaments.forEach((img) => {
     const wrap = document.createElement("span");
     wrap.className = img.className + " vine-ornament";
@@ -27,7 +23,6 @@
     img.replaceWith(wrap);
 
     const vine = wrap.firstChild;
-    if (scrollMode) { wrap.classList.add("is-scroll"); grown.push(wrap); return; }
     wrap.addEventListener("pointerenter", () => {
       if (wrap.classList.contains("is-growing")) return; // let a grow finish
       wrap.classList.add("is-growing");
@@ -36,126 +31,4 @@
       if (e.target === vine) wrap.classList.remove("is-growing");
     });
   });
-
-  if (!scrollMode || !grown.length) return;
-
-  // Kyla's 8 growth frames (assets/images/rodeo/vine-grow.png, a strip of 8) chained down
-  // both sides of the page, sprouting out of the top corner ornaments' stems and running
-  // into the bottom ones. As you scroll, one piece at a time sprouts and flips through the
-  // frames, then the next grows on from its end, like one vine creeping down the page.
-  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const FRAMES = 8, RATIO = 370 / 300; // frame height / width
-  const BASE_X = 0.82;   // where the grown vine's main stem runs down a frame (from the left)
-  const STEM_X = 0.111;  // where the ornament's stem sits, in from its outer edge
-  const sides = document.createElement("div");
-  sides.className = "side-vines";
-  sides.setAttribute("aria-hidden", "true");
-  document.body.appendChild(sides);
-  const topOrn = grown.find((w) => /--top-left/.test(w.className));
-  const topOrnR = grown.find((w) => /--top-right/.test(w.className));
-  const botOrn = grown.find((w) => /--bottom-left/.test(w.className));
-  let sprouts = [], layoutKey = "", top = 0, step = 1;
-  function placeSides() {
-    const y = (el, edge) => el.getBoundingClientRect()[edge] + window.scrollY;
-    const vw = document.documentElement.clientWidth;
-    const w = Math.min(150, Math.max(44, window.innerWidth * 0.1));
-    const h = w * RATIO;
-    step = h * 0.9;
-    // start a little inside the top ornaments so the first sprout comes out of their stem
-    const o = topOrn ? topOrn.getBoundingClientRect() : null;
-    top = o ? y(topOrn, "top") + o.height * 0.6 : 0; // the ornament's art ends about 2/3 down its box
-    const bottom = botOrn ? y(botOrn, "top") + 10 : document.documentElement.scrollHeight;
-    const n = Math.max(1, Math.round((bottom - top - h * 0.5) / step));
-    // line each column's stem up with its ornament's stem
-    const or = topOrnR ? topOrnR.getBoundingClientRect() : null;
-    const leftX = o ? o.left + o.width * STEM_X - w * (1 - BASE_X) : 0;
-    const rightX = or ? vw - (or.right - or.width * STEM_X) - w * (1 - BASE_X) : 0;
-    sides.style.setProperty("--vine-left", leftX + "px");
-    sides.style.setProperty("--vine-right", rightX + "px");
-    const key = [Math.round(top), n, Math.round(w), Math.round(leftX), Math.round(rightX)].join();
-    if (key === layoutKey) return;
-    layoutKey = key;
-    sides.style.top = top + "px";
-    sides.style.height = Math.max(0, bottom - top) + "px";
-    sides.style.setProperty("--vine-w", w + "px");
-    sides.textContent = "";
-    sprouts = [];
-    for (let i = 0; i < n; i++) {
-      ["left", "right"].forEach((side, k) => {
-        const el = document.createElement("span");
-        el.className = "side-vine side-vine--" + side;
-        el.style.top = i * step + "px";
-        sides.appendChild(el);
-        sprouts.push({ el, i, frame: -1 });
-      });
-    }
-    updateSides();
-  }
-  function setFrame(s, f) {
-    if (f === s.frame) return;
-    s.frame = f;
-    s.el.style.backgroundPositionX = (f * 100) / (FRAMES - 1) + "%";
-    s.el.classList.toggle("is-on", f >= 0);
-  }
-  // How many pieces long the vine is. It waits until the top ornaments have finished
-  // growing, then keeps its tip about 45% of the way down the screen as you scroll.
-  // The shown length catches up at a steady pace, so each piece visibly sprouts and
-  // grows frame by frame before the next one starts, and it never ungrows.
-  const PACE = 420; // how fast the tip can grow, in pixels per second
-  let target = 0, shown = 0, last = 0, running = false;
-  function aim() {
-    const vh = window.innerHeight, sy = window.scrollY;
-    const atEnd = sy + vh >= document.documentElement.scrollHeight - 4;
-    const ornamentsDone = sy >= vh * 0.2; // matches the corner ornaments' growth below
-    const t = atEnd ? sprouts.length / 2 : ornamentsDone ? (sy + vh * 0.45 - top) / step : 0;
-    if (t > target) target = t;
-    if (!running && shown < target) { running = true; last = performance.now(); requestAnimationFrame(tick); }
-  }
-  function tick(now) {
-    shown = Math.min(target, shown + (PACE / step) * (now - last) / 1000);
-    last = now;
-    updateSides();
-    running = shown < target;
-    if (running) requestAnimationFrame(tick);
-  }
-  function updateSides() {
-    if (reduce) { sprouts.forEach((s) => setFrame(s, FRAMES - 1)); return; }
-    sprouts.forEach((s) => {
-      const p = shown - s.i;
-      setFrame(s, p <= 0 ? -1 : Math.min(FRAMES - 1, Math.floor(p * FRAMES)));
-    });
-  }
-  const onScroll = aim;
-  placeSides();
-  window.addEventListener("load", placeSides);
-  window.addEventListener("resize", placeSides);
-  if (!reduce) window.addEventListener("scroll", onScroll, { passive: true });
-
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    grown.forEach((w) => w.style.setProperty("--grow", 1));
-    return;
-  }
-  // How far each vine has grown (0 = just the corner, 1 = the full ornament):
-  // the top pair start part grown and finish over the first stretch of scrolling;
-  // the bottom pair grow as they rise into view at the end of the page.
-  const clamp = (n) => Math.min(1, Math.max(0, n));
-  let ticking = false;
-  function update() {
-    ticking = false;
-    const vh = window.innerHeight;
-    grown.forEach((w) => {
-      let g;
-      if (/--top-/.test(w.className)) {
-        g = 0.35 + 0.65 * (window.scrollY / (vh * 0.2)); // finishes before they scroll away
-      } else {
-        const r = w.getBoundingClientRect();
-        g = (vh - r.top) / r.height; // fully grown once the whole ornament is on screen
-      }
-      w.style.setProperty("--grow", clamp(g).toFixed(3));
-    });
-  }
-  const queue = () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } };
-  window.addEventListener("scroll", queue, { passive: true });
-  window.addEventListener("resize", queue);
-  update();
 })();
