@@ -631,20 +631,35 @@
   if (year) year.textContent = new Date().getFullYear();
 })();
 
-// Work cards: a short muted clip plays over the cover while the card is hovered
+// Work cards: a short muted clip plays over the cover. On a computer it plays while
+// the card is hovered; on phones (no hover) it plays on its own while the card is on screen.
 (function () {
-  if (!window.matchMedia("(hover: hover)").matches) return;
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  document.querySelectorAll(".bento-card").forEach(function (card) {
-    const video = card.querySelector(".bento-card__video");
-    if (!video) return;
-    card.addEventListener("mouseenter", function () {
-      video.play().then(function () { video.classList.add("is-playing"); }).catch(function () {});
+  const videos = document.querySelectorAll(".bento-card__video");
+  if (!videos.length) return;
+
+  function start(video) {
+    video.play().then(function () { video.classList.add("is-playing"); }).catch(function () {});
+  }
+  function stop(video, rewind) {
+    video.classList.remove("is-playing");
+    video.pause();
+    if (rewind) video.currentTime = 0;
+  }
+
+  if (window.matchMedia("(hover: hover)").matches) {
+    videos.forEach(function (video) {
+      const card = video.closest(".bento-card");
+      card.addEventListener("mouseenter", function () { start(video); });
+      card.addEventListener("mouseleave", function () { stop(video, true); });
     });
-    card.addEventListener("mouseleave", function () {
-      video.classList.remove("is-playing");
-      video.pause();
-      video.currentTime = 0;
-    });
-  });
+  } else if ("IntersectionObserver" in window) {
+    const io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) start(entry.target);
+        else stop(entry.target, false);
+      });
+    }, { threshold: 0.5 });
+    videos.forEach(function (video) { io.observe(video); });
+  }
 })();
