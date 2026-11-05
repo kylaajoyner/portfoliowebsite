@@ -726,11 +726,12 @@
 })();
 
 // Work page: the intro is a "scroll to enter" screen. While you're on it, the first
-// scroll down (wheel, trackpad, swipe or keys) glides the page to the first sign,
+// scroll down (wheel, trackpad, swipe or keys) glides the page to the header and work,
 // and the intro fades out as it leaves. Scrolling back up works as normal.
 (function () {
   const intro = document.querySelector("[data-enter]");
-  const target = document.getElementById("work-start");
+  // land on the header so the nav and the first sign come into view together
+  const target = document.querySelector(".site-header");
   if (!intro || !target) return;
   const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 

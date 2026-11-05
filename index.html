@@ -21,29 +21,14 @@
   <meta name="twitter:image" content="https://kylajoyner.com/assets/images/og-star.png">
   <!-- Adobe Fonts kit: West End + Narkiss Yair -->
   <link rel="stylesheet" href="https://use.typekit.net/ijs5kav.css">
-  <link rel="stylesheet" href="css/style.css?v=166">
+  <link rel="stylesheet" href="css/style.css?v=167">
 </head>
 <body>
-  <header class="site-header">
-    <a class="wordmark" href="index.html">Kyla Joyner</a>
-    <nav class="site-nav" aria-label="Main">
-      <ul>
-        <li><a href="index.html" aria-current="page">Work</a></li>
-        <li><a href="about.html">About</a></li>
-        <li><a href="rodeo.html">Rodeo</a></li>
-      </ul>
-    </nav>
-  </header>
-
-  <main class="page page--work page--work-redo">
+  <!-- Full-screen intro (scroll to enter): it fills the whole screen before the header.
+       The first scroll glides down to the header and the work (main.js). -->
+  <section class="work-intro work-intro--full" data-enter>
     <img class="ornament ornament--top-left" src="assets/images/ornament.png" alt="">
     <img class="ornament ornament--top-right" src="assets/images/ornament.png" alt="">
-    <img class="ornament ornament--bottom-left" src="assets/images/ornament.png" alt="">
-    <img class="ornament ornament--bottom-right" src="assets/images/ornament.png" alt="">
-
-    <!-- First screen: room for Kyla's intro copy under the header, then the cowgirl ride.
-         The cards start below it, so visitors scroll down to the work. -->
-    <section class="work-intro" data-enter>
       <!-- Intro speech (Kyla's storyboard): "..." like the lost cowboy, then each line arrives one after another -->
       <div class="work-intro__copy" data-speech aria-live="polite">
         <span class="speech__dots" aria-hidden="true"><i></i><i></i><i></i></span>
@@ -62,7 +47,23 @@
           <svg viewBox="0 0 7 7" width="7" height="7" shape-rendering="crispEdges" aria-hidden="true"><path d="M2 0h3v3H2zM0 3h7v1H0zM1 4h5v1H1zM2 5h3v1H2zM3 6h1v1H3z" fill="#1c1c1c"/></svg>
         </a>
       </p>
-    </section>
+  </section>
+
+  <header class="site-header">
+    <a class="wordmark" href="index.html">Kyla Joyner</a>
+    <nav class="site-nav" aria-label="Main">
+      <ul>
+        <li><a href="index.html" aria-current="page">Work</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="rodeo.html">Rodeo</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="page page--work page--work-redo">
+    <img class="ornament ornament--bottom-left" src="assets/images/ornament.png" alt="">
+    <img class="ornament ornament--bottom-right" src="assets/images/ornament.png" alt="">
+
 
     <!-- Work page redo: new bento cards, built one at a time -->
     <!-- Art Direction section: Kyla's blank pixel saloon sign with the title in Bebas Neue, with the Old Spice projects under it -->
@@ -189,6 +190,6 @@
     <p class="copyright">&copy; <span data-year>2026</span> Kyla Joyner. All rights reserved.</p>
   </footer>
 
-  <script src="js/main.js?v=126"></script>
+  <script src="js/main.js?v=127"></script>
 </body>
 </html>

@@ -2373,6 +2373,17 @@ a {
   min-height: calc(100vh - var(--header-height) - 44 * var(--u));
   padding-bottom: 0; /* the clues box runs down to the sign line */
 }
+/* Full-screen version: the intro sits before the header and fills the whole screen
+   like a title card; the top ornaments frame it */
+.work-intro--full {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100svh;
+  padding-top: calc(44 * var(--u));
+  padding-inline: 16px; /* copy keeps off the screen edges; the ride still runs edge to edge */
+  overflow-x: clip;
+  box-sizing: border-box;
+}
 .work-intro__copy {
   position: relative;
   min-height: calc(220 * var(--u));
@@ -2702,6 +2713,7 @@ a {
 
 @media (max-width: 900px) {
   .work-intro { min-height: calc(100svh - var(--header-height) - 44px); padding: 100px 0 0; } /* clears the smaller corner ornaments */
+  .work-intro--full { min-height: 100svh; padding-inline: 16px; }
   .work-intro__copy { min-height: 140px; }
   .speech__line { font-size: 19px; }
   .speech__clues { font-size: 34px; }
