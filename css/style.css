@@ -2306,8 +2306,8 @@ a {
 }
 .side-vine.is-on { visibility: visible; }
 /* flipped upside down so each sprout starts at the top and grows down the page */
-.side-vine--right { right: 0; transform: scaleY(-1); }
-.side-vine--left  { left: 0;  transform: scale(-1, -1); }
+.side-vine--right { right: var(--vine-right, 0); transform: scaleY(-1); }
+.side-vine--left  { left: var(--vine-left, 0);  transform: scale(-1, -1); }
 
 @keyframes vine-grow {
   from { clip-path: circle(9% at 88.9% 90.1%); }
