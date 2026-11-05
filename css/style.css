@@ -2534,7 +2534,7 @@ a {
   left: calc(50% - 50vw);
   width: 100vw;
   height: calc(88 * var(--u));
-  background: url("../assets/images/work/vine-line.png") center / auto 100% repeat-x;
+  background: url("../assets/images/work/vine-line.png?v=2") center / auto 100% repeat-x;
 }
 .work-sign img {
   position: relative; /* in front of the vine */
