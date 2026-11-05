@@ -664,8 +664,9 @@
   }
 })();
 
-// Work page intro speech: "..." first, then each line arrives one after another,
-// ending with "We have some clues" under the ride. The whole speech takes about 4s.
+// Work page intro speech: "..." first, then the outlaw line, then each descriptor
+// replaces the one before it in the same spot (the last one stays), ending with
+// "We have some clues" under the ride. The whole speech takes about 7s.
 (function () {
   const box = document.querySelector("[data-speech]");
   if (!box) return;
@@ -675,15 +676,24 @@
   if (last) lines.push(last);
 
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    lines.forEach(function (l) { l.classList.add("is-said"); });
+    // No motion: show the opening line, the final descriptor and the clues line
+    const roles = box.querySelectorAll(".speech__role");
+    lines.forEach(function (l) {
+      if (!l.classList.contains("speech__role") || l === roles[roles.length - 1]) l.classList.add("is-said");
+    });
     return;
   }
 
   let t = 300;
+  let prevRole = null;
   dots.classList.add("is-typing");
   lines.forEach(function (line, i) {
-    t += i === 0 ? 1100 : 650; // first "..." lingers, then each line follows quickly
+    t += 1400; // each line gets time to be read before the next
     setTimeout(function () {
+      if (line.classList.contains("speech__role")) {
+        if (prevRole) prevRole.classList.add("is-gone");
+        prevRole = line;
+      }
       line.classList.add("is-said");
       if (i === lines.length - 1) dots.classList.remove("is-typing");
     }, t);
