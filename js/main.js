@@ -630,3 +630,21 @@
   const year = document.querySelector("[data-year]");
   if (year) year.textContent = new Date().getFullYear();
 })();
+
+// Work cards: a short muted clip plays over the cover while the card is hovered
+(function () {
+  if (!window.matchMedia("(hover: hover)").matches) return;
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  document.querySelectorAll(".bento-card").forEach(function (card) {
+    const video = card.querySelector(".bento-card__video");
+    if (!video) return;
+    card.addEventListener("mouseenter", function () {
+      video.play().then(function () { video.classList.add("is-playing"); }).catch(function () {});
+    });
+    card.addEventListener("mouseleave", function () {
+      video.classList.remove("is-playing");
+      video.pause();
+      video.currentTime = 0;
+    });
+  });
+})();

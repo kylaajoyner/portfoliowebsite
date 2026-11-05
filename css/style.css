@@ -2556,6 +2556,7 @@ a {
 }
 
 .bento-card__media {
+  position: relative;
   display: block;
   aspect-ratio: 380 / 214; /* same landscape format as the cover tiles */
   overflow: hidden;
@@ -2595,6 +2596,18 @@ a {
 .bento-card:focus-visible .bento-card__media img {
   transform: scale(1.04);
 }
+/* hover clip: a short muted loop from the film fades in over the cover while hovered */
+.bento-card__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+.bento-card__video.is-playing { opacity: 1; }
 
 /* the older tiles that haven't been converted yet sit underneath */
 .page--work-redo .work-grid { margin-top: calc(80 * var(--u)); }
