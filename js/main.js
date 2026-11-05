@@ -692,7 +692,8 @@
   let prevRole = null;
   dots.classList.add("is-typing");
   lines.forEach(function (line, i) {
-    t += 800; // the whole intro lands in about 4 seconds
+    // descriptors get longer on screen than the other lines
+    t += line.classList.contains("speech__role") ? 1500 : 800;
     setTimeout(function () {
       if (line.classList.contains("speech__role")) {
         if (prevRole) {
@@ -725,7 +726,7 @@
       setTimeout(function () { out.classList.remove("is-said", "is-gone"); }, 500);
       inn.classList.remove("is-gone");
       inn.classList.add("is-said");
-    }, 1800); // same pace as the About TV roles
+    }, 2600); // slower than the About TV roles, at Kyla's ask
   }
 })();
 
