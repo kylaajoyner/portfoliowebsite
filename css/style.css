@@ -2388,9 +2388,10 @@ a {
    pulse like the lost cowboy's while the next line is "coming" */
 .speech__line {
   margin: 0;
-  font-family: var(--font-body);
-  font-size: calc(32 * var(--u));
-  line-height: 1.35;
+  font-family: var(--font-nav);
+  font-size: calc(40 * var(--u));
+  line-height: 1.2;
+  letter-spacing: 0.02em;
   opacity: 0;
   transform: translateY(6px);
   transition: opacity 0.35s ease, transform 0.35s ease;
@@ -2657,7 +2658,7 @@ a {
 @media (max-width: 900px) {
   .work-intro { min-height: calc(100svh - var(--header-height) - 44px); padding: 100px 0 40px; } /* clears the smaller corner ornaments */
   .work-intro__copy { min-height: 140px; }
-  .speech__line { font-size: 20px; }
+  .speech__line { font-size: 26px; }
   .speech__dots { bottom: -24px; gap: 7px; }
   .speech__dots i { width: 7px; height: 7px; }
   .ride { --tile: calc(100vw - 32px); }
