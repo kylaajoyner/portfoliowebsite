@@ -2276,6 +2276,17 @@ a {
   animation-delay: calc(var(--at) * 1.4s); /* blooms once the vine reaches it */
 }
 
+/* Scroll version (Rodeo): main.js-free, vines.js sets --grow from 0 to 1 as you scroll */
+.vine-ornament.is-scroll { pointer-events: none; }
+.vine-ornament.is-scroll .vine {
+  clip-path: circle(calc(9% + 76% * var(--grow, 1)) at 88.9% 90.1%);
+}
+.vine-ornament.is-scroll .vine__bud {
+  /* each bud pops open once the vine has grown past it */
+  transform: scale(clamp(0, calc((var(--grow, 1) - var(--at)) * 6), 1));
+  transition: transform 0.25s ease-out;
+}
+
 @keyframes vine-grow {
   from { clip-path: circle(9% at 88.9% 90.1%); }
   to   { clip-path: circle(85% at 88.9% 90.1%); }

@@ -15,6 +15,10 @@
     BUDS.map(([d, at]) => '<path class="vine__bud" style="--at:' + at + '" d="' + d + '"/>').join("") +
     "</svg>";
 
+  // Rodeo: <body data-vines="scroll"> makes the vines extend as you scroll instead of on hover.
+  const scrollMode = document.body.dataset.vines === "scroll";
+  const grown = [];
+
   ornaments.forEach((img) => {
     const wrap = document.createElement("span");
     wrap.className = img.className + " vine-ornament";
@@ -23,6 +27,7 @@
     img.replaceWith(wrap);
 
     const vine = wrap.firstChild;
+    if (scrollMode) { wrap.classList.add("is-scroll"); grown.push(wrap); return; }
     wrap.addEventListener("pointerenter", () => {
       if (wrap.classList.contains("is-growing")) return; // let a grow finish
       wrap.classList.add("is-growing");
@@ -31,4 +36,33 @@
       if (e.target === vine) wrap.classList.remove("is-growing");
     });
   });
+
+  if (!scrollMode || !grown.length) return;
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    grown.forEach((w) => w.style.setProperty("--grow", 1));
+    return;
+  }
+  // How far each vine has grown (0 = just the corner, 1 = the full ornament):
+  // the top pair start part grown and finish over the first stretch of scrolling;
+  // the bottom pair grow as they rise into view at the end of the page.
+  const clamp = (n) => Math.min(1, Math.max(0, n));
+  let ticking = false;
+  function update() {
+    ticking = false;
+    const vh = window.innerHeight;
+    grown.forEach((w) => {
+      let g;
+      if (/--top-/.test(w.className)) {
+        g = 0.35 + 0.65 * (window.scrollY / (vh * 0.2)); // finishes before they scroll away
+      } else {
+        const r = w.getBoundingClientRect();
+        g = (vh - r.top) / r.height; // fully grown once the whole ornament is on screen
+      }
+      w.style.setProperty("--grow", clamp(g).toFixed(3));
+    });
+  }
+  const queue = () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } };
+  window.addEventListener("scroll", queue, { passive: true });
+  window.addEventListener("resize", queue);
+  update();
 })();
