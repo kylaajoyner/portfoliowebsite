@@ -690,10 +690,12 @@
 
   let t = 300;
   let prevRole = null;
+  let prevRoleQueued = false;
   dots.classList.add("is-typing");
   lines.forEach(function (line, i) {
     // descriptors get longer on screen than the other lines
     t += line.classList.contains("speech__role") ? 1500 : 800;
+    if (line.classList.contains("speech__role") && !prevRoleQueued) { t += 1000; prevRoleQueued = true; } // a beat after the outlaw line
     setTimeout(function () {
       if (line.classList.contains("speech__role")) {
         if (prevRole) {
