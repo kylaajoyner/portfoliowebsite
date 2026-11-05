@@ -694,7 +694,7 @@
         if (prevRole) {
           const out = prevRole;
           out.classList.add("is-gone");
-          setTimeout(function () { out.classList.remove("is-said", "is-gone"); }, 1000);
+          setTimeout(function () { out.classList.remove("is-said", "is-gone"); }, 500);
         }
         prevRole = line;
       }
@@ -718,9 +718,9 @@
       const inn = roles[at];
       out.classList.add("is-gone");
       // once it has faded out, reset it quietly so it can come back in later
-      setTimeout(function () { out.classList.remove("is-said", "is-gone"); }, 1000);
+      setTimeout(function () { out.classList.remove("is-said", "is-gone"); }, 500);
       inn.classList.remove("is-gone");
       inn.classList.add("is-said");
-    }, 2200);
+    }, 1800); // same pace as the About TV roles
   }
 })();

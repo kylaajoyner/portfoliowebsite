@@ -2409,9 +2409,20 @@ a {
   margin-top: calc(-40 * var(--u)); /* cancel the intro gap so the box starts at the ground line */
 }
 /* The descriptors share one spot: each one replaces the one before it */
-.speech__roles { display: grid; justify-items: center; }
-.speech__roles .speech__line { grid-area: 1 / 1; color: #c4263f; font-size: calc(150 * var(--u)); }
-.speech__line.is-gone { opacity: 0; transform: translateY(-8px); filter: blur(6px); }
+/* They flip over like a sign, the same motion as the roles on the About page TV */
+.speech__roles { display: grid; justify-items: center; perspective: 11em; font-size: calc(150 * var(--u)); }
+.speech__roles .speech__line {
+  grid-area: 1 / 1;
+  color: #c4263f;
+  font-size: 1em;
+  white-space: nowrap;
+  filter: none;
+  transform: rotateX(-90deg);
+  transform-origin: 50% 50% -0.55em;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+.speech__roles .speech__line.is-said { transform: rotateX(0); }
+.speech__roles .speech__line.is-gone { opacity: 0; transform: rotateX(90deg); }
 .speech__dots {
   position: absolute;
   bottom: calc(-36 * var(--u));
@@ -2674,7 +2685,7 @@ a {
   .work-intro__copy { min-height: 140px; }
   .speech__line { font-size: 22px; }
   .speech__clues { font-size: 28px; }
-  .speech__roles .speech__line { font-size: 40px; }
+  .speech__roles { font-size: 40px; }
   .speech__dots { bottom: -24px; gap: 7px; }
   .speech__dots i { width: 7px; height: 7px; }
   .ride { --tile: calc(100vw - 32px); }
