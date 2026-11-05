@@ -38,6 +38,47 @@
   });
 
   if (!scrollMode || !grown.length) return;
+
+  // Kyla's single vine (assets/images/rodeo/side-vine.png) stacked down both sides
+  // of the page, between the top and bottom ornaments, revealed as you scroll down.
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const sides = document.createElement("div");
+  sides.className = "side-vines";
+  sides.setAttribute("aria-hidden", "true");
+  sides.innerHTML = '<div class="side-vines__col side-vines__col--left"></div><div class="side-vines__col side-vines__col--right"></div>';
+  document.body.appendChild(sides);
+  const topOrn = grown.find((w) => /--top-left/.test(w.className));
+  const botOrn = grown.find((w) => /--bottom-left/.test(w.className));
+  let front = 0, target = 0, sidesTop = 0, growing = false;
+  function placeSides() {
+    const y = (el, edge) => el.getBoundingClientRect()[edge] + window.scrollY;
+    sidesTop = topOrn ? y(topOrn, "bottom") - 20 : 0;
+    const bottom = botOrn ? y(botOrn, "top") + 20 : document.documentElement.scrollHeight;
+    sides.style.top = sidesTop + "px";
+    sides.style.height = Math.max(0, bottom - sidesTop) + "px";
+  }
+  function setFront(v) { sides.style.setProperty("--front", v.toFixed(1) + "px"); }
+  function growStep() {
+    // ease toward the furthest point reached; it never ungrows
+    front += (target - front) * 0.06;
+    if (target - front < 0.5) front = target;
+    setFront(front);
+    growing = front !== target;
+    if (growing) requestAnimationFrame(growStep);
+  }
+  function sideTarget() {
+    const vh = window.innerHeight;
+    const atEnd = window.scrollY + vh >= document.documentElement.scrollHeight - 4;
+    const t = atEnd ? 1e6 : window.scrollY + vh * 0.85 - sidesTop;
+    if (t > target) { target = t; if (!growing) { growing = true; requestAnimationFrame(growStep); } }
+  }
+  placeSides();
+  if (reduce) setFront(1e6);
+  else { setFront(0); sideTarget(); }
+  window.addEventListener("load", placeSides);
+  window.addEventListener("resize", placeSides);
+  if (!reduce) window.addEventListener("scroll", sideTarget, { passive: true });
+
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     grown.forEach((w) => w.style.setProperty("--grow", 1));
     return;
