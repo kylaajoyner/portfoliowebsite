@@ -670,7 +670,7 @@
 
 // Work page intro speech: "..." first, then the outlaw line, then each descriptor
 // replaces the one before it in the same spot, then "We have some clues" under the
-// ride (about 7s in all). After that the descriptors keep looping.
+// ride (about 5s in all). After that the descriptors keep looping.
 (function () {
   const box = document.querySelector("[data-speech]");
   if (!box) return;
@@ -692,7 +692,7 @@
   let prevRole = null;
   dots.classList.add("is-typing");
   lines.forEach(function (line, i) {
-    t += 1400; // each line gets time to be read before the next
+    t += 1000; // each line gets time to be read before the next
     setTimeout(function () {
       if (line.classList.contains("speech__role")) {
         if (prevRole) {
