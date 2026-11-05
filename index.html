@@ -21,7 +21,7 @@
   <meta name="twitter:image" content="https://kylajoyner.com/assets/images/og-star.png">
   <!-- Adobe Fonts kit: West End + Narkiss Yair -->
   <link rel="stylesheet" href="https://use.typekit.net/ijs5kav.css">
-  <link rel="stylesheet" href="css/style.css?v=156">
+  <link rel="stylesheet" href="css/style.css?v=157">
 </head>
 <body>
   <header class="site-header">
@@ -44,9 +44,17 @@
     <!-- First screen: room for Kyla's intro copy under the header, then the cowgirl ride.
          The cards start below it, so visitors scroll down to the work. -->
     <section class="work-intro">
-      <div class="work-intro__copy"><!-- intro copy coming from Kyla --></div>
+      <!-- Intro speech (Kyla's storyboard): "..." like the lost cowboy, then each line arrives one after another -->
+      <div class="work-intro__copy" data-speech aria-live="polite">
+        <span class="speech__dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        <p class="speech__line">There have been tales of an outlaw&hellip;</p>
+        <p class="speech__line">A creative&hellip;</p>
+        <p class="speech__line">An art director&hellip;</p>
+        <p class="speech__line">A designer&hellip;</p>
+      </div>
       <!-- Kyla's pixel cowgirl ride: her horse frames gallop over her scrolling desert -->
       <div class="ride" role="img" aria-label="Pixel-art cowgirl galloping on horseback through the desert"><span class="ride__horse"></span></div>
+      <p class="speech__line speech__clues" data-speech-last>We have some clues</p>
     </section>
 
     <!-- Work page redo: new bento cards, built one at a time -->
@@ -165,6 +173,6 @@
     <p class="copyright">&copy; <span data-year>2026</span> Kyla Joyner. All rights reserved.</p>
   </footer>
 
-  <script src="js/main.js?v=121"></script>
+  <script src="js/main.js?v=122"></script>
 </body>
 </html>

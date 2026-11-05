@@ -2373,7 +2373,49 @@ a {
   min-height: calc(100vh - var(--header-height) - 44 * var(--u));
   padding-bottom: calc(60 * var(--u));
 }
-.work-intro__copy { min-height: calc(220 * var(--u)); }
+.work-intro__copy {
+  position: relative;
+  min-height: calc(220 * var(--u));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: calc(6 * var(--u));
+  text-align: center;
+}
+
+/* Intro speech: lines arrive one after another (main.js adds .is-said); the dots
+   pulse like the lost cowboy's while the next line is "coming" */
+.speech__line {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: calc(32 * var(--u));
+  line-height: 1.35;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+.speech__line.is-said { opacity: 1; transform: none; }
+.speech__clues { text-align: center; }
+.speech__dots {
+  position: absolute;
+  bottom: calc(-36 * var(--u));
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: calc(10 * var(--u));
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.speech__dots.is-typing { opacity: 1; }
+.speech__dots i {
+  width: calc(10 * var(--u));
+  height: calc(10 * var(--u));
+  background: #1c1c1c;
+  animation: lost-dot 0.9s steps(1) infinite;
+}
+.speech__dots i:nth-child(2) { animation-delay: 0.3s; }
+.speech__dots i:nth-child(3) { animation-delay: 0.6s; }
 
 /* Pixel cowgirl ride: Kyla's saloon desert (the last row of her background sheet,
    followed by three stretches of empty desert so only one saloon is ever on screen; 4096x136) scrolls left along the bottom on a seamless loop while her horse frames
@@ -2615,6 +2657,9 @@ a {
 @media (max-width: 900px) {
   .work-intro { min-height: calc(100svh - var(--header-height) - 44px); padding: 100px 0 40px; } /* clears the smaller corner ornaments */
   .work-intro__copy { min-height: 140px; }
+  .speech__line { font-size: 20px; }
+  .speech__dots { bottom: -24px; gap: 7px; }
+  .speech__dots i { width: 7px; height: 7px; }
   .ride { --tile: calc(100vw - 32px); }
   .work-sign { width: calc(100% - 64px); margin-bottom: 24px; }
   .bento + .work-sign { margin-top: 56px; }

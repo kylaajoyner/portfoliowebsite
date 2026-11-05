@@ -663,3 +663,29 @@
     videos.forEach(function (video) { io.observe(video); });
   }
 })();
+
+// Work page intro speech: "..." first, then each line arrives one after another,
+// ending with "We have some clues" under the ride. The whole speech takes about 4s.
+(function () {
+  const box = document.querySelector("[data-speech]");
+  if (!box) return;
+  const dots = box.querySelector(".speech__dots");
+  const lines = Array.prototype.slice.call(box.querySelectorAll(".speech__line"));
+  const last = document.querySelector("[data-speech-last]");
+  if (last) lines.push(last);
+
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    lines.forEach(function (l) { l.classList.add("is-said"); });
+    return;
+  }
+
+  let t = 300;
+  dots.classList.add("is-typing");
+  lines.forEach(function (line, i) {
+    t += i === 0 ? 1100 : 650; // first "..." lingers, then each line follows quickly
+    setTimeout(function () {
+      line.classList.add("is-said");
+      if (i === lines.length - 1) dots.classList.remove("is-typing");
+    }, t);
+  });
+})();
