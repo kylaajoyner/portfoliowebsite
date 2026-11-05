@@ -665,8 +665,8 @@
 })();
 
 // Work page intro speech: "..." first, then the outlaw line, then each descriptor
-// replaces the one before it in the same spot (the last one stays), ending with
-// "We have some clues" under the ride. The whole speech takes about 7s.
+// replaces the one before it in the same spot, then "We have some clues" under the
+// ride (about 7s in all). After that the descriptors keep looping.
 (function () {
   const box = document.querySelector("[data-speech]");
   if (!box) return;
@@ -691,11 +691,36 @@
     t += 1400; // each line gets time to be read before the next
     setTimeout(function () {
       if (line.classList.contains("speech__role")) {
-        if (prevRole) prevRole.classList.add("is-gone");
+        if (prevRole) {
+          const out = prevRole;
+          out.classList.add("is-gone");
+          setTimeout(function () { out.classList.remove("is-said", "is-gone"); }, 1000);
+        }
         prevRole = line;
       }
       line.classList.add("is-said");
-      if (i === lines.length - 1) dots.classList.remove("is-typing");
+      if (i === lines.length - 1) {
+        dots.classList.remove("is-typing");
+        loopRoles();
+      }
     }, t);
   });
+
+  // After the speech, the descriptors keep cycling in a loop:
+  // A creative... -> An art director... -> A designer... -> A creative... ...
+  function loopRoles() {
+    const roles = Array.prototype.slice.call(box.querySelectorAll(".speech__role"));
+    if (roles.length < 2) return;
+    let at = roles.length - 1; // "A designer..." is showing
+    setInterval(function () {
+      const out = roles[at];
+      at = (at + 1) % roles.length;
+      const inn = roles[at];
+      out.classList.add("is-gone");
+      // once it has faded out, reset it quietly so it can come back in later
+      setTimeout(function () { out.classList.remove("is-said", "is-gone"); }, 1000);
+      inn.classList.remove("is-gone");
+      inn.classList.add("is-said");
+    }, 2200);
+  }
 })();
