@@ -1,6 +1,6 @@
 // Lucky Lips (MSCHF): Kyla's red box as a 3D model. Click it and the lid flips open,
 // a cigarette rises out and fades away, and that cigarette's "tooth" in the lips goes
-// black. Keep clicking until the mouth is empty.
+// black. Keep clicking until the mouth is empty; 5 seconds later the box refills.
 (function () {
   const stage = document.querySelector("[data-lucky-box]");
   if (!stage || !window.THREE) return;
@@ -166,6 +166,23 @@
   const clamp01 = (t) => Math.min(Math.max(t, 0), 1);
   let busy = false;
 
+  // Once the mouth is empty, it refills after 5 seconds: the teeth come back left to right
+  let refillTimer = 0;
+  function checkEmpty() {
+    if (left.includes(true) || refillTimer) return;
+    stage.classList.add("is-empty");
+    refillTimer = setTimeout(refill, 5000);
+  }
+  function refill() {
+    if (busy) { refillTimer = setTimeout(refill, 300); return; }
+    refillTimer = 0;
+    stage.classList.remove("is-empty");
+    left.forEach((_, i) => setTimeout(() => {
+      left[i] = true;
+      drawFront(); drawTop(-1); render();
+    }, reduceMotion ? 0 : i * 140));
+  }
+
   function pull() {
     if (busy) return;
     stage.classList.add("has-spun");
@@ -175,6 +192,7 @@
       if (i >= 0) { left[i] = false; drawFront(); drawTop(-1); }
       render();
       busy = false;
+      checkEmpty();
       return;
     }
     if (i >= 0) {
@@ -211,7 +229,7 @@
         drawTop(-1);
         render();
         busy = false;
-        if (!left.includes(true)) stage.classList.add("is-empty");
+        checkEmpty();
       }
     }
     requestAnimationFrame(frame);
