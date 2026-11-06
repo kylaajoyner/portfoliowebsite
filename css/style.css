@@ -2617,6 +2617,7 @@ a {
   text-align: center;
   color: #000;
 }
+.work-sign__label--long { font-size: 10.8cqw; } /* "Creative Direction" fits inside the sign's frame */
 .bento + .bento { margin-top: calc(40 * var(--u)); }
 .bento + .work-sign { margin-top: calc(100 * var(--u)); }
 
