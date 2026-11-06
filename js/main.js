@@ -710,14 +710,13 @@ const workReturn = (function () {
     [0,    () => typing(true)],
     [900,  () => { typing(false); say(opens[0]); }],
     [1300, () => typing(true)],
-    [2100, () => { typing(false); say(opens[1]); }],
-    [3300, () => say(roles[0])],          // "an outlaw" lands in its red dither
+    [2100, () => { typing(false); say(opens[1]); say(roles[0]); }], // "an outlaw" comes in with its line
     [4900, showRide],                     // the ride fades in slowly (3s)
     [6100, () => typing(true)],
     [6900, () => { typing(false); say(cowpoke); }],
     [7600, () => typing(true)],
     [8400, () => { typing(false); say(clues); }],
-    [7800, loopRoles]                     // ~3s after "an outlaw" finishes pixelating
+    [6600, loopRoles]                     // ~3s after "an outlaw" finishes pixelating
   ];
   steps.forEach(([when, fn]) => setTimeout(fn, when));
 
