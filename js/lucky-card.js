@@ -1,5 +1,5 @@
-// Lucky Lips trading cards: one card in 3D, drag it any way (around and upside down)
-// to see the front and the back. Picking a name beside it flips to that character's
+// Lucky Lips trading cards: one card in 3D, drag it side to side (like the Old Spice
+// stick) to see the front and the back. Picking a name beside it flips to that character's
 // card and turns the Lucky Lips box into that card's pack.
 (function () {
   const stage = document.querySelector("[data-lucky-card]");
@@ -87,7 +87,7 @@
   function render() { renderer.render(scene, camera); }
   window.addEventListener("resize", resize);
 
-  // Drag (mouse or finger) turns the card around both axes, with a little momentum.
+  // Drag (mouse or finger) turns the card around its vertical axis, with a little momentum.
   // Left alone it turns slowly so it reads as an object.
   const IDLE = reduceMotion ? 0 : 0.4; // radians per second around the vertical
   const X = new THREE.Vector3(1, 0, 0), Y = new THREE.Vector3(0, 1, 0);
@@ -111,9 +111,9 @@
     if (!dragging) return;
     const now = performance.now(), dt = Math.max(now - lastT, 1) / 1000;
     const k = 4.2 / canvas.clientWidth; // a full width of drag is about two thirds of a turn
-    const dx = (e.clientX - lastX) * k, dy = (e.clientY - lastY) * k;
-    turn(dy, dx);
-    vy = dx / dt; vx = dy / dt;
+    const dx = (e.clientX - lastX) * k;
+    turn(0, dx); // side to side only, like the Old Spice stick
+    vy = dx / dt; vx = 0;
     lastX = e.clientX; lastY = e.clientY; lastT = now;
     render();
   });

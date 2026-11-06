@@ -2837,7 +2837,7 @@ a {
   margin: 0;
   padding: 0;
 }
-.product-3d--card .product-3d__canvas { cursor: grab; touch-action: none; }
+.product-3d--card .product-3d__canvas { cursor: grab; touch-action: pan-y; }
 .product-3d--card.is-dragging .product-3d__canvas { cursor: grabbing; }
 
 .lucky-names {
