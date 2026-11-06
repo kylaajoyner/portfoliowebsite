@@ -2850,6 +2850,17 @@ a {
 }
 .lucky-names li + li { margin-top: calc(18 * var(--u)); }
 .lucky-play > .lucky-names { transform: translateY(var(--band-shift, 0)); }
+
+/* a link inside explainer copy (Lucky Lips role: Teo Almaguer) */
+.explainer__copy a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  transition: color 0.2s ease;
+}
+.explainer__copy a:hover,
+.explainer__copy a:focus-visible { color: #c4263f; }
 .lucky-names button {
   display: flex;
   align-items: baseline;
@@ -2887,8 +2898,9 @@ a {
     display: grid;
     grid-template-columns: auto auto;
     justify-content: center;
-    gap: 14px 28px;
-    font-size: 22px;
+    gap: 14px clamp(14px, 6vw, 28px);
+    max-width: 100%;
+    font-size: clamp(17px, 5.6vw, 22px); /* both names in a row fit on small phones */
   }
   .lucky-names li + li { margin-top: 0; }
   .lucky-play > .lucky-names { transform: none; }
