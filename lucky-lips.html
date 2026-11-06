@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="icon" href="favicon-48.png" sizes="48x48" type="image/png">
+  <link rel="icon" href="favicon-96.png" sizes="96x96" type="image/png">
+  <link rel="icon" href="favicon-192.png" sizes="192x192" type="image/png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <title>Kyla Joyner | Lucky Lips</title>
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Kyla Joyner | Lucky Lips">
+  <meta property="og:url" content="https://kylajoyner.com/lucky-lips.html">
+  <meta property="og:image" content="https://kylajoyner.com/assets/images/og-star.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Kyla Joyner's white star">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://kylajoyner.com/assets/images/og-star.png">
+  <!-- Adobe Fonts kit: West End + Narkiss Yair -->
+  <link rel="stylesheet" href="https://use.typekit.net/ijs5kav.css">
+  <link rel="stylesheet" href="css/style.css?v=202">
+  <script>try{if(sessionStorage.getItem("slide-in"))document.documentElement.classList.add("slide-in")}catch(e){}</script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="index.html">Kyla Joyner</a>
+    <nav class="site-nav" aria-label="Main">
+      <ul>
+        <li><a href="index.html" aria-current="page">Work</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="rodeo.html">Rodeo</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="page page--project">
+    <!-- Lucky Lips (MSCHF): gallery still to come from Kyla -->
+    <dl class="explainer">
+      <div class="explainer__row explainer__row--nostar">
+        <dt class="explainer__label explainer__label--full">Client: MSCHF</dt>
+        <dd class="explainer__copy spec-note">*unofficial spec work*</dd>
+      </div>
+      <div class="explainer__row">
+        <dt class="explainer__label">Problem:</dt>
+        <dd class="explainer__copy">Young people are smoking again. D.A.R.E didn&rsquo;t work and Gen-Z doesn&rsquo;t care about getting cancer. The age of mass media has left many young people craving a return to physical and traditional items (vinyl collecting, trinket collection,etc). Vapes are out &ndash;&ndash; Cigs are in.</dd>
+      </div>
+      <div class="explainer__row">
+        <dt class="explainer__label">Solution:</dt>
+        <dd class="explainer__copy">
+          <p>What does the younger generation care about more than cancer? <strong>Our looks.</strong></p>
+          <p>Each pack comes with a collectible trading card of random rarity, ranging from common to mythic. Want a more rare card? Return the whole pack, NO cigarettes missing, and get a guaranteed mythic card for your choice. Don&rsquo;t care about collectibles and prefer a smoke? We won&rsquo;t stop you.</p>
+        </dd>
+      </div>
+      <div class="explainer__row">
+        <dt class="explainer__label">Role:</dt>
+        <dd class="explainer__copy">Creative Director with <a href="https://www.teoalmaguer.com/work" target="_blank" rel="noopener">Teo Almaguer</a></dd>
+      </div>
+    </dl>
+
+    <!-- The Lucky Lips box in 3D (each click takes one cigarette, a tooth, out of the lips)
+         beside the trading cards: drag the card to turn it over; picking a name shows that
+         card and switches the box to the card's pack -->
+    <section class="lucky-play" aria-label="Lucky Lips box and trading cards">
+      <div class="product-3d product-3d--box" data-lucky-box>
+        <canvas class="product-3d__canvas" tabindex="0" role="button" aria-label="3D Lucky Lips cigarette box. Click to open it and take out a cigarette."></canvas>
+        <p class="product-3d__hint" aria-hidden="true">Click the box</p>
+      </div>
+      <div class="product-3d product-3d--card" data-lucky-card>
+        <canvas class="product-3d__canvas" tabindex="0" role="button" aria-label="Trading card in 3D"></canvas>
+        <p class="product-3d__hint" aria-hidden="true">Drag to spin &middot; Click to view</p>
+      </div>
+      <ul class="lucky-names" aria-label="Trading cards">
+        <li><button type="button" data-card-pick="bushwick-baddie" data-pack="silver" aria-pressed="false">Bushwick Baddie</button></li>
+        <li><button type="button" data-card-pick="finance-fred" data-pack="red" aria-pressed="true">Finance Fred</button></li>
+        <li><button type="button" data-card-pick="line-cook-larry" data-pack="gold" aria-pressed="false">Line Cook Larry</button></li>
+        <li><button type="button" data-card-pick="crackhead-carl" data-pack="menthol" aria-pressed="false">Crackhead Carl</button></li>
+      </ul>
+    </section>
+
+    <!-- Kyla's three vintage-style Lucky Lips ads: click any for the slideshow -->
+    <div class="project-gallery project-gallery--portrait project-gallery--ads">
+      <img src="assets/images/lucky-lips/ad-physicians.jpg" width="928" height="1152" alt="Vintage-style Lucky Lips ad: a smiling doctor holds the pack over the line &ldquo;20,679 Physicians say Lucky Lips are less irritating. It&rsquo;s toasted.&rdquo;" loading="lazy" decoding="async">
+      <img src="assets/images/lucky-lips/ad-slender.jpg" width="928" height="1152" alt="Vintage-style Lucky Lips ad: a 1930s woman with red lips over &ldquo;To keep a slender figure no one can deny&hellip;&rdquo; and an open pack" loading="lazy" decoding="async">
+      <img src="assets/images/lucky-lips/ad-kiss.jpg" width="928" height="1152" alt="Vintage-style Lucky Lips ad: a match lights a cigarette at red lips, &ldquo;Come and kiss &rsquo;em baby!&rdquo;, with the Lucky Lips pack" loading="lazy" decoding="async">
+    </div>
+
+    <nav class="project-nav" aria-label="More projects">
+      <a class="back-link" href="index.html">&larr; Back to All Work</a>
+      <a class="back-link more-link" href="old-spice.html">More Work &rarr;</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">
+    <nav class="site-footer__links site-footer__links--pages" aria-label="Pages">
+      <a href="index.html" aria-current="page">Work</a>
+      <a href="about.html">About</a>
+      <a href="rodeo.html">Rodeo</a>
+    </nav>
+    <nav class="site-footer__links" aria-label="Contact">
+      <a href="https://www.linkedin.com/in/kyla-joyner/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="mailto:kylaajoyner@gmail.com">Email me</a>
+    </nav>
+    <p class="copyright">&copy; <span data-year>2026</span> Kyla Joyner. All rights reserved.</p>
+  </footer>
+
+  <script src="js/vendor/three.min.js?v=149"></script>
+  <script src="js/lucky-box.js?v=6"></script>
+  <script src="js/lucky-card.js?v=5"></script>
+  <script src="js/main.js?v=145"></script>
+</body>
+</html>

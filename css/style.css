@@ -385,6 +385,8 @@ a {
 }
 
 .product-3d.is-dragging .product-3d__canvas { cursor: grabbing; }
+.product-3d--box { margin-bottom: max(56px, calc(64 * var(--u))); } /* room for the "Click the box" hint above the page nav */
+.product-3d--box .product-3d__canvas { cursor: pointer; touch-action: manipulation; }
 
 .product-3d__hint {
   position: absolute;
@@ -2734,6 +2736,8 @@ a {
 }
 
 
+/* a card whose cover hasn't arrived yet: an empty paper box with a thin rule */
+
 /* covers shown whole, at their own shape (same width as the other covers) */
 .bento-card__media.bento-card__media--full { aspect-ratio: 2000 / 1333; }
 
@@ -2797,3 +2801,111 @@ a {
 @media (prefers-reduced-motion: reduce) {
   .bento-card__media img { transition: none; }
 }
+
+/* "*unofficial spec work*" under the Old Spice and MSCHF clients: a very small muted note */
+.spec-note {
+  display: block;
+  font-family: var(--font-body);
+  font-size: max(11px, calc(18 * var(--c)));
+  line-height: 1.3;
+  letter-spacing: 0;
+  text-transform: none;
+  color: rgba(0, 0, 0, 0.55);
+  margin-top: calc(4 * var(--c));
+}
+.page--project .explainer .explainer__copy.spec-note {
+  font-size: calc(14 * var(--u));
+  margin: -2px 0 8px;
+  color: rgba(0, 0, 0, 0.55);
+}
+@media (max-width: 699px) {
+  .page--project .explainer .explainer__copy.spec-note { font-size: 12px; }
+}
+
+/* Lucky Lips: the box, the trading card and the card names side by side */
+.lucky-play {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+  column-gap: calc(28 * var(--u));
+  align-items: center;
+  max-width: calc(1120 * var(--u));
+  margin: calc(28 * var(--u)) auto max(56px, calc(64 * var(--u)));
+}
+.lucky-play .product-3d {
+  max-width: none;
+  height: min(calc(560 * var(--u)), 70vh);
+  margin: 0;
+  padding: 0;
+}
+.product-3d--card .product-3d__canvas { cursor: grab; touch-action: pan-y; }
+.product-3d--card.is-dragging .product-3d__canvas { cursor: grabbing; }
+
+.lucky-names {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--font-nav);
+  font-size: calc(28 * var(--u));
+  line-height: 1.1;
+}
+.lucky-names li + li { margin-top: calc(18 * var(--u)); }
+.lucky-play > .lucky-names { transform: translateY(var(--band-shift, 0)); }
+
+/* a link inside explainer copy (Lucky Lips role: Teo Almaguer) */
+.explainer__copy a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  transition: color 0.2s ease;
+}
+.explainer__copy a:hover,
+.explainer__copy a:focus-visible { color: #c4263f; }
+.lucky-names button {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35em;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  letter-spacing: 0.02em;
+  color: var(--color-ink, #111);
+  white-space: nowrap;
+  cursor: pointer;
+  opacity: 0.5;
+  transition: opacity 0.2s ease;
+}
+.lucky-names button::before {
+  content: "\2605"; /* ★, the same red star as the explainers */
+  font-size: 0.72em;
+  color: #c4263f;
+  visibility: hidden;
+}
+.lucky-names button:hover,
+.lucky-names button:focus-visible,
+.lucky-names button[aria-pressed="true"] { opacity: 1; }
+.lucky-names button[aria-pressed="true"]::before { visibility: visible; }
+
+@media (max-width: 900px) {
+  .lucky-play {
+    grid-template-columns: 1fr;
+    row-gap: 48px;
+    margin-bottom: 56px;
+  }
+  .lucky-play .product-3d { height: 62vh; }
+  .lucky-names {
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: center;
+    gap: 14px clamp(14px, 6vw, 28px);
+    max-width: 100%;
+    font-size: clamp(17px, 5.6vw, 22px); /* both names in a row fit on small phones */
+  }
+  .lucky-names li + li { margin-top: 0; }
+  .lucky-play > .lucky-names { transform: none; }
+}
+/* Lucky Lips ads: one row of four under the box and cards */
+.project-gallery--ads { max-width: calc(1120 * var(--u)); margin-bottom: calc(56 * var(--u)); }
+.project-gallery--ads,
+.project-gallery--portrait.project-gallery--ads { grid-template-columns: repeat(3, 1fr); }

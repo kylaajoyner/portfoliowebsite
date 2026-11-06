@@ -3,12 +3,11 @@
 // ---------- Project gallery lightbox ----------
 // Click any gallery image to see it full screen, then step through the rest.
 // The slideshow loops: next on the last image goes back to the first.
+// Other scripts can open it too: window.siteLightbox.open([{ src, alt }, ...], index)
 
 (function () {
   const gallery = document.querySelector(".project-gallery, .rodeo-gallery");
-  if (!gallery) return;
-
-  const images = Array.from(gallery.querySelectorAll("img:not(.sizzle img)"));
+  let images = gallery ? Array.from(gallery.querySelectorAll("img:not(.sizzle img)")) : [];
   let current = 0;
   let lastFocus = null;
 
@@ -38,7 +37,8 @@
     count.textContent = `${current + 1} / ${images.length}`;
   }
 
-  function open(i) {
+  function open(i, list) {
+    if (list) images = list;
     lastFocus = document.activeElement;
     show(i);
     box.hidden = false;
@@ -52,17 +52,19 @@
     if (lastFocus) lastFocus.focus();
   }
 
-  images.forEach((img, i) => {
+  const galleryImages = images.slice();
+  galleryImages.forEach((img, i) => {
     img.tabIndex = 0;
     img.setAttribute("role", "button");
-    img.addEventListener("click", () => open(i));
+    img.addEventListener("click", () => open(i, galleryImages));
     img.addEventListener("keydown", (e) => {
       if (e.key === "Enter" || e.key === " ") {
         e.preventDefault();
-        open(i);
+        open(i, galleryImages);
       }
     });
   });
+  window.siteLightbox = { open: (list, i) => open(i || 0, list) };
 
   closeBtn.addEventListener("click", close);
   box.querySelector(".lightbox__arrow--prev").addEventListener("click", () => show(current - 1));
