@@ -2734,6 +2734,9 @@ a {
 }
 
 
+/* a card whose cover hasn't arrived yet: an empty paper box with a thin rule */
+.bento-card__media--empty { background: var(--color-paper); outline: 1px solid rgba(0, 0, 0, 0.15); outline-offset: -1px; }
+
 /* covers shown whole, at their own shape (same width as the other covers) */
 .bento-card__media.bento-card__media--full { aspect-ratio: 2000 / 1333; }
 
