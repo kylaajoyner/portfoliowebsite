@@ -2674,7 +2674,7 @@ a {
   display: inline-block;
   margin: calc(30 * var(--c)) 0 0 calc(65 * var(--c));
   font-family: var(--font-body);
-  font-size: calc(30 * var(--c));
+  font-size: calc(40 * var(--c));
   position: relative;
 }
 
