@@ -190,6 +190,21 @@
     camera.position.set(0, midY + dist * Math.sin(tilt), dist * Math.cos(tilt));
     camera.lookAt(0, midY, 0);
     camera.updateProjectionMatrix();
+    camera.updateMatrixWorld();
+    pack.updateMatrixWorld();
+    // where the closed box lands on screen (fractions of the canvas height, from the top),
+    // so the trading card beside it can be framed to the same top and bottom
+    let t = 1, b = 0;
+    const v = new THREE.Vector3();
+    for (const x of [-W / 2, W / 2]) for (const y of [-H / 2, H / 2]) for (const z of [-D / 2, D / 2]) {
+      v.set(x, y, z).applyMatrix4(pack.matrixWorld).project(camera);
+      const f = (1 - v.y) / 2;
+      t = Math.min(t, f); b = Math.max(b, f);
+    }
+    window.luckyBoxBand = { top: t, bottom: b };
+    // the card names sit level with the middle of the box, not the middle of its canvas
+    stage.parentElement.style.setProperty("--band-shift", (((t + b) / 2 - 0.5) * h).toFixed(1) + "px");
+    document.dispatchEvent(new CustomEvent("lucky:band"));
     render();
   }
   function render() { renderer.render(scene, camera); }

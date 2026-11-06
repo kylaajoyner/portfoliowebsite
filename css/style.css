@@ -2825,7 +2825,7 @@ a {
 /* Lucky Lips: the box, the trading card and the card names side by side */
 .lucky-play {
   display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
   column-gap: calc(28 * var(--u));
   align-items: center;
   max-width: calc(1120 * var(--u));
@@ -2849,6 +2849,7 @@ a {
   line-height: 1.1;
 }
 .lucky-names li + li { margin-top: calc(18 * var(--u)); }
+.lucky-play > .lucky-names { transform: translateY(var(--band-shift, 0)); }
 .lucky-names button {
   display: flex;
   align-items: baseline;
@@ -2890,6 +2891,9 @@ a {
     font-size: 22px;
   }
   .lucky-names li + li { margin-top: 0; }
+  .lucky-play > .lucky-names { transform: none; }
 }
 /* Lucky Lips ads: one row of four under the box and cards */
 .project-gallery--ads { max-width: calc(1120 * var(--u)); margin-bottom: calc(56 * var(--u)); }
+.project-gallery--ads,
+.project-gallery--portrait.project-gallery--ads { grid-template-columns: repeat(3, 1fr); }

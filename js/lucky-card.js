@@ -77,15 +77,23 @@
     if (!w || !h) return;
     renderer.setSize(w, h, false);
     camera.aspect = w / h;
-    // fill the space: the card's height, and a bit more than its width so tilts stay in frame
+    // fill the space: the card's height, and a bit more than its width so tilts stay in frame.
+    // Beside the box, match the box's top and bottom on screen so the two line up.
     const tan = Math.tan((camera.fov * Math.PI) / 360);
-    camera.position.set(0, 0, Math.max((H * 1.08) / (2 * tan), (W * 1.3) / (2 * tan * camera.aspect)) + T);
-    camera.lookAt(0, 0, 0);
+    const band = window.luckyBoxBand;
+    const side = band && stage.parentElement && getComputedStyle(stage.parentElement).gridTemplateColumns.split(" ").length > 1;
+    const frac = side ? band.bottom - band.top : 1 / 1.08;
+    const d = Math.max(H / (2 * tan * frac), (W * (side ? 1 : 1.3)) / (2 * tan * camera.aspect));
+    const mid = side ? 0.5 - (band.top + band.bottom) / 2 : 0; // + = above the middle
+    const y = -mid * 2 * d * tan;
+    camera.position.set(0, y, d + T);
+    camera.lookAt(0, y, 0);
     camera.updateProjectionMatrix();
     render();
   }
   function render() { renderer.render(scene, camera); }
   window.addEventListener("resize", resize);
+  document.addEventListener("lucky:band", resize);
 
   // Drag (mouse or finger) turns the card around its vertical axis, with a little momentum.
   // Left alone it turns slowly so it reads as an object.
