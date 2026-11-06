@@ -2411,23 +2411,23 @@ a {
 .speech__line.is-said { opacity: 1; transform: none; filter: none; }
 /* the trailing "..." hangs past the end so the words themselves sit on the page's center line */
 .speech__hang { position: absolute; }
-.speech__clues { text-align: center; font-size: calc(100 * var(--u)); }
+.speech__clues { text-align: center; font-size: calc(58 * var(--u)); }
 /* the opening line: bigger, wraps onto balanced lines (its "..." stays inline) */
-.speech__open { font-size: calc(66 * var(--u)); max-width: calc(1260 * var(--u)); text-wrap: balance; }
-.speech__cowpoke { text-align: center; font-size: calc(56 * var(--u)); margin-top: calc(10 * var(--u)); }
+.speech__open { font-size: calc(58 * var(--u)); max-width: calc(1260 * var(--u)); text-wrap: balance; }
+.speech__cowpoke { text-align: center; font-size: calc(58 * var(--u)); margin-top: calc(10 * var(--u)); }
 /* "an outlaw" lands solid red, then a pixel dither fades in over it: solid at the top,
    breaking up toward the bottom. dither-red.png holds 8 frames, from solid to the
    finished dither, stacked top to bottom; the animation steps through them. */
 .speech__shake {
   display: inline-block;
   color: transparent;
-  background: url("../assets/images/work/dither-red.png?v=3") 0 0 / auto 800% repeat-x;
+  background: url("../assets/images/work/dither-red.png?v=4") 0 0 / auto 800% repeat-x;
   -webkit-background-clip: text;
   background-clip: text;
   image-rendering: pixelated;
 }
 /* the dither steps in quickly and the letters turn blocky (#speech-pixel in index.html) at the same moment */
-.speech__role--outlaw.is-said .speech__shake { animation: outlaw-dither 0.6s 0.3s steps(7, end) both, outlaw-pixel 0.01s 0.3s both; }
+.speech__role--outlaw.is-said .speech__shake { animation: outlaw-dither 1s 0.4s steps(7, end) both, outlaw-pixel 0.01s 0.4s both; }
 @keyframes outlaw-dither { from { background-position: 0 0; } to { background-position: 0 100%; } }
 @keyframes outlaw-pixel { from { filter: none; } to { filter: url(#speech-pixel); } }
 @keyframes outlaw-pixel-sm { from { filter: none; } to { filter: url(#speech-pixel-sm); } }
@@ -2452,9 +2452,10 @@ a {
 /* the arrow glides down to the first sign instead of jumping */
 /* "We have some clues" sits centered in the box between the ride's ground line and
    the sign's line: the copy and the clues share the free space of the first screen */
-.work-intro .work-intro__copy { flex: 1 0 auto; }
+/* the copy above and the clues below share the free space equally, so the ride sits evenly between them */
+.work-intro .work-intro__copy { flex: 1 1 0; justify-content: center; }
 .work-intro .work-intro__end {
-  flex: 1 0 auto;
+  flex: 1 1 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -2470,7 +2471,7 @@ a {
 /* They flip over like a sign, the same motion as the roles on the About page TV */
 .speech__open { max-width: calc(1400 * var(--u)); }
 /* "there have been tales of an outlaw." stays on one line on bigger screens */
-@media (min-width: 700px) { .speech__open.speech__tales { max-width: none; white-space: nowrap; font-size: calc(56 * var(--u)); } }
+@media (min-width: 700px) { .speech__open.speech__tales { max-width: none; white-space: nowrap; font-size: calc(58 * var(--u)); } }
 
 /* the slot sits inline at the end of "there have been tales of"; main.js sizes it to the
    word showing so the sentence stays centered and closes up as the words change */
@@ -2524,9 +2525,10 @@ a {
   --tile: calc(960 * var(--u)); /* one copy of the desert strip; the ride's height follows it */
   position: relative;
   overflow: hidden;
-  width: 100vw; /* full-bleed: runs edge to edge of the screen */
+  /* full-bleed: runs edge to edge (cancels the intro's 16px side padding, so its center
+     is the page's center, the same as the text; 100vw would include the scrollbar) */
   height: calc(var(--tile) * 200 / 1024);
-  margin: 0 calc(50% - 50vw);
+  margin: 0 -16px;
   image-rendering: pixelated;
 }
 /* on the Work intro the ride starts hidden and fades in slowly with the opening line */
@@ -2762,9 +2764,9 @@ a {
   .work-intro--full { min-height: 100svh; padding-inline: 16px; }
   .work-intro__copy { min-height: 140px; }
   .speech__line { font-size: 19px; }
-  .speech__clues { font-size: 36px; }
-  .speech__open { font-size: 22px; }
-  .speech__cowpoke { font-size: 18px; }
+  .speech__clues { font-size: 20px; }
+  .speech__open { font-size: 20px; }
+  .speech__cowpoke { font-size: 20px; }
   .scroll-hint { width: 30px; margin-top: 14px; padding: 6px; }
   .speech__dots { bottom: -24px; gap: 7px; }
   .speech__dots i { width: 7px; height: 7px; }
