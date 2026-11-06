@@ -100,8 +100,23 @@
     if (ax) card.quaternion.premultiply(q.setFromAxisAngle(X, ax));
   }
 
+  // A click (no real drag) opens the card's front and back as stills in the slideshow
+  let downX = 0, downY = 0, downT = 0;
+  function openStills() {
+    if (!window.siteLightbox || !current) return;
+    const who = (buttons.find((b) => b.dataset.cardPick === current) || {}).textContent || "";
+    window.siteLightbox.open([
+      { src: DIR + "card-" + current + ".jpg" + V, alt: who.trim() + " trading card, front" },
+      { src: DIR + "card-back.jpg" + V, alt: who.trim() + " trading card, back: the Lucky Lips halftone lips" },
+    ], 0);
+  }
+  canvas.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openStills(); }
+  });
+
   canvas.addEventListener("pointerdown", (e) => {
     dragging = true; tween = null;
+    downX = e.clientX; downY = e.clientY; downT = performance.now();
     lastX = e.clientX; lastY = e.clientY; lastT = performance.now();
     vx = vy = 0;
     canvas.setPointerCapture(e.pointerId);
@@ -124,7 +139,11 @@
     if (performance.now() - lastT > 80) vx = vy = 0; // held still before letting go
     idleAt = performance.now() + 2500;
   }
-  canvas.addEventListener("pointerup", endDrag);
+  canvas.addEventListener("pointerup", (e) => {
+    const still = Math.hypot(e.clientX - downX, e.clientY - downY) < 6 && performance.now() - downT < 500;
+    endDrag();
+    if (still) openStills();
+  });
   canvas.addEventListener("pointercancel", endDrag);
 
   let prev = performance.now();
@@ -155,7 +174,7 @@
       current = name;
       frontMat.map = tex(name);
       frontMat.needsUpdate = true;
-      stage.setAttribute("aria-label", btn.textContent.trim() + " trading card in 3D. Drag to turn it over.");
+      canvas.setAttribute("aria-label", btn.textContent.trim() + " trading card in 3D. Drag to turn it over, or press to see the front and back up close.");
     }
     if (!quiet) {
       document.dispatchEvent(new CustomEvent("lucky:pack", { detail: btn.dataset.pack }));
