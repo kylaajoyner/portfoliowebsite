@@ -2415,24 +2415,15 @@ a {
 /* the opening line: bigger, wraps onto balanced lines (its "..." stays inline) */
 .speech__open { font-size: calc(66 * var(--u)); max-width: calc(1260 * var(--u)); text-wrap: balance; }
 .speech__cowpoke { text-align: center; font-size: calc(56 * var(--u)); margin-top: calc(10 * var(--u)); }
-/* "an outlaw" shakes like a wanted man once it lands (and each time it comes back round) */
-.speech__shake { display: inline-block; }
-/* it shakes, then settles slightly pixelated (the #speech-pixel filter in index.html) */
-.speech__role--outlaw.is-said .speech__shake { animation: outlaw-shake 0.8s 0.45s ease-in-out both, outlaw-pixel 0.01s 0.45s both; }
-@keyframes outlaw-pixel { from { filter: none; } to { filter: url(#speech-pixel); } }
-.speech__defs { position: absolute; width: 0; height: 0; overflow: hidden; }
-@keyframes outlaw-shake {
-  0%, 100% { transform: translate(0, 0) rotate(0); }
-  10% { transform: translate(-0.06em, 0) rotate(-2deg); }
-  20% { transform: translate(0.06em, 0) rotate(2deg); }
-  30% { transform: translate(-0.05em, 0) rotate(-1.5deg); }
-  40% { transform: translate(0.05em, 0) rotate(1.5deg); }
-  50% { transform: translate(-0.04em, 0) rotate(-1deg); }
-  60% { transform: translate(0.04em, 0) rotate(1deg); }
-  70% { transform: translate(-0.02em, 0) rotate(-0.5deg); }
-  80% { transform: translate(0.02em, 0) rotate(0.5deg); }
+/* "an outlaw" is filled with a red pixel dither: solid at the top, breaking up toward the bottom */
+.speech__shake {
+  display: inline-block;
+  color: transparent;
+  background: url("../assets/images/work/dither-red.png?v=1") 0 0 / auto 100% repeat-x;
+  -webkit-background-clip: text;
+  background-clip: text;
+  image-rendering: pixelated;
 }
-@media (prefers-reduced-motion: reduce) { .speech__role--outlaw.is-said .speech__shake { animation: none; filter: url(#speech-pixel); } }
 /* Scroll hint: Kyla's-ride-style pixel arrow bouncing under "We have some clues" */
 .scroll-hint {
   display: block;
@@ -2470,9 +2461,7 @@ a {
 .speech__open { max-width: calc(1400 * var(--u)); }
 /* "there have been tales of an outlaw." stays on one line on bigger screens */
 @media (min-width: 700px) { .speech__open.speech__tales { max-width: none; white-space: nowrap; font-size: calc(56 * var(--u)); } }
-/* phones: smaller pixel blocks to suit the smaller letters */
-@media (max-width: 699px) { .speech__role--outlaw.is-said .speech__shake { animation-name: outlaw-shake, outlaw-pixel-sm; } }
-@keyframes outlaw-pixel-sm { from { filter: none; } to { filter: url(#speech-pixel-sm); } }
+
 /* the slot sits inline at the end of "there have been tales of"; main.js sizes it to the
    word showing so the sentence stays centered and closes up as the words change */
 .speech__roles {

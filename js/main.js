@@ -680,8 +680,8 @@ const workReturn = (function () {
 })();
 
 // Work page intro speech (Kyla's sequence): the framed screen starts blank, then
-// "For some time now," -> "there have been tales of an outlaw." ("an outlaw" in red on the
-// same line, shakes, then turns slightly pixelated) -> the ride slowly fades in ->
+// "For some time now," -> "there have been tales of an outlaw." ("an outlaw" in a red
+// pixel dither on the same line) -> the ride slowly fades in ->
 // "We're counting on you to find her, Cowpoke." -> "We have some clues." Then the descriptors take turns replacing "an outlaw"
 // in a loop (outlaw -> creative -> art director -> designer -> outlaw ...).
 (function () {
@@ -718,7 +718,7 @@ const workReturn = (function () {
     [900,  () => { typing(false); say(opens[0]); }],
     [1300, () => typing(true)],
     [2100, () => { typing(false); say(opens[1]); }],
-    [3300, () => say(roles[0])],          // "an outlaw" lands, shakes, then pixelates
+    [3300, () => say(roles[0])],          // "an outlaw" lands in its red dither
     [4900, showRide],                     // the ride fades in slowly (3s)
     [6100, () => typing(true)],
     [6900, () => { typing(false); say(cowpoke); }],

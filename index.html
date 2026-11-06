@@ -21,7 +21,7 @@
   <meta name="twitter:image" content="https://kylajoyner.com/assets/images/og-star.png">
   <!-- Adobe Fonts kit: West End + Narkiss Yair -->
   <link rel="stylesheet" href="https://use.typekit.net/ijs5kav.css">
-  <link rel="stylesheet" href="css/style.css?v=180">
+  <link rel="stylesheet" href="css/style.css?v=181">
 </head>
 <body>
   <!-- Full-screen intro (scroll to enter): it fills the whole screen before the header.
@@ -35,27 +35,10 @@
       <div class="work-intro__copy" data-speech aria-live="polite">
         <span class="speech__dots" aria-hidden="true"><i></i><i></i><i></i></span>
         <p class="speech__line speech__open">For some time now,</p>
-        <!-- "an outlaw" lands on the same line, shakes and turns slightly pixelated;
+        <!-- "an outlaw" lands on the same line in a red pixel dither;
              then the descriptors take its place in a loop -->
         <p class="speech__line speech__open speech__tales">there have been tales of <span class="speech__roles"><span class="speech__line speech__role speech__role--outlaw"><span class="speech__shake">an outlaw</span></span><span class="speech__line speech__role">a creative</span><span class="speech__line speech__role">an art director</span><span class="speech__line speech__role">a designer</span></span>.</p>
         <p class="speech__line speech__cowpoke">We&rsquo;re counting on you to find her, Cowpoke.</p>
-        <!-- the pixel look for "an outlaw": samples the letters in small square blocks -->
-        <svg class="speech__defs" width="0" height="0" aria-hidden="true" focusable="false">
-          <filter id="speech-pixel" x="0" y="0" width="1" height="1">
-            <feFlood x="2" y="2" width="1" height="1"/>
-            <feComposite width="4" height="4"/>
-            <feTile result="grid"/>
-            <feComposite in="SourceGraphic" in2="grid" operator="in"/>
-            <feMorphology operator="dilate" radius="2"/>
-          </filter>
-          <filter id="speech-pixel-sm" x="0" y="0" width="1" height="1">
-            <feFlood x="1" y="1" width="1" height="1"/>
-            <feComposite width="2" height="2"/>
-            <feTile result="grid"/>
-            <feComposite in="SourceGraphic" in2="grid" operator="in"/>
-            <feMorphology operator="dilate" radius="1"/>
-          </filter>
-        </svg>
       </div>
       <!-- Kyla's pixel cowgirl ride: her horse frames gallop over her scrolling desert -->
       <div class="ride" role="img" aria-label="Pixel-art cowgirl galloping on horseback through the desert"><span class="ride__horse"></span></div>
@@ -210,6 +193,6 @@
     <p class="copyright">&copy; <span data-year>2026</span> Kyla Joyner. All rights reserved.</p>
   </footer>
 
-  <script src="js/main.js?v=137"></script>
+  <script src="js/main.js?v=138"></script>
 </body>
 </html>
