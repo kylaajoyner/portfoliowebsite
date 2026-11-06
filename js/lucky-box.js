@@ -182,7 +182,7 @@
     renderer.setSize(w, h, false);
     camera.aspect = w / h;
     // frame the box plus the room the cigarette rises into
-    const top = H / 2 + CIG_L * 0.72, bottom = -H / 2 - H * 0.06; // a little room under it so the near corner never clips
+    const top = H / 2 + CIG_L * 1.02, bottom = -H / 2 - H * 0.06; // a little room under it so the near corner never clips
     const midY = (top + bottom) / 2, spanY = (top - bottom) * 1.04;
     const tan = Math.tan((camera.fov * Math.PI) / 360);
     const dist = Math.max(spanY / (2 * tan), (W * 1.5) / (2 * tan * camera.aspect));
