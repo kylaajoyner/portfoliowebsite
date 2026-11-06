@@ -717,7 +717,7 @@ const workReturn = (function () {
     [6900, () => { typing(false); say(cowpoke); }],
     [7600, () => typing(true)],
     [8400, () => { typing(false); say(clues); }],
-    [9900, loopRoles]
+    [7800, loopRoles]                     // ~3s after "an outlaw" finishes pixelating
   ];
   steps.forEach(([when, fn]) => setTimeout(fn, when));
 
@@ -736,8 +736,13 @@ const workReturn = (function () {
       inn.classList.add("is-said");
       fit(inn);
     };
-    swap();
-    setInterval(swap, 2600);
+    // "an outlaw" holds about 3s after its dither/pixelate finishes (it takes ~1.5s);
+    // the other words hold 2.6s
+    const next = function () {
+      swap();
+      setTimeout(next, at === 0 ? 4500 : 2600);
+    };
+    next();
   }
 })();
 
