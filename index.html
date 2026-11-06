@@ -21,7 +21,7 @@
   <meta name="twitter:image" content="https://kylajoyner.com/assets/images/og-star.png">
   <!-- Adobe Fonts kit: West End + Narkiss Yair -->
   <link rel="stylesheet" href="https://use.typekit.net/ijs5kav.css">
-  <link rel="stylesheet" href="css/style.css?v=178">
+  <link rel="stylesheet" href="css/style.css?v=179">
 </head>
 <body>
   <!-- Full-screen intro (scroll to enter): it fills the whole screen before the header.
@@ -34,21 +34,33 @@
       <!-- Intro speech (Kyla's storyboard): a blank framed screen, then each line arrives one after another -->
       <div class="work-intro__copy" data-speech aria-live="polite">
         <span class="speech__dots" aria-hidden="true"><i></i><i></i><i></i></span>
-        <p class="speech__line speech__open">For some time now</p>
-        <p class="speech__line speech__open">There has been tales of</p>
-        <!-- "an outlaw" comes in red and shakes; then the descriptors take its place in a loop -->
-        <div class="speech__roles">
-          <p class="speech__line speech__role speech__role--outlaw"><span class="speech__shake">An outlaw</span></p>
-          <p class="speech__line speech__role">A creative</p>
-          <p class="speech__line speech__role">An art director</p>
-          <p class="speech__line speech__role">A designer</p>
-        </div>
-        <p class="speech__line speech__cowpoke">We&rsquo;re counting on you to find her Cowpoke</p>
+        <p class="speech__line speech__open">For some time now,</p>
+        <!-- "an outlaw" lands on the same line, shakes and turns slightly pixelated;
+             then the descriptors take its place in a loop -->
+        <p class="speech__line speech__open speech__tales">there have been tales of <span class="speech__roles"><span class="speech__line speech__role speech__role--outlaw"><span class="speech__shake">an outlaw</span></span><span class="speech__line speech__role">a creative</span><span class="speech__line speech__role">an art director</span><span class="speech__line speech__role">a designer</span></span>.</p>
+        <p class="speech__line speech__cowpoke">We&rsquo;re counting on you to find her, Cowpoke.</p>
+        <!-- the pixel look for "an outlaw": samples the letters in small square blocks -->
+        <svg class="speech__defs" width="0" height="0" aria-hidden="true" focusable="false">
+          <filter id="speech-pixel" x="0" y="0" width="1" height="1">
+            <feFlood x="2" y="2" width="1" height="1"/>
+            <feComposite width="4" height="4"/>
+            <feTile result="grid"/>
+            <feComposite in="SourceGraphic" in2="grid" operator="in"/>
+            <feMorphology operator="dilate" radius="2"/>
+          </filter>
+          <filter id="speech-pixel-sm" x="0" y="0" width="1" height="1">
+            <feFlood x="1" y="1" width="1" height="1"/>
+            <feComposite width="2" height="2"/>
+            <feTile result="grid"/>
+            <feComposite in="SourceGraphic" in2="grid" operator="in"/>
+            <feMorphology operator="dilate" radius="1"/>
+          </filter>
+        </svg>
       </div>
       <!-- Kyla's pixel cowgirl ride: her horse frames gallop over her scrolling desert -->
       <div class="ride" role="img" aria-label="Pixel-art cowgirl galloping on horseback through the desert"><span class="ride__horse"></span></div>
       <div class="work-intro__end">
-        <p class="speech__line speech__clues">We have some clues
+        <p class="speech__line speech__clues">We have some clues.
           <!-- scroll hint: a pixel arrow that bounces, and jumps to the first sign on click -->
           <a class="scroll-hint" href="#work-start" aria-label="Scroll to the work">
             <svg viewBox="0 0 7 7" width="7" height="7" shape-rendering="crispEdges" aria-hidden="true"><path d="M2 0h3v3H2zM0 3h7v1H0zM1 4h5v1H1zM2 5h3v1H2zM3 6h1v1H3z" fill="#1c1c1c"/></svg>
@@ -198,6 +210,6 @@
     <p class="copyright">&copy; <span data-year>2026</span> Kyla Joyner. All rights reserved.</p>
   </footer>
 
-  <script src="js/main.js?v=136"></script>
+  <script src="js/main.js?v=137"></script>
 </body>
 </html>

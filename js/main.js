@@ -680,9 +680,9 @@ const workReturn = (function () {
 })();
 
 // Work page intro speech (Kyla's sequence): the framed screen starts blank, then
-// "For some time now" -> "There has been tales of" -> "an outlaw" (red, shakes) ->
-// the ride slowly fades in -> "We're counting on you to find her Cowpoke" ->
-// "We have some clues". Then the descriptors take turns replacing "an outlaw"
+// "For some time now," -> "there have been tales of an outlaw." ("an outlaw" in red on the
+// same line, shakes, then turns slightly pixelated) -> the ride slowly fades in ->
+// "We're counting on you to find her, Cowpoke." -> "We have some clues." Then the descriptors take turns replacing "an outlaw"
 // in a loop (outlaw -> creative -> art director -> designer -> outlaw ...).
 (function () {
   const box = document.querySelector("[data-speech]");
@@ -696,22 +696,34 @@ const workReturn = (function () {
   const clues = intro.querySelector(".speech__clues");
   const say = (el) => el && el.classList.add("is-said");
   const showRide = () => ride && ride.classList.add("is-shown");
+  const typing = (on) => dots && dots.classList.toggle("is-typing", on);
+  // the slot is as wide as the word showing, so the sentence stays centered
+  const slot = box.querySelector(".speech__roles");
+  const fit = function (el) { if (slot && el) slot.style.width = el.scrollWidth + "px"; };
+  fit(roles[0]);
+  window.addEventListener("resize", function () { fit(box.querySelector(".speech__role.is-said:not(.is-gone)") || roles[0]); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { fit(box.querySelector(".speech__role.is-said:not(.is-gone)") || roles[0]); });
 
-  if (workReturn || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (workReturn || still) {
     // No motion, or a return visit: everything at once, with "an outlaw" in the slot
     opens.forEach(say); say(roles[0]); say(cowpoke); say(clues); showRide();
-    if (workReturn && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) setTimeout(loopRoles, 1500);
+    if (!still) setTimeout(loopRoles, 1500);
     return;
   }
 
-  // [when (ms), what]
+  // [when (ms), what]. The "..." only shows while a new sentence is on its way.
   const steps = [
-    [900,  () => { say(opens[0]); dots.classList.add("is-typing"); }],
-    [2100, () => say(opens[1])],
-    [3300, () => say(roles[0])],          // "an outlaw" lands in red and shakes
+    [0,    () => typing(true)],
+    [900,  () => { typing(false); say(opens[0]); }],
+    [1300, () => typing(true)],
+    [2100, () => { typing(false); say(opens[1]); }],
+    [3300, () => say(roles[0])],          // "an outlaw" lands, shakes, then pixelates
     [4900, showRide],                     // the ride fades in slowly (3s)
-    [6900, () => say(cowpoke)],
-    [8400, () => { say(clues); dots.classList.remove("is-typing"); }],
+    [6100, () => typing(true)],
+    [6900, () => { typing(false); say(cowpoke); }],
+    [7600, () => typing(true)],
+    [8400, () => { typing(false); say(clues); }],
     [9900, loopRoles]
   ];
   steps.forEach(([when, fn]) => setTimeout(fn, when));
@@ -729,6 +741,7 @@ const workReturn = (function () {
       setTimeout(function () { out.classList.remove("is-said", "is-gone"); }, 500);
       inn.classList.remove("is-gone");
       inn.classList.add("is-said");
+      fit(inn);
     };
     swap();
     setInterval(swap, 2600);

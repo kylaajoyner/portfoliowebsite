@@ -2417,7 +2417,10 @@ a {
 .speech__cowpoke { text-align: center; font-size: calc(56 * var(--u)); margin-top: calc(10 * var(--u)); }
 /* "an outlaw" shakes like a wanted man once it lands (and each time it comes back round) */
 .speech__shake { display: inline-block; }
-.speech__role--outlaw.is-said .speech__shake { animation: outlaw-shake 0.8s 0.45s ease-in-out both; }
+/* it shakes, then settles slightly pixelated (the #speech-pixel filter in index.html) */
+.speech__role--outlaw.is-said .speech__shake { animation: outlaw-shake 0.8s 0.45s ease-in-out both, outlaw-pixel 0.01s 1.25s both; }
+@keyframes outlaw-pixel { from { filter: none; } to { filter: url(#speech-pixel); } }
+.speech__defs { position: absolute; width: 0; height: 0; overflow: hidden; }
 @keyframes outlaw-shake {
   0%, 100% { transform: translate(0, 0) rotate(0); }
   10% { transform: translate(-0.06em, 0) rotate(-2deg); }
@@ -2429,7 +2432,7 @@ a {
   70% { transform: translate(-0.02em, 0) rotate(-0.5deg); }
   80% { transform: translate(0.02em, 0) rotate(0.5deg); }
 }
-@media (prefers-reduced-motion: reduce) { .speech__role--outlaw.is-said .speech__shake { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .speech__role--outlaw.is-said .speech__shake { animation: none; filter: url(#speech-pixel); } }
 /* Scroll hint: Kyla's-ride-style pixel arrow bouncing under "We have some clues" */
 .scroll-hint {
   display: block;
@@ -2464,8 +2467,25 @@ a {
 }
 /* The descriptors share one spot: each one replaces the one before it */
 /* They flip over like a sign, the same motion as the roles on the About page TV */
-.speech__roles { display: grid; justify-items: center; perspective: 11em; font-size: calc(124 * var(--u)); }
+.speech__open { max-width: calc(1400 * var(--u)); }
+/* "there have been tales of an outlaw." stays on one line on bigger screens */
+@media (min-width: 700px) { .speech__open.speech__tales { max-width: none; white-space: nowrap; font-size: calc(56 * var(--u)); } }
+/* phones: smaller pixel blocks to suit the smaller letters */
+@media (max-width: 699px) { .speech__role--outlaw.is-said .speech__shake { animation-name: outlaw-shake, outlaw-pixel-sm; } }
+@keyframes outlaw-pixel-sm { from { filter: none; } to { filter: url(#speech-pixel-sm); } }
+/* the slot sits inline at the end of "there have been tales of"; main.js sizes it to the
+   word showing so the sentence stays centered and closes up as the words change */
+.speech__roles {
+  display: inline-grid;
+  justify-items: start;
+  vertical-align: bottom;
+  perspective: 11em;
+  font-size: 1.15em;
+  line-height: 1.15;
+  transition: width 0.5s ease;
+}
 .speech__roles .speech__line {
+  display: block;
   grid-area: 1 / 1;
   color: #c4263f;
   font-size: 1em;
@@ -2746,7 +2766,6 @@ a {
   .speech__clues { font-size: 36px; }
   .speech__open { font-size: 22px; }
   .speech__cowpoke { font-size: 18px; }
-  .speech__roles { font-size: 36px; }
   .scroll-hint { width: 30px; margin-top: 14px; padding: 6px; }
   .speech__dots { bottom: -24px; gap: 7px; }
   .speech__dots i { width: 7px; height: 7px; }
