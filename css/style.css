@@ -385,6 +385,9 @@ a {
 }
 
 .product-3d.is-dragging .product-3d__canvas { cursor: grabbing; }
+.product-3d--box { margin-bottom: max(56px, calc(64 * var(--u))); } /* room for the "Click the box" hint above the page nav */
+.product-3d--box .product-3d__canvas { cursor: pointer; touch-action: manipulation; }
+.product-3d--box.is-empty .product-3d__canvas { cursor: default; }
 
 .product-3d__hint {
   position: absolute;

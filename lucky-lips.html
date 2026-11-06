@@ -21,7 +21,7 @@
   <meta name="twitter:image" content="https://kylajoyner.com/assets/images/og-star.png">
   <!-- Adobe Fonts kit: West End + Narkiss Yair -->
   <link rel="stylesheet" href="https://use.typekit.net/ijs5kav.css">
-  <link rel="stylesheet" href="css/style.css?v=196">
+  <link rel="stylesheet" href="css/style.css?v=197">
   <script>try{if(sessionStorage.getItem("slide-in"))document.documentElement.classList.add("slide-in")}catch(e){}</script>
 </head>
 <body>
@@ -56,7 +56,12 @@
         <dd class="explainer__copy">Creative Director</dd>
       </div>
     </dl>
-    <div class="project-gallery project-gallery--single"></div>
+
+    <!-- the Lucky Lips box in 3D: each click opens the lid and takes one cigarette (a tooth) out of the lips -->
+    <div class="product-3d product-3d--box" data-lucky-box>
+      <canvas class="product-3d__canvas" tabindex="0" role="button" aria-label="3D Lucky Lips cigarette box. Click to open it and take out a cigarette."></canvas>
+      <p class="product-3d__hint" aria-hidden="true">Click the box</p>
+    </div>
     <nav class="project-nav" aria-label="More projects">
       <a class="back-link" href="index.html">&larr; Back to All Work</a>
       <a class="back-link more-link" href="old-spice.html">More Work &rarr;</a>
@@ -76,6 +81,8 @@
     <p class="copyright">&copy; <span data-year>2026</span> Kyla Joyner. All rights reserved.</p>
   </footer>
 
+  <script src="js/vendor/three.min.js?v=149"></script>
+  <script src="js/lucky-box.js?v=1"></script>
   <script src="js/main.js?v=144"></script>
 </body>
 </html>
