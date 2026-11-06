@@ -2414,8 +2414,22 @@ a {
 .speech__clues { text-align: center; font-size: calc(100 * var(--u)); }
 /* the opening line: bigger, wraps onto balanced lines (its "..." stays inline) */
 .speech__open { font-size: calc(66 * var(--u)); max-width: calc(1260 * var(--u)); text-wrap: balance; }
-.speech__open .speech__hang { position: static; }
-.speech__cowpoke { text-align: center; font-size: calc(66 * var(--u)); }
+.speech__cowpoke { text-align: center; font-size: calc(56 * var(--u)); margin-top: calc(10 * var(--u)); }
+/* "an outlaw" shakes like a wanted man once it lands (and each time it comes back round) */
+.speech__shake { display: inline-block; }
+.speech__role--outlaw.is-said .speech__shake { animation: outlaw-shake 0.8s 0.45s ease-in-out both; }
+@keyframes outlaw-shake {
+  0%, 100% { transform: translate(0, 0) rotate(0); }
+  10% { transform: translate(-0.06em, 0) rotate(-2deg); }
+  20% { transform: translate(0.06em, 0) rotate(2deg); }
+  30% { transform: translate(-0.05em, 0) rotate(-1.5deg); }
+  40% { transform: translate(0.05em, 0) rotate(1.5deg); }
+  50% { transform: translate(-0.04em, 0) rotate(-1deg); }
+  60% { transform: translate(0.04em, 0) rotate(1deg); }
+  70% { transform: translate(-0.02em, 0) rotate(-0.5deg); }
+  80% { transform: translate(0.02em, 0) rotate(0.5deg); }
+}
+@media (prefers-reduced-motion: reduce) { .speech__role--outlaw.is-said .speech__shake { animation: none; } }
 /* Scroll hint: Kyla's-ride-style pixel arrow bouncing under "We have some clues" */
 .scroll-hint {
   display: block;
@@ -2730,7 +2744,8 @@ a {
   .work-intro__copy { min-height: 140px; }
   .speech__line { font-size: 19px; }
   .speech__clues { font-size: 36px; }
-  .speech__open, .speech__cowpoke { font-size: 22px; }
+  .speech__open { font-size: 22px; }
+  .speech__cowpoke { font-size: 18px; }
   .speech__roles { font-size: 36px; }
   .scroll-hint { width: 30px; margin-top: 14px; padding: 6px; }
   .speech__dots { bottom: -24px; gap: 7px; }

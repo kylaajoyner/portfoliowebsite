@@ -669,76 +669,57 @@
 })();
 
 // Work page intro speech (Kyla's sequence): the framed screen starts blank, then
-// "For some time now there have been tales of an outlaw..." fades in while the ride
-// slowly fades in, then each descriptor replaces the one before it, then
-// "We're counting on you Cowpoke." and "We have some clues". After that the
-// descriptors keep looping.
+// "For some time now" -> "There has been tales of" -> "an outlaw" (red, shakes) ->
+// the ride slowly fades in -> "We're counting on you to find her Cowpoke" ->
+// "We have some clues". Then the descriptors take turns replacing "an outlaw"
+// in a loop (outlaw -> creative -> art director -> designer -> outlaw ...).
 (function () {
   const box = document.querySelector("[data-speech]");
   if (!box) return;
   const intro = box.closest(".work-intro") || document;
   const dots = box.querySelector(".speech__dots");
   const ride = intro.querySelector(".ride");
-  const lines = Array.prototype.slice.call(intro.querySelectorAll(".speech__line"));
+  const roles = Array.prototype.slice.call(box.querySelectorAll(".speech__role"));
+  const opens = Array.prototype.slice.call(box.querySelectorAll(".speech__open"));
+  const cowpoke = intro.querySelector(".speech__cowpoke");
+  const clues = intro.querySelector(".speech__clues");
+  const say = (el) => el && el.classList.add("is-said");
+  const showRide = () => ride && ride.classList.add("is-shown");
 
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    // No motion: show everything at once, with the last descriptor
-    const roles = box.querySelectorAll(".speech__role");
-    lines.forEach(function (l) {
-      if (!l.classList.contains("speech__role") || l === roles[roles.length - 1]) l.classList.add("is-said");
-    });
-    if (ride) ride.classList.add("is-shown");
+    // No motion: everything at once, with "an outlaw" in the slot
+    opens.forEach(say); say(roles[0]); say(cowpoke); say(clues); showRide();
     return;
   }
 
-  let t = 900; // a moment of blank, framed screen first
-  let prevRole = null;
-  let firstRole = true;
-  lines.forEach(function (line, i) {
-    const isRole = line.classList.contains("speech__role");
-    if (i > 0) {
-      // descriptors get longer on screen than the other lines
-      t += isRole ? 1500 : 1300;
-      if (isRole && firstRole) t += 1200; // a beat after the opening line
-    }
-    if (isRole) firstRole = false;
-    setTimeout(function () {
-      if (i === 0) {
-        if (ride) ride.classList.add("is-shown");
-        dots.classList.add("is-typing");
-      }
-      if (isRole) {
-        if (prevRole) {
-          const out = prevRole;
-          out.classList.add("is-gone");
-          setTimeout(function () { out.classList.remove("is-said", "is-gone"); }, 500);
-        }
-        prevRole = line;
-      }
-      line.classList.add("is-said");
-      if (i === lines.length - 1) {
-        dots.classList.remove("is-typing");
-        loopRoles();
-      }
-    }, t);
-  });
+  // [when (ms), what]
+  const steps = [
+    [900,  () => { say(opens[0]); dots.classList.add("is-typing"); }],
+    [2100, () => say(opens[1])],
+    [3300, () => say(roles[0])],          // "an outlaw" lands in red and shakes
+    [4900, showRide],                     // the ride fades in slowly (3s)
+    [6900, () => say(cowpoke)],
+    [8400, () => { say(clues); dots.classList.remove("is-typing"); }],
+    [9900, loopRoles]
+  ];
+  steps.forEach(([when, fn]) => setTimeout(fn, when));
 
-  // After the speech, the descriptors keep cycling in a loop:
-  // A creative... -> An art director... -> A designer... -> A creative... ...
+  // The descriptors take turns in the outlaw's spot, flipping like the About TV roles
   function loopRoles() {
-    const roles = Array.prototype.slice.call(box.querySelectorAll(".speech__role"));
     if (roles.length < 2) return;
-    let at = roles.length - 1; // "A designer..." is showing
-    setInterval(function () {
+    let at = 0; // "an outlaw" is showing
+    const swap = function () {
       const out = roles[at];
       at = (at + 1) % roles.length;
       const inn = roles[at];
       out.classList.add("is-gone");
-      // once it has faded out, reset it quietly so it can come back in later
+      // once it has flipped away, reset it quietly so it can come back round later
       setTimeout(function () { out.classList.remove("is-said", "is-gone"); }, 500);
       inn.classList.remove("is-gone");
       inn.classList.add("is-said");
-    }, 2600); // slower than the About TV roles, at Kyla's ask
+    };
+    swap();
+    setInterval(swap, 2600);
   }
 })();
 
