@@ -2544,7 +2544,7 @@ a {
 }
 /* on the Work intro the ride starts hidden and fades in slowly with the opening line */
 /* soft fade: it starts barely there and slightly blurred, then settles in over 4s */
-.work-intro--full .ride { opacity: 0; filter: blur(6px); transition: opacity 4s cubic-bezier(0.45, 0, 0.25, 1), filter 3s ease-out; }
+.work-intro--full .ride { opacity: 0; filter: blur(6px); transition: opacity 1.5s cubic-bezier(0.45, 0, 0.25, 1), filter 1.2s ease-out; }
 .work-intro--full .ride.is-shown { opacity: 1; filter: blur(0); }
 .ride::before {
   content: "";
@@ -2670,9 +2670,24 @@ a {
 .bento-card__text { display: block; padding-bottom: calc(40 * var(--c)); }
 
 /* "Explore more" in Narkiss, lined up with the text after the stars */
+/* the Explore line is laid out like a Client/Wanted line, with an invisible star of the
+   same font and size in front, so "Explore" starts exactly where their text does */
+.bento-card__explore {
+  display: flex;
+  align-items: baseline;
+  gap: calc(22 * var(--c));
+  margin-top: calc(30 * var(--c));
+}
+.bento-card__explore::before {
+  content: "\2605";
+  flex: none;
+  visibility: hidden;
+  font-family: var(--font-nav);
+  font-size: calc(50 * var(--c) * 0.72);
+}
 .bento-card__more {
   display: inline-block;
-  margin: calc(30 * var(--c)) 0 0 calc(65 * var(--c));
+  margin: 0;
   font-family: var(--font-body);
   font-size: calc(40 * var(--c));
   position: relative;
@@ -2694,6 +2709,19 @@ a {
 
 .bento-card:hover .bento-card__more::after,
 .bento-card:focus-visible .bento-card__more::after { transform: scaleX(1); }
+
+/* small red arrow after "Explore More" (Kyla 2026-11-06); nudges right on hover */
+.bento-card__arrow {
+  display: inline-block;
+  width: calc(30 * var(--c));
+  height: calc(18 * var(--c));
+  margin-left: calc(12 * var(--c));
+  vertical-align: calc(2 * var(--c)); /* centred on the lowercase letters */
+  color: #c4263f;
+  transition: transform 0.25s ease;
+}
+.bento-card:hover .bento-card__arrow,
+.bento-card:focus-visible .bento-card__arrow { transform: translateX(calc(6 * var(--c))); }
 
 .bento-card__facts li {
   display: flex;
