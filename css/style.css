@@ -2617,6 +2617,7 @@ a {
   text-align: center;
   color: #000;
 }
+.work-sign__label--long { font-size: 10.8cqw; } /* "Creative Direction" fits inside the sign's frame */
 .bento + .bento { margin-top: calc(40 * var(--u)); }
 .bento + .work-sign { margin-top: calc(100 * var(--u)); }
 
@@ -2673,7 +2674,7 @@ a {
   display: inline-block;
   margin: calc(30 * var(--c)) 0 0 calc(65 * var(--c));
   font-family: var(--font-body);
-  font-size: calc(30 * var(--c));
+  font-size: calc(40 * var(--c));
   position: relative;
 }
 
@@ -2909,3 +2910,12 @@ a {
 .project-gallery--ads { max-width: calc(1120 * var(--u)); margin-bottom: calc(56 * var(--u)); }
 .project-gallery--ads,
 .project-gallery--portrait.project-gallery--ads { grid-template-columns: repeat(3, 1fr); }
+.project-gallery--ads { margin-bottom: 0; }
+/* Kyla's photos of the real packs: one smaller row, columns sized so all three share a height */
+.project-gallery--photos {
+  grid-template-columns: 4fr 2.25fr 4fr;
+  gap: calc(16 * var(--u));
+  max-width: calc(860 * var(--u));
+  margin-top: max(20px, calc(32 * var(--u)));
+  margin-bottom: max(56px, calc(64 * var(--u)));
+}

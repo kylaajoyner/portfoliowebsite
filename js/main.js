@@ -6,8 +6,9 @@
 // Other scripts can open it too: window.siteLightbox.open([{ src, alt }, ...], index)
 
 (function () {
-  const gallery = document.querySelector(".project-gallery, .rodeo-gallery");
-  let images = gallery ? Array.from(gallery.querySelectorAll("img:not(.sizzle img)")) : [];
+  // every gallery on the page joins one slideshow (Lucky Lips has the ads and the photos)
+  let images = Array.from(document.querySelectorAll(
+    ".project-gallery img:not(.sizzle img), .rodeo-gallery img:not(.sizzle img)"));
   let current = 0;
   let lastFocus = null;
 
