@@ -676,7 +676,7 @@ const workReturn = (function () {
 // "For some time now," -> "there have been tales of an outlaw." ("an outlaw" in a red
 // pixel dither on the same line) -> the ride slowly fades in ->
 // "We're counting on you to find her, Cowpoke." -> "We have some clues." Then the descriptors take turns replacing "an outlaw"
-// in a loop (outlaw -> creative -> art director -> designer -> outlaw ...).
+// in a loop (outlaw once, then creative -> art director -> designer -> creative ...).
 (function () {
   const box = document.querySelector("[data-speech]");
   if (!box) return;
@@ -724,23 +724,22 @@ const workReturn = (function () {
   // The descriptors take turns in the outlaw's spot, flipping like the About TV roles
   function loopRoles() {
     if (roles.length < 2) return;
-    let at = 0; // "an outlaw" is showing
+    let at = 0; // "an outlaw" is showing; it only appears this once
     const swap = function () {
       const out = roles[at];
-      at = (at + 1) % roles.length;
+      // after the outlaw, loop through the other words only (creative -> art director -> designer -> creative ...)
+      at = at >= roles.length - 1 ? 1 : at + 1;
       const inn = roles[at];
       out.classList.add("is-gone");
       // once it has flipped away, reset it quietly so it can come back round later
-      setTimeout(function () { out.classList.remove("is-said", "is-gone"); }, 500);
+      setTimeout(function () { out.classList.remove("is-said", "is-gone"); }, 1000);
       inn.classList.remove("is-gone");
       inn.classList.add("is-said");
       fit(inn);
     };
-    // "an outlaw" holds about 3s after its dither/pixelate finishes (it takes ~1.5s);
-    // the other words hold 2.6s
     const next = function () {
       swap();
-      setTimeout(next, at === 0 ? 4500 : 2600);
+      setTimeout(next, 2600);
     };
     next();
   }
