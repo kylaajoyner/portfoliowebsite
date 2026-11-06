@@ -2670,9 +2670,24 @@ a {
 .bento-card__text { display: block; padding-bottom: calc(40 * var(--c)); }
 
 /* "Explore more" in Narkiss, lined up with the text after the stars */
+/* the Explore line is laid out like a Client/Wanted line, with an invisible star of the
+   same font and size in front, so "Explore" starts exactly where their text does */
+.bento-card__explore {
+  display: flex;
+  align-items: baseline;
+  gap: calc(22 * var(--c));
+  margin-top: calc(30 * var(--c));
+}
+.bento-card__explore::before {
+  content: "\2605";
+  flex: none;
+  visibility: hidden;
+  font-family: var(--font-nav);
+  font-size: calc(50 * var(--c) * 0.72);
+}
 .bento-card__more {
   display: inline-block;
-  margin: calc(30 * var(--c)) 0 0 calc(65 * var(--c));
+  margin: 0;
   font-family: var(--font-body);
   font-size: calc(40 * var(--c));
   position: relative;
