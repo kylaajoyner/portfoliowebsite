@@ -668,6 +668,17 @@
   }
 })();
 
+// Work page: the intro plays once per visit. Coming back to Work from another page
+// (or the browser back button) skips it and lands on the first sign, Art Direction.
+// A reload of Work still plays it.
+const workReturn = (function () {
+  if (!document.querySelector("[data-enter]")) return false;
+  let seen = false;
+  try { seen = sessionStorage.getItem("work-intro-seen") === "1"; sessionStorage.setItem("work-intro-seen", "1"); } catch (e) {}
+  const nav = performance.getEntriesByType && performance.getEntriesByType("navigation")[0];
+  return seen && !(nav && nav.type === "reload");
+})();
+
 // Work page intro speech (Kyla's sequence): the framed screen starts blank, then
 // "For some time now" -> "There has been tales of" -> "an outlaw" (red, shakes) ->
 // the ride slowly fades in -> "We're counting on you to find her Cowpoke" ->
@@ -686,9 +697,10 @@
   const say = (el) => el && el.classList.add("is-said");
   const showRide = () => ride && ride.classList.add("is-shown");
 
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    // No motion: everything at once, with "an outlaw" in the slot
+  if (workReturn || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    // No motion, or a return visit: everything at once, with "an outlaw" in the slot
     opens.forEach(say); say(roles[0]); say(cowpoke); say(clues); showRide();
+    if (workReturn && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) setTimeout(loopRoles, 1500);
     return;
   }
 
@@ -736,6 +748,15 @@
   let busy = false;
   const dest = function () { return target.getBoundingClientRect().top + window.scrollY; };
   const onIntro = function () { return window.scrollY < dest() - 4; };
+
+  // return visit: start on the header and the Art Direction sign, not the intro
+  if (workReturn) {
+    if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+    const land = function () { window.scrollTo({ top: dest(), behavior: "instant" }); };
+    land();
+    // fonts and images can shift the layout a moment later, so settle once more
+    window.addEventListener("load", function () { if (window.scrollY < dest() + 40) land(); });
+  }
 
   function enter() {
     if (busy) return;
