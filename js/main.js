@@ -714,7 +714,7 @@ const workReturn = (function () {
     [900,  () => { typing(false); say(opens[0]); }],
     [1300, () => typing(true)],
     [2100, () => { typing(false); say(opens[1]); say(roles[0]); }], // "an outlaw" comes in with its line
-    [4900, showRide],                     // the ride fades in slowly (3s)
+    [3000, showRide],                     // the ride fades in (1.5s; Kyla 2026-11-06 wanted it quicker)
     [6100, () => typing(true)],
     [6900, () => { typing(false); say(cowpoke); }],
     [7600, () => typing(true)],
