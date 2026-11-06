@@ -635,8 +635,9 @@
   if (year) year.textContent = new Date().getFullYear();
 })();
 
-// Work cards: a short muted clip plays over the cover. On a computer it plays while
-// the card is hovered; on phones (no hover) it plays on its own while the card is on screen.
+// Work cards: a short muted clip loops over the cover on its own, on every device
+// (Kyla: not only on hover). It plays while the card is on screen and pauses when
+// scrolled away, so the clips only load and run when someone can see them.
 (function () {
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   const videos = document.querySelectorAll(".bento-card__video");
@@ -645,26 +646,18 @@
   function start(video) {
     video.play().then(function () { video.classList.add("is-playing"); }).catch(function () {});
   }
-  function stop(video, rewind) {
-    video.classList.remove("is-playing");
-    video.pause();
-    if (rewind) video.currentTime = 0;
-  }
+  function stop(video) { video.pause(); }
 
-  if (window.matchMedia("(hover: hover)").matches) {
-    videos.forEach(function (video) {
-      const card = video.closest(".bento-card");
-      card.addEventListener("mouseenter", function () { start(video); });
-      card.addEventListener("mouseleave", function () { stop(video, true); });
-    });
-  } else if ("IntersectionObserver" in window) {
+  if ("IntersectionObserver" in window) {
     const io = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (entry.isIntersecting) start(entry.target);
-        else stop(entry.target, false);
+        else stop(entry.target);
       });
-    }, { threshold: 0.5 });
+    }, { threshold: 0.25 });
     videos.forEach(function (video) { io.observe(video); });
+  } else {
+    videos.forEach(start);
   }
 })();
 
