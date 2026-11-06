@@ -701,7 +701,7 @@ const workReturn = (function () {
   if (workReturn || still) {
     // No motion, or a return visit: everything at once, with "an outlaw" in the slot
     opens.forEach(say); say(roles[0]); say(cowpoke); say(clues); showRide();
-    if (!still) setTimeout(loopRoles, 1500);
+    if (!still) setTimeout(loopRoles, 4500);
     return;
   }
 
