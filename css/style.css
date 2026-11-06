@@ -2328,6 +2328,10 @@ a {
   transform: scaleX(1);
 }
 
+/* page links (Work / About / Rodeo) sit above LinkedIn / Email me */
+.site-footer__links--pages + .site-footer__links { padding-top: calc(16 * var(--u)); }
+.site-footer__links a[aria-current="page"]::after { transform: scaleX(1); }
+
 /* Project pages: the links line up with the Project / Role copy instead of centring */
 .page--project ~ .site-footer .site-footer__links {
   justify-content: flex-start;
@@ -2351,4 +2355,445 @@ a {
   .copyright { font-size: 12px; padding: 12px 16px 24px; }
   .site-footer__links { gap: 32px; padding-top: 24px; }
   .site-footer__links a { font-size: 18px; }
+}
+
+/* ---------- Work page redo: bento cards (in progress, one card at a time) ---------- */
+/* Each card scales with its own width, so the same card works at any size in the bento.
+   --c = one pixel of Kyla's Figma card (1268 wide). */
+
+.page--work-redo {
+  height: auto;
+  min-height: calc(100vh - var(--header-height));
+  padding-bottom: calc(120 * var(--u));
+}
+
+/* First screen of the Work page: white space for intro copy, then the ride.
+   It fills the screen under the header, so the cards sit below the fold. */
+.work-intro {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: calc(40 * var(--u));
+  min-height: calc(100vh - var(--header-height) - 44 * var(--u));
+  padding-bottom: 0; /* the clues box runs down to the sign line */
+}
+/* Full-screen version: the intro sits before the header and fills the whole screen
+   like a title card; the top ornaments frame it */
+.work-intro--full {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100svh;
+  padding-top: calc(44 * var(--u));
+  padding-inline: 16px; /* copy keeps off the screen edges; the ride still runs edge to edge */
+  overflow-x: clip;
+  box-sizing: border-box;
+}
+.work-intro__copy {
+  position: relative;
+  min-height: calc(220 * var(--u));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: calc(6 * var(--u));
+  text-align: center;
+}
+
+/* Intro speech: lines arrive one after another (main.js adds .is-said); the dots
+   pulse like the lost cowboy's while the next line is "coming" */
+.speech__line {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: calc(54 * var(--u));
+  line-height: 1.15;
+  text-transform: uppercase;
+  opacity: 0;
+  transform: translateY(8px);
+  filter: blur(6px);
+  transition: opacity 0.9s ease-in-out, transform 0.9s ease-in-out, filter 0.9s ease-in-out;
+}
+.speech__line.is-said { opacity: 1; transform: none; filter: none; }
+/* the trailing "..." hangs past the end so the words themselves sit on the page's center line */
+.speech__hang { position: absolute; }
+.speech__clues { text-align: center; font-size: calc(58 * var(--u)); }
+/* the opening line: bigger, wraps onto balanced lines (its "..." stays inline) */
+.speech__open { font-size: calc(58 * var(--u)); max-width: calc(1260 * var(--u)); text-wrap: balance; }
+.speech__cowpoke { text-align: center; font-size: calc(58 * var(--u)); margin-top: calc(10 * var(--u)); }
+/* "an outlaw" lands solid red, then a pixel dither fades in over it: solid at the top,
+   breaking up toward the bottom. dither-red.png holds 8 frames, from solid to the
+   finished dither, stacked top to bottom; the animation steps through them. */
+.speech__shake {
+  display: inline-block;
+  color: transparent;
+  background: url("../assets/images/work/dither-red.png?v=4") 0 0 / auto 800% repeat-x;
+  -webkit-background-clip: text;
+  background-clip: text;
+  image-rendering: pixelated;
+}
+/* the dither steps in quickly and the letters turn blocky (#speech-pixel in index.html) at the same moment */
+.speech__role--outlaw.is-said .speech__shake { animation: outlaw-dither 0.5s 1s steps(7, end) both, outlaw-pixel 0.01s 1s both; }
+/* "an outlaw" comes in slower than the other words */
+/* "an outlaw" doesn't flip in: it fades in together with the rest of its line;
+   it only flips away when the other words take over */
+.speech__roles .speech__line.speech__role--outlaw:not(.is-gone) { transition: none; }
+.speech__roles .speech__line.speech__role--outlaw.is-gone { transition-duration: 1s; }
+@keyframes outlaw-dither { from { background-position: 0 0; } to { background-position: 0 100%; } }
+@keyframes outlaw-pixel { from { filter: none; } to { filter: url(#speech-pixel); } }
+@keyframes outlaw-pixel-sm { from { filter: none; } to { filter: url(#speech-pixel-sm); } }
+@media (max-width: 699px) { .speech__role--outlaw.is-said .speech__shake { animation-name: outlaw-dither, outlaw-pixel-sm; } }
+.speech__defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+@media (prefers-reduced-motion: reduce) { .speech__role--outlaw.is-said .speech__shake { animation: none; background-position: 0 100%; filter: url(#speech-pixel); } }
+/* Scroll hint: Kyla's-ride-style pixel arrow bouncing under "We have some clues" */
+.scroll-hint {
+  display: block;
+  width: calc(56 * var(--u));
+  margin-top: calc(28 * var(--u));
+  padding: calc(8 * var(--u));
+  box-sizing: content-box;
+  animation: scroll-hint-bob 1.4s ease-in-out infinite;
+}
+.scroll-hint svg { display: block; width: 100%; height: auto; }
+@keyframes scroll-hint-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(calc(14 * var(--u))); }
+}
+@media (prefers-reduced-motion: reduce) { .scroll-hint { animation: none; } }
+/* the arrow glides down to the first sign instead of jumping */
+/* "We have some clues" sits centered in the box between the ride's ground line and
+   the sign's line: the copy and the clues share the free space of the first screen */
+/* the copy above and the clues below share the free space equally, so the ride sits evenly between them */
+.work-intro .work-intro__copy { flex: 1 1 0; justify-content: center; }
+.work-intro .work-intro__end {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: calc(14 * var(--u));
+}
+.work-intro .speech__clues {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+/* The descriptors share one spot: each one replaces the one before it */
+/* They flip over like a sign, the same motion as the roles on the About page TV */
+.speech__open { max-width: calc(1400 * var(--u)); }
+/* "there have been tales of an outlaw." stays on one line on bigger screens */
+@media (min-width: 700px) { .speech__open.speech__tales { max-width: none; white-space: nowrap; font-size: calc(58 * var(--u)); } }
+
+/* the slot sits inline at the end of "there have been tales of"; main.js sizes it to the
+   word showing so the sentence stays centered and closes up as the words change */
+.speech__roles {
+  display: inline-grid;
+  justify-items: start;
+  vertical-align: bottom;
+  perspective: 11em;
+  font-size: 1.15em;
+  line-height: 1.15;
+  transition: width 0.5s ease;
+}
+.speech__roles .speech__line {
+  display: block;
+  grid-area: 1 / 1;
+  color: #c4263f;
+  font-size: 1em;
+  white-space: nowrap;
+  filter: none;
+  transform: rotateX(-90deg);
+  transform-origin: 50% 50% -0.55em;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+.speech__roles .speech__line.is-said { transform: rotateX(0); }
+.speech__roles .speech__line.is-gone { opacity: 0; transform: rotateX(90deg); }
+.speech__dots {
+  position: absolute;
+  bottom: calc(-36 * var(--u));
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: calc(10 * var(--u));
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.speech__dots.is-typing { opacity: 1; }
+.speech__dots i {
+  width: calc(10 * var(--u));
+  height: calc(10 * var(--u));
+  background: #1c1c1c;
+  animation: lost-dot 0.9s steps(1) infinite;
+}
+.speech__dots i:nth-child(2) { animation-delay: 0.3s; }
+.speech__dots i:nth-child(3) { animation-delay: 0.6s; }
+
+/* Pixel cowgirl ride: Kyla's saloon desert (the last row of her background sheet,
+   followed by three stretches of empty desert so only one saloon is ever on screen; 4096x136) scrolls left along the bottom on a seamless loop while her horse frames
+   gallop in place on top (her seven-frame cowgirl sheet, ground lines and frame numbers removed). Keyframe names are work-only so they don't clash with
+   the Rodeo page's "ride". */
+.ride {
+  --tile: calc(960 * var(--u)); /* one copy of the desert strip; the ride's height follows it */
+  position: relative;
+  overflow: hidden;
+  /* full-bleed: runs edge to edge (cancels the intro's 16px side padding, so its center
+     is the page's center, the same as the text; 100vw would include the scrollbar) */
+  height: calc(var(--tile) * 200 / 1024);
+  margin: 0 -16px;
+  image-rendering: pixelated;
+}
+/* on the Work intro the ride starts hidden and fades in slowly with the opening line */
+/* soft fade: it starts barely there and slightly blurred, then settles in over 4s */
+.work-intro--full .ride { opacity: 0; filter: blur(6px); transition: opacity 4s cubic-bezier(0.45, 0, 0.25, 1), filter 3s ease-out; }
+.work-intro--full .ride.is-shown { opacity: 1; filter: blur(0); }
+.ride::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("../assets/images/work/ride-desert.png?v=2") 0 100% / calc(4 * var(--tile)) 68% repeat-x;
+  animation: ride-scroll 40s linear infinite;
+}
+.ride__horse {
+  z-index: 1; /* always in front of the scrolling desert */
+  position: absolute;
+  left: 50%;
+  bottom: 1%;
+  height: 80%;
+  aspect-ratio: 341 / 276;
+  transform: translateX(-50%);
+  background: url("../assets/images/work/ride-horse.png?v=2") 0 0 / 700% 100% no-repeat;
+  animation: ride-gallop 0.7s steps(7) infinite;
+}
+
+@keyframes ride-scroll {
+  to { background-position-x: calc(-4 * var(--tile)); }
+}
+@keyframes ride-gallop {
+  to { background-position-x: 116.667%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ride::before, .ride__horse { animation: none; }
+  z-index: 1; /* always in front of the scrolling desert */
+}
+
+/* Section signs: Kyla's pixel saloon boards, each heading its group of cards */
+.work-sign {
+  position: relative;
+  container-type: inline-size; /* the title scales with the board */
+  width: calc(600 * var(--u));
+  max-width: 100%;
+  margin: 0 auto calc(40 * var(--u));
+}
+/* the sign hangs from Kyla's vine running across the whole page */
+.work-sign::before {
+  content: "";
+  position: absolute;
+  top: calc(-44 * var(--u));
+  left: calc(50% - 50vw);
+  width: 100vw;
+  height: calc(88 * var(--u));
+  background: url("../assets/images/work/vine-line.png?v=2") center / auto 100% repeat-x;
+}
+.work-sign img {
+  position: relative; /* in front of the vine */
+  display: block;
+  width: 100%;
+  height: auto;
+  image-rendering: pixelated;
+}
+/* the title sits on the plain middle of the board */
+.work-sign__label {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 65.8%;
+  transform: translateY(-50%);
+  font-family: var(--font-nav);
+  font-weight: 400;
+  font-size: 13.5cqw;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  text-align: center;
+  color: #000;
+}
+.bento + .bento { margin-top: calc(40 * var(--u)); }
+.bento + .work-sign { margin-top: calc(100 * var(--u)); }
+
+.bento {
+  max-width: calc(1120 * var(--u));
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+}
+
+.bento__item { container-type: inline-size; }
+
+.bento-card {
+  --c: calc(100cqw / 1268);
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr calc(430 * var(--c)); /* = the 380u cover tile at full width */
+  gap: calc(40 * var(--c));
+  align-items: center;
+  padding: calc(110 * var(--c)) calc(129 * var(--c)) calc(110 * var(--c)) calc(48 * var(--c));
+  background: var(--color-paper);
+  color: var(--color-ink);
+  text-decoration: none;
+  outline: 1px solid rgba(0, 0, 0, 0.12); /* keeps the white card visible on the white page */
+}
+
+.bento-card__ornament {
+  position: absolute;
+  width: calc(84 * var(--c));
+  height: auto;
+  pointer-events: none;
+}
+/* The ornament art points to the bottom-right corner; the others are flipped. */
+.bento-card__ornament--tl { top: calc(32 * var(--c)); left: calc(26 * var(--c)); transform: rotate(180deg); }
+.bento-card__ornament--tr { top: calc(32 * var(--c)); right: calc(32 * var(--c)); transform: scaleY(-1); }
+.bento-card__ornament--bl { bottom: calc(40 * var(--c)); left: calc(26 * var(--c)); transform: scaleX(-1); }
+.bento-card__ornament--br { bottom: calc(40 * var(--c)); right: calc(32 * var(--c)); }
+
+.bento-card__facts {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--font-nav);
+  font-size: calc(50 * var(--c));
+  line-height: 1.08;
+  white-space: nowrap; /* each line stays on one line */
+  text-transform: uppercase;
+}
+
+.bento-card__text { display: block; padding-bottom: calc(40 * var(--c)); }
+
+/* "Explore more" in Narkiss, lined up with the text after the stars */
+.bento-card__more {
+  display: inline-block;
+  margin: calc(30 * var(--c)) 0 0 calc(65 * var(--c));
+  font-family: var(--font-body);
+  font-size: calc(30 * var(--c));
+  position: relative;
+}
+
+/* same grow-from-the-middle underline as the nav and the other page links */
+.bento-card__more::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(-3 * var(--c));
+  height: max(1px, calc(1.5 * var(--u)));
+  background: rgba(0, 0, 0, 0.3);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.25s ease;
+}
+
+.bento-card:hover .bento-card__more::after,
+.bento-card:focus-visible .bento-card__more::after { transform: scaleX(1); }
+
+.bento-card__facts li {
+  display: flex;
+  align-items: baseline;
+  gap: calc(22 * var(--c));
+}
+
+/* a name too long for one line beside the cover wraps instead of running under it */
+.bento-card__facts li.bento-card__fact--wrap { white-space: normal; }
+
+.bento-card__facts .nowrap { white-space: nowrap; } /* never split a hyphenated word */
+
+.bento-card__facts li + li { margin-top: calc(14 * var(--c)); }
+
+.bento-card__facts li::before {
+  content: "\2605"; /* ★ */
+  flex: none;
+  font-size: 0.72em;
+  color: #c4263f; /* same red star as the explainers and the Jukebox */
+}
+
+.bento-card__media {
+  position: relative;
+  display: block;
+  aspect-ratio: 380 / 214; /* same landscape format as the cover tiles */
+  overflow: hidden;
+  background: #000;
+}
+
+/* the stick GIF sits on white with no border, a little bigger than the cover tiles */
+.bento-card__media--light {
+  background: var(--color-paper);
+}
+
+/* the stick GIF is cropped tall around the stick: 20% taller than the cover tiles,
+   and narrow, so the text keeps its room */
+.bento-card__media--light {
+  aspect-ratio: 280 / 428;
+  width: calc(190 * var(--c));
+  justify-self: center; /* centered where the cover image sits on the other cards */
+}
+
+
+/* covers shown whole, at their own shape (same width as the other covers) */
+.bento-card__media.bento-card__media--full { aspect-ratio: 2000 / 1333; }
+
+/* space between cards (placeholder until the bento arrangement is designed) */
+.bento__item + .bento__item { margin-top: calc(40 * var(--u)); }
+
+.bento-card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+/* the whole thumbnail pops up slightly on hover, the same lift as the Rodeo gallery pieces */
+.bento-card__media { transition: transform 0.25s ease, box-shadow 0.25s ease; }
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .bento-card:hover .bento-card__media,
+  .bento-card:focus-visible .bento-card__media {
+    transform: translateY(-6px) scale(1.04);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.18);
+  }
+  /* the stick GIF has no frame, so it just grows without a shadow */
+  .bento-card:hover .bento-card__media--light,
+  .bento-card:focus-visible .bento-card__media--light { box-shadow: none; }
+}
+/* hover clip: a short muted loop from the film fades in over the cover while hovered */
+.bento-card__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+.bento-card__video.is-playing { opacity: 1; }
+
+/* the older tiles that haven't been converted yet sit underneath */
+.page--work-redo .work-grid { margin-top: calc(80 * var(--u)); }
+
+@media (max-width: 900px) {
+  .work-intro { min-height: calc(100svh - var(--header-height) - 44px); padding: 100px 0 0; } /* clears the smaller corner ornaments */
+  .work-intro--full { min-height: 100svh; padding-inline: 16px; }
+  .work-intro__copy { min-height: 140px; }
+  .speech__line { font-size: 19px; }
+  .speech__clues { font-size: 20px; }
+  .speech__open { font-size: 20px; }
+  .speech__cowpoke { font-size: 20px; }
+  .scroll-hint { width: 30px; margin-top: 14px; padding: 6px; }
+  .speech__dots { bottom: -24px; gap: 7px; }
+  .speech__dots i { width: 7px; height: 7px; }
+  .ride { --tile: calc(100vw - 32px); }
+  .work-sign { width: calc(100% - 64px); margin-bottom: 24px; }
+  .bento + .work-sign { margin-top: 56px; }
+  .work-sign::before { top: -24px; height: 48px; }
+  .bento { padding: 0 16px; }
+  .page--work-redo .work-grid { margin-top: 40px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bento-card__media img { transition: none; }
 }

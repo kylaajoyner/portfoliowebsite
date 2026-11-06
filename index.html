@@ -21,9 +21,54 @@
   <meta name="twitter:image" content="https://kylajoyner.com/assets/images/og-star.png">
   <!-- Adobe Fonts kit: West End + Narkiss Yair -->
   <link rel="stylesheet" href="https://use.typekit.net/ijs5kav.css">
-  <link rel="stylesheet" href="css/style.css?v=130">
+  <link rel="stylesheet" href="css/style.css?v=193">
 </head>
 <body>
+  <!-- Full-screen intro (scroll to enter): it fills the whole screen before the header.
+       The first scroll glides down to the header and the work (main.js). -->
+  <section class="work-intro work-intro--full" data-enter>
+    <img class="ornament ornament--top-left" src="assets/images/ornament.png" alt="">
+    <img class="ornament ornament--top-right" src="assets/images/ornament.png" alt="">
+    <img class="ornament ornament--bottom-left" src="assets/images/ornament.png" alt="">
+    <img class="ornament ornament--bottom-right" src="assets/images/ornament.png" alt="">
+      <!-- Intro speech (Kyla's storyboard): a blank framed screen, then each line arrives one after another -->
+      <div class="work-intro__copy" data-speech aria-live="polite">
+        <span class="speech__dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        <p class="speech__line speech__open">For some time now,</p>
+        <!-- "an outlaw" lands on the same line in a red pixel dither;
+             then the descriptors take its place in a loop -->
+        <p class="speech__line speech__open speech__tales">there have been tales of <span class="speech__roles"><span class="speech__line speech__role speech__role--outlaw"><span class="speech__shake">an outlaw</span></span><span class="speech__line speech__role">a creative</span><span class="speech__line speech__role">an art director</span><span class="speech__line speech__role">a designer</span><span class="speech__line speech__role">a storyteller</span></span>.</p>
+        <!-- blocky pixel look for "an outlaw": samples the letters in square blocks -->
+        <svg class="speech__defs" width="0" height="0" aria-hidden="true" focusable="false">
+          <filter id="speech-pixel" x="0" y="0" width="1" height="1">
+            <feFlood x="0" y="0" width="1" height="1"/>
+            <feComposite width="2" height="2"/>
+            <feTile result="grid"/>
+            <feComposite in="SourceGraphic" in2="grid" operator="in"/>
+            <feMorphology operator="dilate" radius="0.5"/>
+          </filter>
+          <filter id="speech-pixel-sm" x="0" y="0" width="1" height="1">
+            <feFlood x="1" y="1" width="1" height="1"/>
+            <feComposite width="2" height="2"/>
+            <feTile result="grid"/>
+            <feComposite in="SourceGraphic" in2="grid" operator="in"/>
+            <feMorphology operator="dilate" radius="1"/>
+          </filter>
+        </svg>
+        <p class="speech__line speech__cowpoke">We&rsquo;re counting on you to find her, Cowpoke.</p>
+      </div>
+      <!-- Kyla's pixel cowgirl ride: her horse frames gallop over her scrolling desert -->
+      <div class="ride" role="img" aria-label="Pixel-art cowgirl galloping on horseback through the desert"><span class="ride__horse"></span></div>
+      <div class="work-intro__end">
+        <p class="speech__line speech__clues">We have some clues&hellip;
+          <!-- scroll hint: a pixel arrow that bounces, and jumps to the first sign on click -->
+          <a class="scroll-hint" href="#work-start" aria-label="Scroll to the work">
+            <svg viewBox="0 0 7 7" width="7" height="7" shape-rendering="crispEdges" aria-hidden="true"><path d="M2 0h3v3H2zM0 3h7v1H0zM1 4h5v1H1zM2 5h3v1H2zM3 6h1v1H3z" fill="#1c1c1c"/></svg>
+          </a>
+        </p>
+      </div>
+  </section>
+
   <header class="site-header">
     <a class="wordmark" href="index.html">Kyla Joyner</a>
     <nav class="site-nav" aria-label="Main">
@@ -35,24 +80,132 @@
     </nav>
   </header>
 
-  <main class="page page--work">
-    <img class="ornament ornament--top-left" src="assets/images/ornament.png" alt="">
-    <img class="ornament ornament--top-right" src="assets/images/ornament.png" alt="">
-    <img class="ornament ornament--bottom-left" src="assets/images/ornament.png" alt="">
-    <img class="ornament ornament--bottom-right" src="assets/images/ornament.png" alt="">
+  <main class="page page--work page--work-redo">
 
-    <ul class="work-grid">
-      <li><a class="work-card" href="unc-womens-basketball.html"><img src="assets/images/thumbs/unc-wbb.jpg" alt="UNC Women's Basketball"><span class="work-card__label">UNC Women's Basketball</span></a></li>
-      <li><a class="work-card" href="old-spice.html"><img src="assets/images/thumbs/old-spice.jpg" alt="Old Spice Pure Sport"><span class="work-card__label">Old Spice Logo Rebrand</span></a></li>
-      <li><a class="work-card" href="old-spice-ad.html"><img src="assets/images/thumbs/old-spice-ad.jpg?v=3" alt="Old Spice Scent Mogged ad"><span class="work-card__label">Old Spice Ad Campaign</span></a></li>
-      <li><a class="work-card" href="pending.html"><img src="assets/images/thumbs/pending.jpg" alt="Pending"><span class="work-card__label">Pending</span></a></li>
-      <li><a class="work-card work-card--wordmark" href="daily-tar-heel.html"><img src="assets/images/thumbs/daily-tar-heel.png" alt="The Daily Tar Heel"><span class="work-card__label">The Daily Tar Heel</span></a></li>
-      <li><a class="work-card" href="carolina-photojournalism-workshop.html"><img src="assets/images/thumbs/carolina-photojournalism-workshop.jpg" alt="Out There, Carolina Photojournalism Workshop"><span class="work-card__label">Carolina Photojournalism Workshop</span></a></li>
-      <li><a class="work-card" href="malama-maui.html"><img src="assets/images/thumbs/malama-maui.jpg" alt="He wa’a, Ko’u Kūpuna (The Canoe, My Ancestor), Mālama Maui: The Land We Hold"><span class="work-card__label">Mālama Maui: The Land We Hold</span></a></li>
+
+    <!-- Work page redo: new bento cards, built one at a time -->
+    <!-- Art Direction section: Kyla's blank pixel saloon sign with the title in Bebas Neue, with the Old Spice projects under it -->
+    <h2 class="work-sign" id="work-start"><img src="assets/images/work/sign-blank.png?v=2" alt="" width="942" height="496"><span class="work-sign__label">Art Direction</span></h2>
+    <ul class="bento">
+      <li class="bento__item">
+        <a class="bento-card" href="old-spice.html">
+          <img class="bento-card__ornament bento-card__ornament--tl" src="assets/images/ornament.png" alt="">
+          <img class="bento-card__ornament bento-card__ornament--tr" src="assets/images/ornament.png" alt="">
+          <img class="bento-card__ornament bento-card__ornament--bl" src="assets/images/ornament.png" alt="">
+          <img class="bento-card__ornament bento-card__ornament--br" src="assets/images/ornament.png" alt="">
+          <span class="bento-card__text">
+            <ul class="bento-card__facts">
+              <li>Client: Old Spice &ldquo;Pure Sport&rdquo;</li>
+              <li>Wanted: Art Director &amp; Designer</li>
+            </ul>
+            <span class="bento-card__more">Explore more</span>
+          </span>
+          <span class="bento-card__media bento-card__media--light"><img src="assets/images/thumbs/old-spice-stick.gif" alt="The redesigned Old Spice Pure Sport deodorant stick, turning in 3D"></span>
+        </a>
+      <li class="bento__item">
+        <a class="bento-card" href="old-spice-ad.html">
+          <img class="bento-card__ornament bento-card__ornament--tl" src="assets/images/ornament.png" alt="">
+          <img class="bento-card__ornament bento-card__ornament--tr" src="assets/images/ornament.png" alt="">
+          <img class="bento-card__ornament bento-card__ornament--bl" src="assets/images/ornament.png" alt="">
+          <img class="bento-card__ornament bento-card__ornament--br" src="assets/images/ornament.png" alt="">
+          <span class="bento-card__text">
+            <ul class="bento-card__facts">
+              <li>Client: Old Spice &ldquo;Pure Sport&rdquo;</li>
+              <li>Wanted: Art Director &amp; Designer</li>
+            </ul>
+            <span class="bento-card__more">Explore more</span>
+          </span>
+          <span class="bento-card__media"><img src="assets/images/thumbs/old-spice-ad.jpg?v=3" alt="Old Spice Scent Mogged ad"></span>
+        </a>
     </ul>
+
+    <!-- Design section: the same sign reading Design, with UNC WBB and The Daily Tar Heel under it -->
+    <h2 class="work-sign"><img src="assets/images/work/sign-blank.png?v=2" alt="" width="942" height="496"><span class="work-sign__label">Design</span></h2>
+    <ul class="bento">
+      <li class="bento__item">
+        <a class="bento-card" href="unc-womens-basketball.html">
+          <img class="bento-card__ornament bento-card__ornament--tl" src="assets/images/ornament.png" alt="">
+          <img class="bento-card__ornament bento-card__ornament--tr" src="assets/images/ornament.png" alt="">
+          <img class="bento-card__ornament bento-card__ornament--bl" src="assets/images/ornament.png" alt="">
+          <img class="bento-card__ornament bento-card__ornament--br" src="assets/images/ornament.png" alt="">
+          <span class="bento-card__text">
+            <ul class="bento-card__facts">
+              <li>Client: UNC Women&rsquo;s Basketball</li>
+              <li>Wanted: Designer &amp; Photographer</li>
+            </ul>
+            <span class="bento-card__more">Explore more</span>
+          </span>
+          <span class="bento-card__media"><img src="assets/images/thumbs/unc-wbb.jpg" alt="UNC Women's Basketball cover: ACC, Carolina and Jordan logos over Carmichael Arena"></span>
+        </a>
+      <li class="bento__item">
+        <a class="bento-card" href="daily-tar-heel.html">
+          <img class="bento-card__ornament bento-card__ornament--tl" src="assets/images/ornament.png" alt="">
+          <img class="bento-card__ornament bento-card__ornament--tr" src="assets/images/ornament.png" alt="">
+          <img class="bento-card__ornament bento-card__ornament--bl" src="assets/images/ornament.png" alt="">
+          <img class="bento-card__ornament bento-card__ornament--br" src="assets/images/ornament.png" alt="">
+          <span class="bento-card__text">
+            <ul class="bento-card__facts">
+              <li>Client: The Daily Tar Heel</li>
+              <li>Wanted: Designer</li>
+            </ul>
+            <span class="bento-card__more">Explore more</span>
+          </span>
+          <span class="bento-card__media bento-card__media--full"><img src="assets/images/thumbs/daily-tar-heel-cover.jpg" alt="Collage for a Daily Tar Heel opinion column on college romance: a torn red heart over the Old Well, a vintage team photo and a UNC pennant, above four swooning people with heart eyes"></span>
+        </a>
+    </ul>
+
+    <!-- Documentary section: the same sign reading Documentary, with CPW and Mālama Maui under it -->
+    <h2 class="work-sign"><img src="assets/images/work/sign-blank.png?v=2" alt="" width="942" height="496"><span class="work-sign__label">Documentary</span></h2>
+    <ul class="bento">
+      <li class="bento__item">
+        <a class="bento-card" href="carolina-photojournalism-workshop.html">
+          <img class="bento-card__ornament bento-card__ornament--tl" src="assets/images/ornament.png" alt="">
+          <img class="bento-card__ornament bento-card__ornament--tr" src="assets/images/ornament.png" alt="">
+          <img class="bento-card__ornament bento-card__ornament--bl" src="assets/images/ornament.png" alt="">
+          <img class="bento-card__ornament bento-card__ornament--br" src="assets/images/ornament.png" alt="">
+          <span class="bento-card__text">
+            <ul class="bento-card__facts">
+              <li class="bento-card__fact--wrap">Project: Carolina Photojournalism Workshop</li>
+              <li>Wanted: Videographer &amp; Editor</li>
+            </ul>
+            <span class="bento-card__more">Explore more</span>
+          </span>
+          <span class="bento-card__media"><img src="assets/images/thumbs/carolina-photojournalism-workshop.jpg" alt="Out There, Carolina Photojournalism Workshop"><video class="bento-card__video" src="assets/images/thumbs/carolina-photojournalism-workshop.mp4" muted loop playsinline preload="none" aria-hidden="true"></video></span>
+        </a>
+      <li class="bento__item">
+        <a class="bento-card" href="malama-maui.html">
+          <img class="bento-card__ornament bento-card__ornament--tl" src="assets/images/ornament.png" alt="">
+          <img class="bento-card__ornament bento-card__ornament--tr" src="assets/images/ornament.png" alt="">
+          <img class="bento-card__ornament bento-card__ornament--bl" src="assets/images/ornament.png" alt="">
+          <img class="bento-card__ornament bento-card__ornament--br" src="assets/images/ornament.png" alt="">
+          <span class="bento-card__text">
+            <ul class="bento-card__facts">
+              <li>Project: M&#257;lama Maui</li>
+              <li>Wanted: Videographer &amp; Editor</li>
+            </ul>
+            <span class="bento-card__more">Explore more</span>
+          </span>
+          <span class="bento-card__media"><img src="assets/images/thumbs/malama-maui.jpg" alt="He wa’a, Ko’u Kūpuna (The Canoe, My Ancestor), Mālama Maui: The Land We Hold"><video class="bento-card__video" src="assets/images/thumbs/malama-maui.mp4" muted loop playsinline preload="none" aria-hidden="true"></video></span>
+        </a>
+      </li>
+    </ul>
+    <!-- Lost partner: the same cowboy as About and Rodeo; he talks once he scrolls into view -->
+    <section class="lost" data-lost>
+      <div class="lost__cowboy" aria-hidden="true"></div>
+      <div class="lost__bubble" aria-live="polite">
+        <span class="lost__dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        <p class="lost__text">You seem lost partner</p>
+        <p class="lost__links"><a href="#work-start" data-top=".site-header">Back to top</a></p>
+      </div>
+    </section>
   </main>
 
   <footer class="site-footer">
+    <nav class="site-footer__links site-footer__links--pages" aria-label="Pages">
+      <a href="index.html" aria-current="page">Work</a>
+      <a href="about.html">About</a>
+      <a href="rodeo.html">Rodeo</a>
+    </nav>
     <nav class="site-footer__links" aria-label="Contact">
       <a href="https://www.linkedin.com/in/kyla-joyner/" target="_blank" rel="noopener">LinkedIn</a>
       <a href="mailto:kylaajoyner@gmail.com">Email me</a>
@@ -60,6 +213,6 @@
     <p class="copyright">&copy; <span data-year>2026</span> Kyla Joyner. All rights reserved.</p>
   </footer>
 
-  <script src="js/main.js?v=119"></script>
+  <script src="js/main.js?v=144"></script>
 </body>
 </html>

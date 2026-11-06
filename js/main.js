@@ -371,8 +371,8 @@
       lost.classList.add("has-spoken", "has-links");
       return;
     }
-    setTimeout(function () { lost.classList.add("has-spoken"); }, 1000);
-    setTimeout(function () { lost.classList.add("has-links"); }, 1600);
+    setTimeout(function () { lost.classList.add("has-spoken"); }, 500);
+    setTimeout(function () { lost.classList.add("has-links"); }, 850);
   }
 
   if ("IntersectionObserver" in window) {
@@ -381,7 +381,7 @@
         talk();
         io.disconnect();
       }
-    }, { threshold: 0.9 }); // wait until he is fully on screen so the "..." is seen
+    }, { threshold: 0.6 }); // starts once most of him is on screen (Kyla: a little faster)
     io.observe(lost);
   } else {
     talk();
@@ -391,7 +391,11 @@
   if (top) {
     top.addEventListener("click", function (e) {
       e.preventDefault();
-      window.scrollTo({ top: 0, behavior: still ? "auto" : "smooth" });
+      // a page can send him somewhere other than the very top (Work: the Art Direction section)
+      const sel = top.getAttribute("data-top");
+      const dest = sel ? document.querySelector(sel) : null;
+      const y = dest ? dest.getBoundingClientRect().top + window.scrollY : 0;
+      window.scrollTo({ top: y, behavior: still ? "auto" : "smooth" });
     });
   }
 })();
@@ -629,4 +633,192 @@
 (function () {
   const year = document.querySelector("[data-year]");
   if (year) year.textContent = new Date().getFullYear();
+})();
+
+// Work cards: a short muted clip loops over the cover on its own, on every device
+// (Kyla: not only on hover). It plays while the card is on screen and pauses when
+// scrolled away, so the clips only load and run when someone can see them.
+(function () {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const videos = document.querySelectorAll(".bento-card__video");
+  if (!videos.length) return;
+
+  function start(video) {
+    video.play().then(function () { video.classList.add("is-playing"); }).catch(function () {});
+  }
+  function stop(video) { video.pause(); }
+
+  if ("IntersectionObserver" in window) {
+    const io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) start(entry.target);
+        else stop(entry.target);
+      });
+    }, { threshold: 0.25 });
+    videos.forEach(function (video) { io.observe(video); });
+  } else {
+    videos.forEach(start);
+  }
+})();
+
+// Work page: the intro plays once per visit. Coming back to Work from another page
+// (or the browser back button) skips it and lands on the first sign, Art Direction.
+// A reload of Work still plays it.
+const workReturn = (function () {
+  if (!document.querySelector("[data-enter]")) return false;
+  let seen = false;
+  try { seen = sessionStorage.getItem("work-intro-seen") === "1"; sessionStorage.setItem("work-intro-seen", "1"); } catch (e) {}
+  const nav = performance.getEntriesByType && performance.getEntriesByType("navigation")[0];
+  return seen && !(nav && nav.type === "reload");
+})();
+
+// Work page intro speech (Kyla's sequence): the framed screen starts blank, then
+// "For some time now," -> "there have been tales of an outlaw." ("an outlaw" in a red
+// pixel dither on the same line) -> the ride slowly fades in ->
+// "We're counting on you to find her, Cowpoke." -> "We have some clues." Then the descriptors take turns replacing "an outlaw"
+// in a loop (outlaw once, then creative -> art director -> designer -> creative ...).
+(function () {
+  const box = document.querySelector("[data-speech]");
+  if (!box) return;
+  const intro = box.closest(".work-intro") || document;
+  const dots = box.querySelector(".speech__dots");
+  const ride = intro.querySelector(".ride");
+  const roles = Array.prototype.slice.call(box.querySelectorAll(".speech__role"));
+  const opens = Array.prototype.slice.call(box.querySelectorAll(".speech__open"));
+  const cowpoke = intro.querySelector(".speech__cowpoke");
+  const clues = intro.querySelector(".speech__clues");
+  const say = (el) => el && el.classList.add("is-said");
+  const showRide = () => ride && ride.classList.add("is-shown");
+  const typing = (on) => dots && dots.classList.toggle("is-typing", on);
+  // the slot is as wide as the word showing, so the sentence stays centered
+  const slot = box.querySelector(".speech__roles");
+  const fit = function (el) { if (slot && el) slot.style.width = el.scrollWidth + "px"; };
+  fit(roles[0]);
+  window.addEventListener("resize", function () { fit(box.querySelector(".speech__role.is-said:not(.is-gone)") || roles[0]); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { fit(box.querySelector(".speech__role.is-said:not(.is-gone)") || roles[0]); });
+
+  const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (workReturn || still) {
+    // No motion, or a return visit: everything at once, with "an outlaw" in the slot
+    opens.forEach(say); say(roles[0]); say(cowpoke); say(clues); showRide();
+    if (!still) setTimeout(loopRoles, 4500);
+    return;
+  }
+
+  // [when (ms), what]. The "..." only shows while a new sentence is on its way.
+  const steps = [
+    [0,    () => typing(true)],
+    [900,  () => { typing(false); say(opens[0]); }],
+    [1300, () => typing(true)],
+    [2100, () => { typing(false); say(opens[1]); say(roles[0]); }], // "an outlaw" comes in with its line
+    [4900, showRide],                     // the ride fades in slowly (3s)
+    [6100, () => typing(true)],
+    [6900, () => { typing(false); say(cowpoke); }],
+    [7600, () => typing(true)],
+    [8400, () => { typing(false); say(clues); }],
+    [6600, loopRoles]                     // ~3s after "an outlaw" finishes pixelating
+  ];
+  steps.forEach(([when, fn]) => setTimeout(fn, when));
+
+  // The descriptors take turns in the outlaw's spot, flipping like the About TV roles
+  function loopRoles() {
+    if (roles.length < 2) return;
+    let at = 0; // "an outlaw" is showing; it only appears this once
+    const swap = function () {
+      const out = roles[at];
+      // after the outlaw, loop through the other words only (creative -> art director -> designer -> creative ...)
+      at = at >= roles.length - 1 ? 1 : at + 1;
+      const inn = roles[at];
+      out.classList.add("is-gone");
+      // once it has flipped away, reset it quietly so it can come back round later
+      setTimeout(function () { out.classList.remove("is-said", "is-gone"); }, 1000);
+      inn.classList.remove("is-gone");
+      inn.classList.add("is-said");
+      fit(inn);
+    };
+    const next = function () {
+      swap();
+      setTimeout(next, 2600);
+    };
+    next();
+  }
+})();
+
+// Work page: the intro is a "scroll to enter" screen. While you're on it, the first
+// scroll down (wheel, trackpad, swipe or keys) glides the page to the header and work,
+// and the intro fades out as it leaves. Scrolling back up works as normal.
+(function () {
+  const intro = document.querySelector("[data-enter]");
+  // land on the header so the nav and the first sign come into view together
+  const target = document.querySelector(".site-header");
+  if (!intro || !target) return;
+  const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  let busy = false;
+  const dest = function () { return target.getBoundingClientRect().top + window.scrollY; };
+  const onIntro = function () { return window.scrollY < dest() - 4; };
+
+  // return visit: start on the header and the Art Direction sign, not the intro
+  if (workReturn) {
+    if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+    const land = function () { window.scrollTo({ top: dest(), behavior: "instant" }); };
+    land();
+    // fonts and images can shift the layout a moment later, so settle once more
+    window.addEventListener("load", function () { if (window.scrollY < dest() + 40) land(); });
+  }
+
+  function enter() {
+    if (busy) return;
+    busy = true;
+    const from = window.scrollY;
+    const to = dest();
+    if (still) {
+      window.scrollTo({ top: to, behavior: "instant" });
+      busy = false;
+      return;
+    }
+    const dur = 1100;
+    const t0 = performance.now();
+    const ease = function (t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; };
+    (function step(now) {
+      const t = Math.min(1, (now - t0) / dur);
+      window.scrollTo({ top: from + (to - from) * ease(t), behavior: "instant" });
+      if (t < 1) requestAnimationFrame(step);
+      else setTimeout(function () { busy = false; }, 450); // swallow trackpad momentum
+    })(t0);
+  }
+
+  window.addEventListener("wheel", function (e) {
+    if (busy) { e.preventDefault(); return; }
+    if (e.deltaY > 0 && onIntro()) { e.preventDefault(); enter(); }
+  }, { passive: false });
+
+  let touchY = null;
+  window.addEventListener("touchstart", function (e) { touchY = e.touches[0].clientY; }, { passive: true });
+  window.addEventListener("touchmove", function (e) {
+    if (busy) { e.preventDefault(); return; }
+    if (touchY === null || !onIntro()) return;
+    if (touchY - e.touches[0].clientY > 12) { e.preventDefault(); touchY = null; enter(); }
+  }, { passive: false });
+
+  window.addEventListener("keydown", function (e) {
+    if (["ArrowDown", "PageDown", " ", "Spacebar"].indexOf(e.key) === -1) return;
+    if (e.target.closest && e.target.closest("input, textarea, [contenteditable]")) return;
+    if (busy) { e.preventDefault(); return; }
+    if (onIntro()) { e.preventDefault(); enter(); }
+  });
+
+  // the arrow uses the same glide
+  const hint = intro.querySelector(".scroll-hint");
+  if (hint) hint.addEventListener("click", function (e) { e.preventDefault(); enter(); });
+
+  // fade the intro out as it scrolls away
+  if (!still) {
+    const fade = function () {
+      const p = Math.min(1, Math.max(0, window.scrollY / (intro.offsetHeight * 0.8)));
+      intro.style.opacity = String(1 - p);
+    };
+    window.addEventListener("scroll", fade, { passive: true });
+    fade();
+  }
 })();
