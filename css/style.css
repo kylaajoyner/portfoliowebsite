@@ -2799,3 +2799,23 @@ a {
 @media (prefers-reduced-motion: reduce) {
   .bento-card__media img { transition: none; }
 }
+
+/* "*unofficial spec work*" under the Old Spice and MSCHF clients: a very small muted note */
+.spec-note {
+  display: block;
+  font-family: var(--font-body);
+  font-size: max(11px, calc(18 * var(--c)));
+  line-height: 1.3;
+  letter-spacing: 0;
+  text-transform: none;
+  color: rgba(0, 0, 0, 0.55);
+  margin-top: calc(4 * var(--c));
+}
+.page--project .explainer .explainer__copy.spec-note {
+  font-size: calc(14 * var(--u));
+  margin: -2px 0 8px;
+  color: rgba(0, 0, 0, 0.55);
+}
+@media (max-width: 699px) {
+  .page--project .explainer .explainer__copy.spec-note { font-size: 12px; }
+}
