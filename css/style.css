@@ -2328,6 +2328,10 @@ a {
   transform: scaleX(1);
 }
 
+/* page links (Work / About / Rodeo) sit above LinkedIn / Email me */
+.site-footer__links--pages + .site-footer__links { padding-top: calc(16 * var(--u)); }
+.site-footer__links a[aria-current="page"]::after { transform: scaleX(1); }
+
 /* Project pages: the links line up with the Project / Role copy instead of centring */
 .page--project ~ .site-footer .site-footer__links {
   justify-content: flex-start;
@@ -2427,7 +2431,9 @@ a {
   image-rendering: pixelated;
 }
 /* the dither steps in quickly and the letters turn blocky (#speech-pixel in index.html) at the same moment */
-.speech__role--outlaw.is-said .speech__shake { animation: outlaw-dither 1s 0.4s steps(7, end) both, outlaw-pixel 0.01s 0.4s both; }
+.speech__role--outlaw.is-said .speech__shake { animation: outlaw-dither 0.5s 1s steps(7, end) both, outlaw-pixel 0.01s 1s both; }
+/* "an outlaw" comes in slower than the other words */
+.speech__roles .speech__line.speech__role--outlaw { transition-duration: 1s; }
 @keyframes outlaw-dither { from { background-position: 0 0; } to { background-position: 0 100%; } }
 @keyframes outlaw-pixel { from { filter: none; } to { filter: url(#speech-pixel); } }
 @keyframes outlaw-pixel-sm { from { filter: none; } to { filter: url(#speech-pixel-sm); } }

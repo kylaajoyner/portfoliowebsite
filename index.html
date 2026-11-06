@@ -21,7 +21,7 @@
   <meta name="twitter:image" content="https://kylajoyner.com/assets/images/og-star.png">
   <!-- Adobe Fonts kit: West End + Narkiss Yair -->
   <link rel="stylesheet" href="https://use.typekit.net/ijs5kav.css">
-  <link rel="stylesheet" href="css/style.css?v=187">
+  <link rel="stylesheet" href="css/style.css?v=189">
 </head>
 <body>
   <!-- Full-screen intro (scroll to enter): it fills the whole screen before the header.
@@ -41,11 +41,11 @@
         <!-- blocky pixel look for "an outlaw": samples the letters in square blocks -->
         <svg class="speech__defs" width="0" height="0" aria-hidden="true" focusable="false">
           <filter id="speech-pixel" x="0" y="0" width="1" height="1">
-            <feFlood x="1" y="1" width="1" height="1"/>
-            <feComposite width="3" height="3"/>
+            <feFlood x="0" y="0" width="1" height="1"/>
+            <feComposite width="2" height="2"/>
             <feTile result="grid"/>
             <feComposite in="SourceGraphic" in2="grid" operator="in"/>
-            <feMorphology operator="dilate" radius="1"/>
+            <feMorphology operator="dilate" radius="0.5"/>
           </filter>
           <filter id="speech-pixel-sm" x="0" y="0" width="1" height="1">
             <feFlood x="1" y="1" width="1" height="1"/>
@@ -201,6 +201,11 @@
   </main>
 
   <footer class="site-footer">
+    <nav class="site-footer__links site-footer__links--pages" aria-label="Pages">
+      <a href="index.html" aria-current="page">Work</a>
+      <a href="about.html">About</a>
+      <a href="rodeo.html">Rodeo</a>
+    </nav>
     <nav class="site-footer__links" aria-label="Contact">
       <a href="https://www.linkedin.com/in/kyla-joyner/" target="_blank" rel="noopener">LinkedIn</a>
       <a href="mailto:kylaajoyner@gmail.com">Email me</a>
