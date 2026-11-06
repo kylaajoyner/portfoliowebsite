@@ -387,7 +387,6 @@ a {
 .product-3d.is-dragging .product-3d__canvas { cursor: grabbing; }
 .product-3d--box { margin-bottom: max(56px, calc(64 * var(--u))); } /* room for the "Click the box" hint above the page nav */
 .product-3d--box .product-3d__canvas { cursor: pointer; touch-action: manipulation; }
-.product-3d--box.is-empty .product-3d__canvas { cursor: default; }
 
 .product-3d__hint {
   position: absolute;
@@ -2821,4 +2820,74 @@ a {
 }
 @media (max-width: 699px) {
   .page--project .explainer .explainer__copy.spec-note { font-size: 12px; }
+}
+
+/* Lucky Lips: the box, the trading card and the card names side by side */
+.lucky-play {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr) auto;
+  column-gap: calc(28 * var(--u));
+  align-items: center;
+  max-width: calc(1120 * var(--u));
+  margin: calc(28 * var(--u)) auto max(56px, calc(64 * var(--u)));
+}
+.lucky-play .product-3d {
+  max-width: none;
+  height: min(calc(560 * var(--u)), 70vh);
+  margin: 0;
+  padding: 0;
+}
+.product-3d--card .product-3d__canvas { cursor: grab; touch-action: none; }
+.product-3d--card.is-dragging .product-3d__canvas { cursor: grabbing; }
+
+.lucky-names {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--font-nav);
+  font-size: calc(28 * var(--u));
+  line-height: 1.1;
+}
+.lucky-names li + li { margin-top: calc(18 * var(--u)); }
+.lucky-names button {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35em;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  letter-spacing: 0.02em;
+  color: var(--color-ink, #111);
+  white-space: nowrap;
+  cursor: pointer;
+  opacity: 0.5;
+  transition: opacity 0.2s ease;
+}
+.lucky-names button::before {
+  content: "\2605"; /* ★, the same red star as the explainers */
+  font-size: 0.72em;
+  color: #c4263f;
+  visibility: hidden;
+}
+.lucky-names button:hover,
+.lucky-names button:focus-visible,
+.lucky-names button[aria-pressed="true"] { opacity: 1; }
+.lucky-names button[aria-pressed="true"]::before { visibility: visible; }
+
+@media (max-width: 900px) {
+  .lucky-play {
+    grid-template-columns: 1fr;
+    row-gap: 48px;
+    margin-bottom: 56px;
+  }
+  .lucky-play .product-3d { height: 62vh; }
+  .lucky-names {
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: center;
+    gap: 14px 28px;
+    font-size: 22px;
+  }
+  .lucky-names li + li { margin-top: 0; }
 }

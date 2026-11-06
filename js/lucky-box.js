@@ -1,6 +1,6 @@
 // Lucky Lips (MSCHF): Kyla's red box as a 3D model. Click it and the lid flips open,
 // a cigarette rises out and fades away, and that cigarette's "tooth" in the lips goes
-// black. Keep clicking until the mouth is empty; 5 seconds later the box refills.
+// black. Teeth grow back after 3 idle seconds, or at once when an empty box is clicked.
 (function () {
   const stage = document.querySelector("[data-lucky-box]");
   if (!stage || !window.THREE) return;
@@ -57,7 +57,7 @@
   const frontTex = new THREE.CanvasTexture(frontCanvas);
   frontTex.encoding = THREE.sRGBEncoding;
   frontTex.anisotropy = renderer.capabilities.getMaxAnisotropy();
-  const fullImg = new Image(), emptyImg = new Image();
+  let fullImg = new Image(), emptyImg = new Image();
   pending += 2;
   fullImg.onload = emptyImg.onload = () => { if (--pending === 0) ready(); };
   fullImg.src = DIR + "body-front.jpg" + V;
@@ -102,6 +102,51 @@
     mat(tex("body-right")), mat(tex("body-left")), mat(topTex), flat(RED), mat(frontTex), mat(tex("body-back")),
   ]);
   body.position.y = -H / 2 + BODY / 2;
+
+  // The four packs (one per trading card): Red is the default; picking a card name
+  // on the page swaps the box to that card's pack
+  const PACKS = {
+    red: { suffix: "", bottom: 0xa83939 },
+    silver: { suffix: "-silver", bottom: 0x9a9a9e },
+    gold: { suffix: "-gold", bottom: 0xc68450 },
+    menthol: { suffix: "-menthol", bottom: 0x2f6b33 },
+  };
+  const packCache = {};
+  let wantPack = "red";
+  function loadPack(name, done) {
+    if (!packCache.red) { // keep the red set so switching back never reloads it
+      packCache.red = { full: fullImg, empty: emptyImg, right: body.material[0].map, left: body.material[1].map, back: body.material[5].map };
+    }
+    if (packCache[name]) return done(packCache[name]);
+    const sfx = PACKS[name].suffix;
+    const set = { full: new Image(), empty: new Image() };
+    let n = 5;
+    const one = () => { if (--n === 0) { packCache[name] = set; done(set); } };
+    set.full.onload = set.empty.onload = one;
+    set.full.src = DIR + "body-front" + sfx + ".jpg" + V;
+    set.empty.src = DIR + "body-front-empty" + sfx + ".jpg" + V;
+    ["right", "left", "back"].forEach((side) => {
+      const t = loader.load(DIR + "body-" + side + sfx + ".jpg" + V, one);
+      t.encoding = THREE.sRGBEncoding;
+      t.anisotropy = renderer.capabilities.getMaxAnisotropy();
+      set[side] = t;
+    });
+  }
+  function setPack(name) {
+    if (!PACKS[name]) return;
+    wantPack = name;
+    loadPack(name, (set) => {
+      if (wantPack !== name) return; // a newer pick won
+      fullImg = set.full; emptyImg = set.empty;
+      body.material[0].map = set.right;
+      body.material[1].map = set.left;
+      body.material[5].map = set.back;
+      body.material[3].color.setHex(PACKS[name].bottom);
+      drawFront();
+      render();
+    });
+  }
+  document.addEventListener("lucky:pack", (e) => setPack(e.detail));
 
   // The lid hinges on the back edge where it meets the body
   const hinge = new THREE.Group();
@@ -166,16 +211,17 @@
   const clamp01 = (t) => Math.min(Math.max(t, 0), 1);
   let busy = false;
 
-  // Once the mouth is empty, it refills after 5 seconds: the teeth come back left to right
+  // Missing teeth grow back after 3 seconds without a click, or right away when an
+  // empty box is clicked: they come back left to right
   let refillTimer = 0;
-  function checkEmpty() {
-    if (left.includes(true) || refillTimer) return;
-    stage.classList.add("is-empty");
-    refillTimer = setTimeout(refill, 5000);
+  function afterPull() {
+    stage.classList.toggle("is-empty", !left.includes(true));
+    clearTimeout(refillTimer);
+    if (left.includes(false)) refillTimer = setTimeout(refill, 3000);
   }
   function refill() {
+    clearTimeout(refillTimer);
     if (busy) { refillTimer = setTimeout(refill, 300); return; }
-    refillTimer = 0;
     stage.classList.remove("is-empty");
     left.forEach((_, i) => setTimeout(() => {
       left[i] = true;
@@ -186,13 +232,15 @@
   function pull() {
     if (busy) return;
     stage.classList.add("has-spun");
+    clearTimeout(refillTimer);
+    if (!left.includes(true)) { refill(); return; }
     const i = left.indexOf(true); // left to right across the mouth
     busy = true;
     if (reduceMotion) {
       if (i >= 0) { left[i] = false; drawFront(); drawTop(-1); }
       render();
       busy = false;
-      checkEmpty();
+      afterPull();
       return;
     }
     if (i >= 0) {
@@ -229,7 +277,7 @@
         drawTop(-1);
         render();
         busy = false;
-        checkEmpty();
+        afterPull();
       }
     }
     requestAnimationFrame(frame);
