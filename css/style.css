@@ -2729,8 +2729,6 @@ a {
   justify-self: center; /* centered where the cover image sits on the other cards */
 }
 
-.bento-card:hover .bento-card__media--light img,
-.bento-card:focus-visible .bento-card__media--light img { transform: none; }
 
 /* covers shown whole, at their own shape (same width as the other covers) */
 .bento-card__media.bento-card__media--full { aspect-ratio: 2000 / 1333; }
@@ -2745,9 +2743,17 @@ a {
   transition: transform 0.4s ease;
 }
 
-.bento-card:hover .bento-card__media img,
-.bento-card:focus-visible .bento-card__media img {
-  transform: scale(1.04);
+/* the whole thumbnail pops up slightly on hover, the same lift as the Rodeo gallery pieces */
+.bento-card__media { transition: transform 0.25s ease, box-shadow 0.25s ease; }
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .bento-card:hover .bento-card__media,
+  .bento-card:focus-visible .bento-card__media {
+    transform: translateY(-6px) scale(1.04);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.18);
+  }
+  /* the stick GIF has no frame, so it just grows without a shadow */
+  .bento-card:hover .bento-card__media--light,
+  .bento-card:focus-visible .bento-card__media--light { box-shadow: none; }
 }
 /* hover clip: a short muted loop from the film fades in over the cover while hovered */
 .bento-card__video {
