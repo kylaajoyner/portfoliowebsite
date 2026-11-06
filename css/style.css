@@ -2891,3 +2891,5 @@ a {
   }
   .lucky-names li + li { margin-top: 0; }
 }
+/* Lucky Lips ads: one row of four under the box and cards */
+.project-gallery--ads { max-width: calc(1120 * var(--u)); margin-bottom: calc(56 * var(--u)); }
