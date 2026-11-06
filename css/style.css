@@ -2695,6 +2695,19 @@ a {
 .bento-card:hover .bento-card__more::after,
 .bento-card:focus-visible .bento-card__more::after { transform: scaleX(1); }
 
+/* small red arrow after "Explore More" (Kyla 2026-11-06); nudges right on hover */
+.bento-card__arrow {
+  display: inline-block;
+  width: calc(30 * var(--c));
+  height: calc(18 * var(--c));
+  margin-left: calc(12 * var(--c));
+  vertical-align: calc(2 * var(--c)); /* centred on the lowercase letters */
+  color: #c4263f;
+  transition: transform 0.25s ease;
+}
+.bento-card:hover .bento-card__arrow,
+.bento-card:focus-visible .bento-card__arrow { transform: translateX(calc(6 * var(--c))); }
+
 .bento-card__facts li {
   display: flex;
   align-items: baseline;
