@@ -2418,7 +2418,7 @@ a {
 /* "an outlaw" shakes like a wanted man once it lands (and each time it comes back round) */
 .speech__shake { display: inline-block; }
 /* it shakes, then settles slightly pixelated (the #speech-pixel filter in index.html) */
-.speech__role--outlaw.is-said .speech__shake { animation: outlaw-shake 0.8s 0.45s ease-in-out both, outlaw-pixel 0.01s 1.25s both; }
+.speech__role--outlaw.is-said .speech__shake { animation: outlaw-shake 0.8s 0.45s ease-in-out both, outlaw-pixel 0.01s 0.45s both; }
 @keyframes outlaw-pixel { from { filter: none; } to { filter: url(#speech-pixel); } }
 .speech__defs { position: absolute; width: 0; height: 0; overflow: hidden; }
 @keyframes outlaw-shake {
