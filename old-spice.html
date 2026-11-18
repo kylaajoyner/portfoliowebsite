@@ -21,12 +21,12 @@
   <meta name="twitter:image" content="https://kylajoyner.com/assets/images/og-star.png">
   <!-- Adobe Fonts kit: West End + Narkiss Yair -->
   <link rel="stylesheet" href="https://use.typekit.net/ijs5kav.css">
-  <link rel="stylesheet" href="css/style.css?v=220">
+  <link rel="stylesheet" href="css/style.css?v=221">
   <script>try{if(sessionStorage.getItem("slide-in"))document.documentElement.classList.add("slide-in")}catch(e){}</script>
 </head>
 <body>
   <header class="site-header">
-    <a class="wordmark" href="index.html" aria-label="Kyla Joyner, Art Director"><span class="wordmark__name" aria-hidden="true">Kyla joyner</span><span class="wordmark__role" aria-hidden="true">Art Director</span></a>
+    <a class="wordmark" href="index.html#work-start" aria-label="Kyla Joyner, Art Director"><span class="wordmark__name" aria-hidden="true">Kyla joyner</span><span class="wordmark__role" aria-hidden="true">Art Director</span></a>
     <nav class="site-nav" aria-label="Main">
       <ul>
         <li><a href="index.html#work-start" aria-current="page">Work</a></li>
@@ -56,32 +56,36 @@
       </div>
     </dl>
 
-    <!-- Pure Sport stick in 3D: drag to spin it -->
-    <div class="product-3d" data-product-3d data-texture="assets/images/old-spice/pure-sport-wrap.jpg?v=2">
-      <canvas class="product-3d__canvas" role="img" aria-label="3D model of the redesigned Old Spice Pure Sport deodorant stick. Drag to rotate it."></canvas>
-      <p class="product-3d__hint" aria-hidden="true">Drag to spin</p>
+    <!-- The stick on the left, the badge's three parts stacked beside it -->
+    <div class="os-showcase">
+      <div class="os-showcase__model">
+        <!-- Pure Sport stick in 3D: drag to spin it -->
+        <div class="product-3d" data-product-3d data-texture="assets/images/old-spice/pure-sport-wrap.jpg?v=2">
+          <canvas class="product-3d__canvas" role="img" aria-label="3D model of the redesigned Old Spice Pure Sport deodorant stick. Drag to rotate it."></canvas>
+          <p class="product-3d__hint" aria-hidden="true">Drag to spin</p>
+        </div>
+
+        <p class="project-note">Awards: Chosen as Best Design by Old Spice CFO</p>
+      </div>
+      <!-- The three pieces of the Pure Sport badge, each with its story -->
+      <ul class="logo-parts logo-parts--side">
+        <li class="logo-parts__item">
+          <img src="assets/images/old-spice/asset-stripes.png" width="640" height="640" alt="Red label with diagonal white stripes" loading="lazy" decoding="async">
+          <h2 class="logo-parts__title">Stripes</h2>
+          <p class="logo-parts__copy">The two lines resemble the stripes of athletic socks while drawing the eye to the &ldquo;Pure Sport&rdquo;.</p>
+        </li>
+        <li class="logo-parts__item">
+          <img src="assets/images/old-spice/asset-wheel.png" width="640" height="640" alt="Thin red circle crossed by an X" loading="lazy" decoding="async">
+          <h2 class="logo-parts__title">Wheel</h2>
+          <p class="logo-parts__copy">Resembles a captain&rsquo;s steering wheel and a barbell plate.</p>
+        </li>
+        <li class="logo-parts__item">
+          <img src="assets/images/old-spice/asset-stars.png" width="640" height="640" alt="Three red stars in a curved column" loading="lazy" decoding="async">
+          <h2 class="logo-parts__title">Stars</h2>
+          <p class="logo-parts__copy">Represents heritage, pride and valor. Combined with the Old Spice plate, it creates the classic Old Spice patch.</p>
+        </li>
+      </ul>
     </div>
-
-    <p class="project-note">Awards: Chosen as Best Design by Old Spice CFO</p>
-
-    <!-- The three pieces of the Pure Sport badge, each with its story -->
-    <ul class="logo-parts">
-      <li class="logo-parts__item">
-        <img src="assets/images/old-spice/asset-stripes.png" width="640" height="640" alt="Red label with diagonal white stripes" loading="lazy" decoding="async">
-        <h2 class="logo-parts__title">Stripes</h2>
-        <p class="logo-parts__copy">The two lines resemble the stripes of athletic socks while drawing the eye to the &ldquo;Pure Sport&rdquo;.</p>
-      </li>
-      <li class="logo-parts__item">
-        <img src="assets/images/old-spice/asset-wheel.png" width="640" height="640" alt="Thin red circle crossed by an X" loading="lazy" decoding="async">
-        <h2 class="logo-parts__title">Wheel</h2>
-        <p class="logo-parts__copy">Resembles a captain&rsquo;s steering wheel and a barbell plate.</p>
-      </li>
-      <li class="logo-parts__item">
-        <img src="assets/images/old-spice/asset-stars.png" width="640" height="640" alt="Three red stars in a curved column" loading="lazy" decoding="async">
-        <h2 class="logo-parts__title">Stars</h2>
-        <p class="logo-parts__copy">Represents heritage, pride and valor. Combined with the Old Spice plate, it creates the classic Old Spice patch.</p>
-      </li>
-    </ul>
 
     <!-- The Scent Mogged ad (was its own Old Spice Ad Campaign page) -->
     <div class="project-gallery project-gallery--single">

@@ -2985,3 +2985,33 @@ a {
 /* TV name in Docktrin: room under "Kyla" so the K's swash doesn't run into "Joyner" */
 .tv__title span:first-child,
 .tv__spin-name span:first-child { margin-bottom: 0.55em; }
+
+/* Old Spice: the badge parts sit beside the 3D stick in one row (phones stack them) */
+.os-showcase {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: calc(40 * var(--u));
+  align-items: center;
+}
+.os-showcase .product-3d { max-width: none; }
+.logo-parts--side {
+  grid-template-columns: 1fr;
+  gap: calc(28 * var(--u));
+  max-width: calc(520 * var(--u));
+  margin: 0;
+}
+.logo-parts--side .logo-parts__item {
+  display: grid;
+  grid-template-columns: calc(110 * var(--u)) 1fr;
+  column-gap: calc(24 * var(--u));
+  align-items: center;
+}
+.logo-parts--side .logo-parts__item img { grid-row: 1 / span 2; }
+.logo-parts--side .logo-parts__title { margin: 0; align-self: end; }
+.os-showcase + .project-gallery { margin-top: calc(80 * var(--u)); }
+
+@media (max-width: 900px) {
+  .os-showcase { grid-template-columns: 1fr; }
+  .logo-parts--side { margin: 40px auto 0; }
+  .logo-parts--side .logo-parts__item { grid-template-columns: 90px 1fr; }
+}
