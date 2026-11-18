@@ -17,6 +17,13 @@
   font-display: swap;
 }
 
+/* Kyla's name banner font (Docktrin, from Kyla). A capital K draws the swash under the name. */
+@font-face {
+  font-family: "Docktrin";
+  src: url("../assets/fonts/Docktrin.woff2") format("woff2");
+  font-display: swap;
+}
+
 /* West End and Narkiss Yair come from the Adobe Fonts kit linked in each page's <head>. */
 
 :root {
@@ -33,7 +40,7 @@
      without scrolling. Every desktop size below is a multiple of it. */
   --u: min(calc(100vw / 1440), calc(100vh / 1024));
 
-  --header-height: calc(79 * var(--u));
+  --header-height: calc(118 * var(--u));
   --ornament-width: calc(224.63 * var(--u));
   --ornament-height: calc(216.52 * var(--u));
 }
@@ -74,13 +81,30 @@ a {
   background: var(--color-paper);
 }
 
+/* Name banner (Kyla's design): "Kyla joyner" in Docktrin, whose capital K swings a
+   swash under the name, with "Creative Director" in Bebas Neue tucked under the right end. */
 .wordmark {
-  font-family: var(--font-accent);
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-size: calc(54 * var(--u));
+  white-space: nowrap;
+  line-height: 1;
+}
+
+.wordmark__name {
+  font-family: "Docktrin", var(--font-accent);
   font-weight: 400;
   font-synthesis: none;
-  font-size: calc(37 * var(--u));
-  letter-spacing: calc(4.8 * var(--u));
-  white-space: nowrap;
+  letter-spacing: 0.02em;
+  padding-left: 0.72em; /* room for the swash, which reaches left of the K */
+}
+
+.wordmark__role {
+  font-family: var(--font-nav);
+  font-size: 0.4em;
+  letter-spacing: 0.02em;
+  margin-top: 0.08em;
 }
 
 .site-nav ul {
@@ -1725,7 +1749,7 @@ a {
   /* Phones and small tablets use fixed sizes and scroll normally. */
   :root {
     --u: 1px;
-    --header-height: 79px;
+    --header-height: 96px;
   }
 
   .page {
@@ -1740,10 +1764,7 @@ a {
     padding: 0 16px;
   }
 
-  .wordmark {
-    font-size: 24px;
-    letter-spacing: 2.6px;
-  }
+  .wordmark { font-size: 36px; }
 
   .site-nav ul {
     gap: 20px;
@@ -1920,10 +1941,7 @@ a {
 }
 
 @media (max-width: 480px) {
-  .wordmark {
-    font-size: 17px;
-    letter-spacing: 1.3px;
-  }
+  .wordmark { font-size: 26px; }
 
   .site-nav ul {
     gap: 12px;
@@ -2618,8 +2636,7 @@ a {
   color: #000;
 }
 .work-sign__label--long { font-size: 10.8cqw; } /* "Creative Direction" fits inside the sign's frame */
-.bento + .bento { margin-top: calc(40 * var(--u)); }
-.bento + .work-sign { margin-top: calc(100 * var(--u)); }
+.page--work-redo > .bento:first-child { margin-top: calc(60 * var(--u)); }
 
 .bento {
   max-width: calc(1120 * var(--u));
@@ -2825,6 +2842,7 @@ a {
   .work-sign::before { top: -24px; height: 48px; }
   .bento { padding: 0 16px; }
   .page--work-redo .work-grid { margin-top: 40px; }
+  .page--work-redo > .bento:first-child { margin-top: 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -21,56 +21,12 @@
   <meta name="twitter:image" content="https://kylajoyner.com/assets/images/og-star.png">
   <!-- Adobe Fonts kit: West End + Narkiss Yair -->
   <link rel="stylesheet" href="https://use.typekit.net/ijs5kav.css">
-  <link rel="stylesheet" href="css/style.css?v=208">
+  <link rel="stylesheet" href="css/style.css?v=209">
 </head>
 <body>
-  <!-- Full-screen intro (scroll to enter): it fills the whole screen before the header.
-       The first scroll glides down to the header and the work (main.js). -->
-  <section class="work-intro work-intro--full" data-enter>
-    <img class="ornament ornament--top-left" src="assets/images/ornament.png" alt="">
-    <img class="ornament ornament--top-right" src="assets/images/ornament.png" alt="">
-    <img class="ornament ornament--bottom-left" src="assets/images/ornament.png" alt="">
-    <img class="ornament ornament--bottom-right" src="assets/images/ornament.png" alt="">
-      <!-- Intro speech (Kyla's storyboard): a blank framed screen, then each line arrives one after another -->
-      <div class="work-intro__copy" data-speech aria-live="polite">
-        <span class="speech__dots" aria-hidden="true"><i></i><i></i><i></i></span>
-        <p class="speech__line speech__open">For some time now,</p>
-        <!-- "an outlaw" lands on the same line in a red pixel dither;
-             then the descriptors take its place in a loop -->
-        <p class="speech__line speech__open speech__tales">there have been tales of <span class="speech__roles"><span class="speech__line speech__role speech__role--outlaw"><span class="speech__shake">an outlaw</span></span><span class="speech__line speech__role">a creative</span><span class="speech__line speech__role">an art director</span><span class="speech__line speech__role">a designer</span><span class="speech__line speech__role">a storyteller</span></span>.</p>
-        <!-- blocky pixel look for "an outlaw": samples the letters in square blocks -->
-        <svg class="speech__defs" width="0" height="0" aria-hidden="true" focusable="false">
-          <filter id="speech-pixel" x="0" y="0" width="1" height="1">
-            <feFlood x="0" y="0" width="1" height="1"/>
-            <feComposite width="2" height="2"/>
-            <feTile result="grid"/>
-            <feComposite in="SourceGraphic" in2="grid" operator="in"/>
-            <feMorphology operator="dilate" radius="0.5"/>
-          </filter>
-          <filter id="speech-pixel-sm" x="0" y="0" width="1" height="1">
-            <feFlood x="1" y="1" width="1" height="1"/>
-            <feComposite width="2" height="2"/>
-            <feTile result="grid"/>
-            <feComposite in="SourceGraphic" in2="grid" operator="in"/>
-            <feMorphology operator="dilate" radius="1"/>
-          </filter>
-        </svg>
-        <p class="speech__line speech__cowpoke">We&rsquo;re counting on you to find her, Cowpoke.</p>
-      </div>
-      <!-- Kyla's pixel cowgirl ride: her horse frames gallop over her scrolling desert -->
-      <div class="ride" role="img" aria-label="Pixel-art cowgirl galloping on horseback through the desert"><span class="ride__horse"></span></div>
-      <div class="work-intro__end">
-        <p class="speech__line speech__clues">We have some clues&hellip;
-          <!-- scroll hint: a pixel arrow that bounces, and jumps to the first sign on click -->
-          <a class="scroll-hint" href="#work-start" aria-label="Scroll to the work">
-            <svg viewBox="0 0 7 7" width="7" height="7" shape-rendering="crispEdges" aria-hidden="true"><path d="M2 0h3v3H2zM0 3h7v1H0zM1 4h5v1H1zM2 5h3v1H2zM3 6h1v1H3z" fill="#1c1c1c"/></svg>
-          </a>
-        </p>
-      </div>
-  </section>
 
   <header class="site-header">
-    <a class="wordmark" href="index.html">Kyla Joyner</a>
+    <a class="wordmark" href="index.html" aria-label="Kyla Joyner, Creative Director"><span class="wordmark__name" aria-hidden="true">Kyla joyner</span><span class="wordmark__role" aria-hidden="true">Creative Director</span></a>
     <nav class="site-nav" aria-label="Main">
       <ul>
         <li><a href="index.html" aria-current="page">Work</a></li>
@@ -83,10 +39,8 @@
   <main class="page page--work page--work-redo">
 
 
-    <!-- Work page redo: new bento cards, built one at a time -->
-    <!-- Creative Direction section: the same sign, with the MSCHF Lucky Lips brief under it -->
-    <h2 class="work-sign" id="work-start"><img src="assets/images/work/sign-blank.png?v=2" alt="" width="942" height="496"><span class="work-sign__label work-sign__label--long">Creative Direction</span></h2>
-    <ul class="bento">
+    <!-- Work page: just the grid of project cards (no intro, no signs) -->
+    <ul class="bento" id="work-start">
       <li class="bento__item">
         <a class="bento-card" href="lucky-lips.html">
           <img class="bento-card__ornament bento-card__ornament--tl" src="assets/images/ornament.png" alt="">
@@ -103,11 +57,6 @@
           <span class="bento-card__media bento-card__media--light"><img src="assets/images/thumbs/lucky-lips-box.gif?v=2" alt="The red Lucky Lips cigarette box, &ldquo;Quitting will make you hotter,&rdquo; turning in 3D"></span>
         </a>
       </li>
-    </ul>
-
-    <!-- Art Direction section: Kyla's blank pixel saloon sign with the title in Bebas Neue, with the Old Spice projects under it -->
-    <h2 class="work-sign"><img src="assets/images/work/sign-blank.png?v=2" alt="" width="942" height="496"><span class="work-sign__label">Art Direction</span></h2>
-    <ul class="bento">
       <li class="bento__item">
         <a class="bento-card" href="old-spice.html">
           <img class="bento-card__ornament bento-card__ornament--tl" src="assets/images/ornament.png" alt="">
@@ -138,11 +87,6 @@
           </span>
           <span class="bento-card__media"><img src="assets/images/thumbs/old-spice-ad.jpg?v=3" alt="Old Spice Scent Mogged ad"></span>
         </a>
-    </ul>
-
-    <!-- Design section: the same sign reading Design, with UNC WBB and The Daily Tar Heel under it -->
-    <h2 class="work-sign"><img src="assets/images/work/sign-blank.png?v=2" alt="" width="942" height="496"><span class="work-sign__label">Design</span></h2>
-    <ul class="bento">
       <li class="bento__item">
         <a class="bento-card" href="unc-womens-basketball.html">
           <img class="bento-card__ornament bento-card__ornament--tl" src="assets/images/ornament.png" alt="">
@@ -173,11 +117,6 @@
           </span>
           <span class="bento-card__media bento-card__media--full"><img src="assets/images/thumbs/daily-tar-heel-cover.jpg" alt="Collage for a Daily Tar Heel opinion column on college romance: a torn red heart over the Old Well, a vintage team photo and a UNC pennant, above four swooning people with heart eyes"></span>
         </a>
-    </ul>
-
-    <!-- Documentary section: the same sign reading Documentary, with CPW and Mālama Maui under it -->
-    <h2 class="work-sign"><img src="assets/images/work/sign-blank.png?v=2" alt="" width="942" height="496"><span class="work-sign__label">Documentary</span></h2>
-    <ul class="bento">
       <li class="bento__item">
         <a class="bento-card" href="carolina-photojournalism-workshop.html">
           <img class="bento-card__ornament bento-card__ornament--tl" src="assets/images/ornament.png" alt="">
@@ -234,6 +173,6 @@
     <p class="copyright">&copy; <span data-year>2026</span> Kyla Joyner. All rights reserved.</p>
   </footer>
 
-  <script src="js/main.js?v=148"></script>
+  <script src="js/main.js?v=149"></script>
 </body>
 </html>
