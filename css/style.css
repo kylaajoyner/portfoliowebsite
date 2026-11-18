@@ -17,6 +17,13 @@
   font-display: swap;
 }
 
+/* Kyla's name banner font (Docktrin, from Kyla). A capital K draws the swash under the name. */
+@font-face {
+  font-family: "Docktrin";
+  src: url("../assets/fonts/Docktrin.woff2") format("woff2");
+  font-display: swap;
+}
+
 /* West End and Narkiss Yair come from the Adobe Fonts kit linked in each page's <head>. */
 
 :root {
@@ -33,7 +40,7 @@
      without scrolling. Every desktop size below is a multiple of it. */
   --u: min(calc(100vw / 1440), calc(100vh / 1024));
 
-  --header-height: calc(79 * var(--u));
+  --header-height: calc(170 * var(--u));
   --ornament-width: calc(224.63 * var(--u));
   --ornament-height: calc(216.52 * var(--u));
 }
@@ -65,23 +72,44 @@ a {
 
 /* ---------- Header ---------- */
 
+/* Name banner on the left, Work / About / Rodeo on the right (phones stack them, centred) */
 .site-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: calc(40 * var(--u));
   height: var(--header-height);
-  padding: 0 calc(44 * var(--u)) 0 calc(15 * var(--u));
+  padding: 0 calc(44 * var(--u)) 0 calc(20 * var(--u));
   background: var(--color-paper);
 }
 
+/* Name banner (Kyla's design): "Kyla joyner" in Docktrin, whose capital K swings a
+   swash under the name, with "Creative Director" in Bebas Neue tucked under the right end. */
 .wordmark {
-  font-family: var(--font-accent);
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-size: calc(68 * var(--u));
+  white-space: nowrap;
+  line-height: 1;
+}
+
+.wordmark__name {
+  font-family: "Docktrin", var(--font-accent);
   font-weight: 400;
   font-synthesis: none;
-  font-size: calc(37 * var(--u));
-  letter-spacing: calc(4.8 * var(--u));
-  white-space: nowrap;
+  letter-spacing: 0.02em;
+  padding-left: 0.72em; /* room for the swash, which reaches left of the K */
 }
+
+.wordmark__role {
+  font-family: var(--font-nav);
+  font-size: 0.4em;
+  letter-spacing: 0.02em;
+  margin-top: 0.08em;
+}
+
+.site-nav { font-size: calc(54 * var(--u)); }
 
 .site-nav ul {
   display: flex;
@@ -292,6 +320,11 @@ a {
 
   .page--project:has(> .explainer, > .project-aside) > * {
     grid-column: 2;
+  }
+
+  /* Back to All Work / More Work: centred on the whole page, under both columns */
+  .page--project:has(> .explainer, > .project-aside) > .project-nav {
+    grid-column: 1 / -1;
   }
 
   .page--project > .explainer,
@@ -698,7 +731,8 @@ a {
 
 /* First screen: just the TV, centred under the header */
 .about-hero {
-  height: calc(100vh - var(--header-height));
+  min-height: calc(100vh - var(--header-height));
+  padding: calc(20 * var(--u)) 0 calc(40 * var(--u));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -823,7 +857,8 @@ a {
 /* Kyla's TV art sits on top; the screen glows through its cut-out */
 .tv {
   position: relative;
-  width: calc(1100 * var(--u));
+  /* as big as fits under the taller header, so it never runs into the nav */
+  width: min(calc(1100 * var(--u)), calc((100vh - var(--header-height) - 100 * var(--u)) * 2350 / 1782));
   max-width: calc(100vw - 32px);
   aspect-ratio: 2350 / 1782;
   cursor: pointer;
@@ -941,7 +976,7 @@ a {
   position: relative;
   z-index: 2;
   margin: 0;
-  font-family: var(--font-accent);
+  font-family: "Docktrin", var(--font-accent); /* same font as the name banner */
   font-weight: 400;
   font-synthesis: none;
   display: flex;
@@ -1229,7 +1264,7 @@ a {
   flex-direction: column;
   align-items: center;
   margin: 6.5cqw 0 0; /* the star's visual middle sits a little below its box centre */
-  font-family: var(--font-accent);
+  font-family: "Docktrin", var(--font-accent); /* same font as the name banner */
   font-weight: 400;
   font-synthesis: none;
   font-size: 10cqw;
@@ -1725,7 +1760,7 @@ a {
   /* Phones and small tablets use fixed sizes and scroll normally. */
   :root {
     --u: 1px;
-    --header-height: 79px;
+    --header-height: 220px;
   }
 
   .page {
@@ -1736,14 +1771,14 @@ a {
   }
 
   .site-header {
-    gap: 16px;
-    padding: 0 16px;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 44px;
+    padding: 18px 16px 0;
   }
 
-  .wordmark {
-    font-size: 24px;
-    letter-spacing: 2.6px;
-  }
+  .wordmark { font-size: 44px; }
+  .site-nav { font-size: 36px; }
 
   .site-nav ul {
     gap: 20px;
@@ -1920,10 +1955,8 @@ a {
 }
 
 @media (max-width: 480px) {
-  .wordmark {
-    font-size: 17px;
-    letter-spacing: 1.3px;
-  }
+  .wordmark { font-size: 34px; }
+  .site-nav { font-size: 26px; }
 
   .site-nav ul {
     gap: 12px;
@@ -2333,16 +2366,14 @@ a {
 /* page links (Work / About / Rodeo) sit above LinkedIn / Email me */
 .site-footer__links--pages + .site-footer__links { padding-top: calc(16 * var(--u)); }
 .site-footer__links a[aria-current="page"]::after { transform: scaleX(1); }
-
-/* Project pages: the links line up with the Project / Role copy instead of centring */
-.page--project ~ .site-footer .site-footer__links {
-  justify-content: flex-start;
-  padding-left: calc(119.3 * var(--u)); /* page gutter + star column: same edge as the Project / Role copy */
+/* Work / About / Rodeo in the footer are set in Narkiss (the header nav stays Bebas) */
+.site-footer__links--pages a {
+  font-family: var(--font-body);
+  font-size: calc(18 * var(--u));
+  letter-spacing: 0;
 }
-
-@media (max-width: 900px) {
-  .page--project ~ .site-footer .site-footer__links { padding-left: 16px; } /* phones: copy runs full width from the gutter */
-}
+/* Old Spice: more room between the page content and the footer */
+.page--old-spice { padding-bottom: calc(120 * var(--u)); }
 
 .copyright {
   margin: 0;
@@ -2357,6 +2388,8 @@ a {
   .copyright { font-size: 12px; padding: 12px 16px 24px; }
   .site-footer__links { gap: 32px; padding-top: 24px; }
   .site-footer__links a { font-size: 18px; }
+  .site-footer__links--pages a { font-size: 15px; }
+  .page--old-spice { padding-bottom: 80px; }
 }
 
 /* ---------- Work page redo: bento cards (in progress, one card at a time) ---------- */
@@ -2618,8 +2651,7 @@ a {
   color: #000;
 }
 .work-sign__label--long { font-size: 10.8cqw; } /* "Creative Direction" fits inside the sign's frame */
-.bento + .bento { margin-top: calc(40 * var(--u)); }
-.bento + .work-sign { margin-top: calc(100 * var(--u)); }
+.page--work-redo > .bento:first-child { margin-top: calc(60 * var(--u)); }
 
 .bento {
   max-width: calc(1120 * var(--u));
@@ -2629,6 +2661,16 @@ a {
 }
 
 .bento__item { container-type: inline-size; }
+
+/* Work page: two cards on each row (one column on phones) */
+.page--work-redo .bento {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: calc(40 * var(--u));
+  max-width: calc(1300 * var(--u));
+}
+.page--work-redo .bento__item + .bento__item { margin-top: 0; }
+.page--work-redo .bento__item, .page--work-redo .bento-card { height: 100%; }
 
 .bento-card {
   --c: calc(100cqw / 1268);
@@ -2825,6 +2867,8 @@ a {
   .work-sign::before { top: -24px; height: 48px; }
   .bento { padding: 0 16px; }
   .page--work-redo .work-grid { margin-top: 40px; }
+  .page--work-redo > .bento:first-child { margin-top: 0; }
+  .page--work-redo .bento { grid-template-columns: 1fr; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -2946,4 +2990,38 @@ a {
   max-width: calc(860 * var(--u));
   margin-top: max(20px, calc(32 * var(--u)));
   margin-bottom: max(56px, calc(64 * var(--u)));
+}
+
+/* TV name in Docktrin: room under "Kyla" so the K's swash doesn't run into "Joyner" */
+.tv__title span:first-child,
+.tv__spin-name span:first-child { margin-bottom: 0.55em; }
+
+/* Old Spice: the badge parts sit beside the 3D stick in one row (phones stack them) */
+.os-showcase {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: calc(40 * var(--u));
+  align-items: center;
+}
+.os-showcase .product-3d { max-width: none; }
+.logo-parts--side {
+  grid-template-columns: 1fr;
+  gap: calc(28 * var(--u));
+  max-width: calc(520 * var(--u));
+  margin: 0;
+}
+.logo-parts--side .logo-parts__item {
+  display: grid;
+  grid-template-columns: calc(110 * var(--u)) 1fr;
+  column-gap: calc(24 * var(--u));
+  align-items: center;
+}
+.logo-parts--side .logo-parts__item img { grid-row: 1 / span 2; }
+.logo-parts--side .logo-parts__title { margin: 0; align-self: end; }
+.project-gallery + .os-showcase { margin-top: calc(80 * var(--u)); }
+
+@media (max-width: 900px) {
+  .os-showcase { grid-template-columns: 1fr; }
+  .logo-parts--side { margin: 40px auto 0; }
+  .logo-parts--side .logo-parts__item { grid-template-columns: 90px 1fr; }
 }

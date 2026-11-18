@@ -669,6 +669,8 @@
 // A reload of Work still plays it.
 const workReturn = (function () {
   if (!document.querySelector("[data-enter]")) return false;
+  // the Work links (nav, footer, Back to All Work) point at #work-start: always land on the grid
+  if (location.hash === "#work-start") return true;
   let seen = false;
   try { seen = sessionStorage.getItem("work-intro-seen") === "1"; sessionStorage.setItem("work-intro-seen", "1"); } catch (e) {}
   const nav = performance.getEntriesByType && performance.getEntriesByType("navigation")[0];
