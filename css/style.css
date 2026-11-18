@@ -323,6 +323,11 @@ a {
     grid-column: 2;
   }
 
+  /* Back to All Work / More Work: centred on the whole page, under both columns */
+  .page--project:has(> .explainer, > .project-aside) > .project-nav {
+    grid-column: 1 / -1;
+  }
+
   .page--project > .explainer,
   .page--project > .project-aside {
     grid-column: 1;
@@ -2360,16 +2365,6 @@ a {
 /* page links (Work / About / Rodeo) sit above LinkedIn / Email me */
 .site-footer__links--pages + .site-footer__links { padding-top: calc(16 * var(--u)); }
 .site-footer__links a[aria-current="page"]::after { transform: scaleX(1); }
-
-/* Project pages: the links line up with the Project / Role copy instead of centring */
-.page--project ~ .site-footer .site-footer__links {
-  justify-content: flex-start;
-  padding-left: calc(119.3 * var(--u)); /* page gutter + star column: same edge as the Project / Role copy */
-}
-
-@media (max-width: 900px) {
-  .page--project ~ .site-footer .site-footer__links { padding-left: 16px; } /* phones: copy runs full width from the gutter */
-}
 
 .copyright {
   margin: 0;
