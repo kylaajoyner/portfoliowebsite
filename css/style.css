@@ -2981,3 +2981,7 @@ a {
   margin-top: max(20px, calc(32 * var(--u)));
   margin-bottom: max(56px, calc(64 * var(--u)));
 }
+
+/* TV name in Docktrin: room under "Kyla" so the K's swash doesn't run into "Joyner" */
+.tv__title span:first-child,
+.tv__spin-name span:first-child { margin-bottom: 0.55em; }
