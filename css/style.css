@@ -2654,6 +2654,16 @@ a {
 
 .bento__item { container-type: inline-size; }
 
+/* Work page: two cards on each row (one column on phones) */
+.page--work-redo .bento {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: calc(40 * var(--u));
+  max-width: calc(1300 * var(--u));
+}
+.page--work-redo .bento__item + .bento__item { margin-top: 0; }
+.page--work-redo .bento__item, .page--work-redo .bento-card { height: 100%; }
+
 .bento-card {
   --c: calc(100cqw / 1268);
   position: relative;
@@ -2850,6 +2860,7 @@ a {
   .bento { padding: 0 16px; }
   .page--work-redo .work-grid { margin-top: 40px; }
   .page--work-redo > .bento:first-child { margin-top: 0; }
+  .page--work-redo .bento { grid-template-columns: 1fr; }
 }
 
 @media (prefers-reduced-motion: reduce) {
