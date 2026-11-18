@@ -4,3 +4,8 @@
 # The Old Spice Ad Campaign page was merged into the Old Spice page
 /old-spice-ad.html  /old-spice.html  301
 /old-spice-ad  /old-spice.html  301
+# The documentaries moved off the Work grid onto the Silverscreen page
+/carolina-photojournalism-workshop.html  /silverscreen.html#carolina-photojournalism-workshop  301
+/carolina-photojournalism-workshop  /silverscreen.html#carolina-photojournalism-workshop  301
+/malama-maui.html  /silverscreen.html#malama-maui  301
+/malama-maui  /silverscreen.html#malama-maui  301

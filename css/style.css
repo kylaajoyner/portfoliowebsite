@@ -3025,3 +3025,61 @@ a {
   .logo-parts--side { margin: 40px auto 0; }
   .logo-parts--side .logo-parts__item { grid-template-columns: 90px 1fr; }
 }
+
+/* ---------- Silverscreen: the documentaries, laid out right on the page ---------- */
+
+.page--silverscreen {
+  height: auto;
+  min-height: calc(100vh - var(--header-height));
+  overflow-y: visible;
+  padding-bottom: calc(120 * var(--u));
+}
+
+/* Page subhead, Bebas Neue like the site's other subheads */
+.silverscreen-title {
+  margin: 0;
+  padding: 0 16px;
+  font-family: var(--font-nav);
+  font-weight: 400;
+  font-size: calc(64 * var(--u));
+  letter-spacing: calc(3 * var(--u));
+  text-align: center;
+}
+
+.film {
+  margin-top: calc(64 * var(--u));
+}
+
+.film + .film {
+  margin-top: calc(140 * var(--u));
+}
+
+/* Each film's name, centred above its project block */
+.film__title {
+  margin: 0;
+  padding: 0 16px;
+  font-family: var(--font-nav);
+  font-weight: 400;
+  font-size: calc(40 * var(--u));
+  letter-spacing: calc(2.5 * var(--u));
+  text-align: center;
+}
+
+/* Each film reuses the project page layout, but only as tall as its content */
+.film > .page--project {
+  min-height: 0;
+  justify-content: flex-start;
+  padding-bottom: 0;
+}
+
+@media (max-width: 900px) {
+  .silverscreen-title { font-size: 40px; letter-spacing: 2px; }
+  .film { margin-top: 32px; }
+  .film + .film { margin-top: 80px; }
+  .film__title { font-size: 26px; letter-spacing: 1.5px; }
+}
+
+/* small phones: four footer page links fit on one line (wrap as a last resort) */
+@media (max-width: 400px) {
+  .site-footer__links--pages { gap: 20px; flex-wrap: wrap; padding-left: 16px; padding-right: 16px; }
+}
