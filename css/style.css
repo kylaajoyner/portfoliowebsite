@@ -40,7 +40,7 @@
      without scrolling. Every desktop size below is a multiple of it. */
   --u: min(calc(100vw / 1440), calc(100vh / 1024));
 
-  --header-height: calc(300 * var(--u));
+  --header-height: calc(170 * var(--u));
   --ornament-width: calc(224.63 * var(--u));
   --ornament-height: calc(216.52 * var(--u));
 }
@@ -72,15 +72,14 @@ a {
 
 /* ---------- Header ---------- */
 
-/* Name banner on top, with Work / About / Rodeo on a line under it, all centred on the page */
+/* Name banner on the left, Work / About / Rodeo on the right (phones stack them, centred) */
 .site-header {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  gap: calc(80 * var(--u));
+  justify-content: space-between;
+  gap: calc(40 * var(--u));
   height: var(--header-height);
-  padding: calc(24 * var(--u)) calc(44 * var(--u)) 0; /* the extra header height becomes room under the nav */
+  padding: 0 calc(44 * var(--u)) 0 calc(20 * var(--u));
   background: var(--color-paper);
 }
 
@@ -1772,6 +1771,8 @@ a {
   }
 
   .site-header {
+    flex-direction: column;
+    justify-content: flex-start;
     gap: 44px;
     padding: 18px 16px 0;
   }
