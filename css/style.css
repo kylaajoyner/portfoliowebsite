@@ -3008,7 +3008,7 @@ a {
 }
 .logo-parts--side .logo-parts__item img { grid-row: 1 / span 2; }
 .logo-parts--side .logo-parts__title { margin: 0; align-self: end; }
-.os-showcase + .project-gallery { margin-top: calc(80 * var(--u)); }
+.project-gallery + .os-showcase { margin-top: calc(80 * var(--u)); }
 
 @media (max-width: 900px) {
   .os-showcase { grid-template-columns: 1fr; }
