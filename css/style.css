@@ -976,7 +976,7 @@ a {
   position: relative;
   z-index: 2;
   margin: 0;
-  font-family: var(--font-accent);
+  font-family: "Docktrin", var(--font-accent); /* same font as the name banner */
   font-weight: 400;
   font-synthesis: none;
   display: flex;
@@ -1264,7 +1264,7 @@ a {
   flex-direction: column;
   align-items: center;
   margin: 6.5cqw 0 0; /* the star's visual middle sits a little below its box centre */
-  font-family: var(--font-accent);
+  font-family: "Docktrin", var(--font-accent); /* same font as the name banner */
   font-weight: 400;
   font-synthesis: none;
   font-size: 10cqw;
