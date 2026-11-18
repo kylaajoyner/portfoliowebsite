@@ -727,7 +727,8 @@ a {
 
 /* First screen: just the TV, centred under the header */
 .about-hero {
-  height: calc(100vh - var(--header-height));
+  min-height: calc(100vh - var(--header-height));
+  padding: calc(20 * var(--u)) 0 calc(40 * var(--u));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -852,7 +853,8 @@ a {
 /* Kyla's TV art sits on top; the screen glows through its cut-out */
 .tv {
   position: relative;
-  width: calc(1100 * var(--u));
+  /* as big as fits under the taller header, so it never runs into the nav */
+  width: min(calc(1100 * var(--u)), calc((100vh - var(--header-height) - 100 * var(--u)) * 2350 / 1782));
   max-width: calc(100vw - 32px);
   aspect-ratio: 2350 / 1782;
   cursor: pointer;
