@@ -40,7 +40,7 @@
      without scrolling. Every desktop size below is a multiple of it. */
   --u: min(calc(100vw / 1440), calc(100vh / 1024));
 
-  --header-height: calc(250 * var(--u));
+  --header-height: calc(300 * var(--u));
   --ornament-width: calc(224.63 * var(--u));
   --ornament-height: calc(216.52 * var(--u));
 }
@@ -78,7 +78,7 @@ a {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  gap: calc(14 * var(--u));
+  gap: calc(36 * var(--u));
   height: var(--header-height);
   padding: calc(24 * var(--u)) calc(44 * var(--u)) 0; /* the extra header height becomes room under the nav */
   background: var(--color-paper);
@@ -90,7 +90,7 @@ a {
   display: inline-flex;
   flex-direction: column;
   align-items: flex-end;
-  font-size: calc(54 * var(--u));
+  font-size: calc(68 * var(--u));
   white-space: nowrap;
   line-height: 1;
 }
@@ -1754,7 +1754,7 @@ a {
   /* Phones and small tablets use fixed sizes and scroll normally. */
   :root {
     --u: 1px;
-    --header-height: 185px;
+    --header-height: 220px;
   }
 
   .page {
@@ -1765,11 +1765,11 @@ a {
   }
 
   .site-header {
-    gap: 12px;
+    gap: 26px;
     padding: 18px 16px 0;
   }
 
-  .wordmark { font-size: 36px; }
+  .wordmark { font-size: 44px; }
   .site-nav { font-size: 36px; }
 
   .site-nav ul {
@@ -1947,7 +1947,7 @@ a {
 }
 
 @media (max-width: 480px) {
-  .wordmark { font-size: 26px; }
+  .wordmark { font-size: 34px; }
   .site-nav { font-size: 26px; }
 
   .site-nav ul {
