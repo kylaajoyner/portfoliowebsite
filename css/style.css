@@ -3018,12 +3018,25 @@ a {
 }
 .logo-parts--side .logo-parts__item img { grid-row: 1 / span 2; }
 .logo-parts--side .logo-parts__title { margin: 0; align-self: end; }
-.project-gallery + .os-showcase { margin-top: calc(80 * var(--u)); }
+.os-hero + .os-showcase { margin-top: calc(96 * var(--u)); }
+.os-showcase + .project-nav { margin-top: calc(96 * var(--u)); }
+/* the poster and the three parts get equal halves, centred on each other */
+.os-showcase__poster { display: flex; justify-content: center; }
+.os-showcase__poster img {
+  width: 100%;
+  max-width: calc(420 * var(--u));
+  height: auto;
+  cursor: zoom-in;
+}
 
 @media (max-width: 900px) {
   .os-showcase { grid-template-columns: 1fr; }
   .logo-parts--side { margin: 40px auto 0; }
   .logo-parts--side .logo-parts__item { grid-template-columns: 90px 1fr; }
+  .os-hero + .os-showcase { margin-top: 64px; }
+  .os-showcase + .project-nav { margin-top: 56px; }
+  .os-showcase__poster { padding: 0 16px; }
+  .os-showcase__poster img { max-width: 420px; }
 }
 
 /* ---------- Silverscreen: the documentaries, laid out right on the page ---------- */

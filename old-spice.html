@@ -21,7 +21,7 @@
   <meta name="twitter:image" content="https://kylajoyner.com/assets/images/og-star.png">
   <!-- Adobe Fonts kit: West End + Narkiss Yair -->
   <link rel="stylesheet" href="https://use.typekit.net/ijs5kav.css">
-  <link rel="stylesheet" href="css/style.css?v=225">
+  <link rel="stylesheet" href="css/style.css?v=226">
   <script>try{if(sessionStorage.getItem("slide-in"))document.documentElement.classList.add("slide-in")}catch(e){}</script>
 </head>
 <body>
@@ -56,21 +56,20 @@
       </div>
     </dl>
 
-    <!-- Hero: the Scent Mogged ad -->
-    <div class="project-gallery project-gallery--single">
-      <img src="assets/images/old-spice/old-spice-8.jpg" fetchpriority="high" decoding="async" alt="Final ad: 'Scent Mogged. Just be Old Spice Bro, Brutal.'" width="1300" height="2010">
+    <!-- Hero: the Pure Sport stick in 3D, drag to spin it -->
+    <div class="os-hero">
+      <div class="product-3d" data-product-3d data-texture="assets/images/old-spice/pure-sport-wrap.jpg?v=2">
+        <canvas class="product-3d__canvas" role="img" aria-label="3D model of the redesigned Old Spice Pure Sport deodorant stick. Drag to rotate it."></canvas>
+        <p class="product-3d__hint" aria-hidden="true">Drag to spin</p>
+      </div>
+
+      <p class="project-note">Awards: Chosen as Best Design by Old Spice CFO</p>
     </div>
 
-    <!-- The stick on the left, the badge's three parts stacked beside it -->
+    <!-- The Scent Mogged ad on the left, the badge's three parts stacked beside it -->
     <div class="os-showcase">
-      <div class="os-showcase__model">
-        <!-- Pure Sport stick in 3D: drag to spin it -->
-        <div class="product-3d" data-product-3d data-texture="assets/images/old-spice/pure-sport-wrap.jpg?v=2">
-          <canvas class="product-3d__canvas" role="img" aria-label="3D model of the redesigned Old Spice Pure Sport deodorant stick. Drag to rotate it."></canvas>
-          <p class="product-3d__hint" aria-hidden="true">Drag to spin</p>
-        </div>
-
-        <p class="project-note">Awards: Chosen as Best Design by Old Spice CFO</p>
+      <div class="os-showcase__poster">
+        <img src="assets/images/old-spice/old-spice-8.jpg" decoding="async" loading="lazy" alt="Final ad: 'Scent Mogged. Just be Old Spice Bro, Brutal.'" width="1300" height="2010">
       </div>
       <!-- The three pieces of the Pure Sport badge, each with its story -->
       <ul class="logo-parts logo-parts--side">
@@ -114,6 +113,6 @@
 
   <script src="js/vendor/three.min.js?v=149"></script>
   <script src="js/deodorant.js?v=122"></script>
-  <script src="js/main.js?v=150"></script>
+  <script src="js/main.js?v=151"></script>
 </body>
 </html>

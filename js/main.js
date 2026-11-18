@@ -8,7 +8,7 @@
 (function () {
   // every gallery on the page joins one slideshow (Lucky Lips has the ads and the photos)
   let images = Array.from(document.querySelectorAll(
-    ".project-gallery img:not(.sizzle img), .rodeo-gallery img:not(.sizzle img)"));
+    ".project-gallery img:not(.sizzle img), .os-showcase__poster img, .rodeo-gallery img:not(.sizzle img)"));
   let current = 0;
   let lastFocus = null;
 
