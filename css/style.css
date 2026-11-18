@@ -2366,6 +2366,14 @@ a {
 /* page links (Work / About / Rodeo) sit above LinkedIn / Email me */
 .site-footer__links--pages + .site-footer__links { padding-top: calc(16 * var(--u)); }
 .site-footer__links a[aria-current="page"]::after { transform: scaleX(1); }
+/* Work / About / Rodeo in the footer are set in Narkiss (the header nav stays Bebas) */
+.site-footer__links--pages a {
+  font-family: var(--font-body);
+  font-size: calc(18 * var(--u));
+  letter-spacing: 0;
+}
+/* Old Spice: more room between the page content and the footer */
+.page--old-spice { padding-bottom: calc(120 * var(--u)); }
 
 .copyright {
   margin: 0;
@@ -2380,6 +2388,8 @@ a {
   .copyright { font-size: 12px; padding: 12px 16px 24px; }
   .site-footer__links { gap: 32px; padding-top: 24px; }
   .site-footer__links a { font-size: 18px; }
+  .site-footer__links--pages a { font-size: 15px; }
+  .page--old-spice { padding-bottom: 80px; }
 }
 
 /* ---------- Work page redo: bento cards (in progress, one card at a time) ---------- */
