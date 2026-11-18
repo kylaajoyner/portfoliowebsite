@@ -72,15 +72,15 @@ a {
 
 /* ---------- Header ---------- */
 
-/* Name banner on top, with Work / About / Rodeo on a line under it (lined up with the K) */
+/* Name banner on top, with Work / About / Rodeo on a line under it, all centred on the page */
 .site-header {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
   gap: calc(14 * var(--u));
   height: var(--header-height);
-  padding: 0 calc(44 * var(--u)) 0 calc(15 * var(--u));
+  padding: 0 calc(44 * var(--u));
   background: var(--color-paper);
 }
 
@@ -110,7 +110,7 @@ a {
   margin-top: 0.08em;
 }
 
-.site-nav { margin-left: 0.72em; font-size: calc(54 * var(--u)); } /* the swash's width, so the nav starts under the K */
+.site-nav { font-size: calc(54 * var(--u)); }
 
 .site-nav ul {
   display: flex;
