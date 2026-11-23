@@ -767,7 +767,7 @@ a {
 
 .about-me__inner {
   display: flex;
-  align-items: center;
+  align-items: flex-start; /* top ornaments start level with the About Me heading */
   gap: calc(110 * var(--u));
   max-width: calc(1260 * var(--u));
 }
@@ -1885,6 +1885,7 @@ a {
 
   .about-me__inner {
     flex-direction: column;
+    align-items: center;
     gap: 28px;
   }
 
