@@ -3087,7 +3087,7 @@ a {
 }
 
 /* UNC WBB: game graphics shown inside an Instagram post frame (dark mode, like the uncwbb feed) */
-.gallery-row--social { align-items: center; }
+.gallery-row--social { align-items: flex-start; }
 .ig-post {
   flex: var(--ar) 1 0;
   min-width: 0;
