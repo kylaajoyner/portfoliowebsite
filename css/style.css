@@ -853,6 +853,7 @@ a {
   font-size: calc(30 * var(--u));
   line-height: 1.6;
 }
+.about-me__copy + .about-me__copy { margin-top: 0.8em; }
 
 /* Kyla's TV art sits on top; the screen glows through its cut-out */
 .tv {
